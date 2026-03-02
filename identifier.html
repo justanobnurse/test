@@ -169,16 +169,20 @@
         const ruleOf60 = isLong && (isBpmDeep || isDropDeep);
         
         let title, rationale;
+        
+        // This is the core definition of a Variable Deceleration according to SOGC
+        const baseVariableDef = "An abrupt FHR decrease (onset to nadir < 30 seconds) of ≥ 15bpm below baseline, lasting ≥ 15 seconds and < 2 minutes.";
 
         if (autoCompNodes.length > 0 || ruleOf60) {
             title = "COMPLICATED VARIABLE DECELERATION";
             let reasons = [];
             autoCompNodes.forEach(node => reasons.push(node.getAttribute('data-label')));
-            if (ruleOf60) reasons.push("Rule of 60s (≥60s AND nadir ≤60bpm or drop ≥60bpm)");
-            rationale = `Complicated due to: <ul><li>${reasons.join("</li><li>")}</li></ul>`;
+            if (ruleOf60) reasons.push("Rule of 60s (Duration ≥ 60s AND nadir ≤ 60bpm OR drop ≥ 60bpm below baseline)");
+            
+            rationale = `${baseVariableDef}<br><br><strong>Complicated due to:</strong><ul><li>${reasons.join("</li><li>")}</li></ul>`;
         } else {
             title = "UNCOMPLICATED VARIABLE DECELERATION";
-            rationale = "Abrupt FHR decrease ≥15bpm for ≥15s that does not meet complication thresholds.";
+            rationale = `${baseVariableDef}<br><br>This deceleration is classified as <strong>Uncomplicated</strong> because it does not meet any individual complication triggers or the combined 'Rule of 60s' thresholds.`;
         }
         showResult(title, rationale);
     }
