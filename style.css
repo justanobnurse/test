@@ -73,19 +73,69 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Standard Buttons */
 .btn { 
-    display: block; width: 100%; padding: 16px; margin: 12px 0; 
-    border: 1px solid var(--border-color); border-radius: 8px; background: var(--card-bg); 
-    cursor: pointer; font-size: 16px; text-decoration: none; 
-    text-align: left; color: var(--text); box-sizing: border-box;
-    transition: all 0.2s ease;
+    display: block; 
+    width: 100%; 
+    padding: 16px; 
+    margin: 12px 0; 
+    border: 1px solid var(--border-color); 
+    border-radius: 10px; /* Kept as rounded squares */
+    background: var(--card-bg); 
+    cursor: pointer; 
+    font-size: 16px; 
+    text-decoration: none; 
+    text-align: left; 
+    color: var(--text); 
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.btn-primary { background: var(--accent); color: white !important; border: none; text-align: center; font-weight: bold; }
-.btn-exit { background: #f8d7da; color: #721c24; border: none; text-align: center; margin-top: 20px; }
-body.dark-mode .btn-exit { background: #4c1d1d; color: #f8d7da; }
+/* The "Bump Up" Effect for all buttons */
+.btn:hover:not(:disabled) { 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    background: #f0f7ff; /* Very subtle blue tint */
+    border-color: var(--accent);
+}
 
+body.dark-mode .btn:hover:not(:disabled) {
+    background: #444;
+}
+
+/* Primary Button Styling */
+.btn-primary { 
+    background: var(--accent); 
+    color: white !important; 
+    border: none; 
+    text-align: center; 
+    font-weight: bold; 
+}
+
+.btn-primary:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+/* Exit/Red Button Styling */
+.btn-exit { 
+    background: #fdf2f2; 
+    color: #c0392b; 
+    border: 1px solid #fadbd8; 
+    text-align: center; 
+    margin-top: 20px; 
+}
+
+body.dark-mode .btn-exit { 
+    background: #4c1d1d; 
+    color: #f8d7da; 
+    border-color: #721c24;
+}
+
+/* Back Button Styling */
+.btn-back {
+    background: transparent;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
 /* NEW: Pill Buttons (Dark Mode & Feedback) with Bump Effect */
 .footer-btn {
     display: inline-flex;
