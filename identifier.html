@@ -103,17 +103,25 @@
         <button class="btn btn-primary" onclick="location.reload()">Reset</button>
     </div>
 
-    <div id="page9" class="hidden">
+   <div id="page9" class="hidden">
         <h3>Do any of the following apply?</h3>
         <div class="checklist">
-            <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Failure to recover to baseline"> Fails to recover to baseline by end of contraction</label>
-            <label class="check-item"><input type="checkbox" id="c-60s"> Deceleration lasts ≥ 60s</label>
-            <label class="check-item"><input type="checkbox" id="c-60bpm"> Nadir reaches 60bpm or below</label>
-            <label class="check-item"><input type="checkbox" id="c-60drop"> Nadir is ≥ 60bpm below baseline</label>
-            <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Baseline Tachycardia"> FHR baseline is > 160 bpm</label>
-            <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Minimal/Absent Variability"> FHR variability at baseline is minimal or absent</label>
+            <label class="check-item" style="border-left-color: #27ae60;">
+                <input type="checkbox" id="v-none" onchange="toggleVariableCheck(this)"> <strong>None</strong>
+            </label>
+            
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
+
+            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Failure to recover to baseline" onchange="toggleVariableCheck(this)"> Fails to recover to baseline by end of contraction</label>
+            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60s" onchange="toggleVariableCheck(this)"> Deceleration lasts ≥ 60s</label>
+            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60bpm" onchange="toggleVariableCheck(this)"> Nadir reaches 60bpm or below</label>
+            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60drop" onchange="toggleVariableCheck(this)"> Nadir is ≥ 60bpm below baseline</label>
+            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Baseline Tachycardia" onchange="toggleVariableCheck(this)"> FHR baseline is > 160 bpm</label>
+            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Minimal/Absent Variability" onchange="toggleVariableCheck(this)"> FHR variability at baseline is minimal or absent</label>
         </div>
-        <button class="btn btn-primary" onclick="checkVariable()">Classify Variable</button>
+        
+        <button id="classifyVarBtn" class="btn btn-primary" disabled style="opacity: 0.5;" onclick="checkVariable()">Classify Variable</button>
+        <button class="btn btn-back" onclick="goTo('page8')">← Back</button>
     </div>
 
     <div id="resPage" class="hidden">
@@ -161,6 +169,26 @@
         goTo('resPage');
     }
 
+    // Smart Toggle Logic for Variable Complications
+    function toggleVariableCheck(element) {
+        const noneBox = document.getElementById('v-none');
+        const compBoxes = document.querySelectorAll('.v-comp');
+        const classifyBtn = document.getElementById('classifyVarBtn');
+
+        if (element.id === 'v-none' && element.checked) {
+            // If None is checked, uncheck everything else
+            compBoxes.forEach(cb => cb.checked = false);
+        } else if (element.classList.contains('v-comp') && element.checked) {
+            // If a complication is checked, uncheck None
+            noneBox.checked = false;
+        }
+
+        // Enable button if anything is selected
+        const anyChecked = noneBox.checked || Array.from(compBoxes).some(cb => cb.checked);
+        classifyBtn.disabled = !anyChecked;
+        classifyBtn.style.opacity = anyChecked ? "1" : "0.5";
+    }
+
     function checkVariable() {
         const autoCompNodes = document.querySelectorAll('.comp-auto:checked');
         const isLong = document.getElementById('c-60s').checked;
@@ -169,8 +197,6 @@
         const ruleOf60 = isLong && (isBpmDeep || isDropDeep);
         
         let title, rationale;
-        
-        // This is the core definition of a Variable Deceleration according to SOGC
         const baseVariableDef = "An abrupt FHR decrease (onset to nadir < 30 seconds) of ≥ 15bpm below baseline, lasting ≥ 15 seconds and < 2 minutes.";
 
         if (autoCompNodes.length > 0 || ruleOf60) {
