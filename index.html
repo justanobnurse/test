@@ -44,14 +44,14 @@
             <a href="mvu.html" style="text-decoration: none; color: inherit;">
                 <div class="tool-card" style="border-left-color: #f39c12;">
                     <h3 style="color: #f39c12;">MVU Calculator</h3>
-                    <p>Quantify uterine activity when using an IUPC using the Montevideo Units formula.</p>
+                    <p>Quantify uterine activity when using an Internal Uterine Pressure Catheter (IUPC) using the Montevideo Units (MVU) formula.</p>
                     <strong style="color: #f39c12;">Launch MVU Calculator →</strong>
                 </div>
             </a>
 
             <a href="ia.html" style="text-decoration: none; color: inherit;">
                 <div class="tool-card" style="border-left-color: #9b59b6;">
-                    <h3 style="color: #9b59b6;">IA Classifier</h3>
+                    <h3 style="color: #9b59b6;">Intermittent Auscultation Classifier</h3>
                     <p>A systematic tool for classifying Intermittent Auscultation (IA) based on the SOGC 2020 FHS Guidelines.</p>
                     <strong style="color: #9b59b6;">Launch IA Classifier →</strong>
                 </div>
@@ -59,25 +59,33 @@
         </div>
 
         <footer style="margin-top: 50px; padding: 20px; font-size: 0.75rem; color: #7f8c8d; border-top: 1px solid var(--border-color); text-align: center;">
-            <p><strong>Notice:</strong> By using this tool, you acknowledge that it is for educational purposes only. It is not a substitute for clinical judgment.</p>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px;">
-                <button id="darkModeToggle" class="btn" style="width: auto; padding: 10px 20px; border-radius: 20px;">🌙 Switch to Dark Mode</button>
-                <div style="padding: 10px; background: var(--item-bg); border-radius: 8px; border: 1px solid var(--border-color);">
-                    <strong>Help improve these tools:</strong> 
-                    <a href="https://forms.gle/uty6b6hfLdT3L1716" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: bold;">Submit Feedback</a>
-                </div>
+            <p><strong>Notice:</strong> By using this tool, you acknowledge that it is for educational purposes only. It is not a substitute for clinical judgment. The creator is not responsible for any clinical decisions made based on this logic.</p>
+            
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 20px;">
+                <button id="darkModeToggle" class="btn" style="width: auto; padding: 10px 25px; border-radius: 50px; margin: 0; background: var(--item-bg); font-weight: bold; border: 1px solid var(--border-color);">
+                    🌙 Switch to Dark Mode
+                </button>
+
+                <a href="https://forms.gle/uty6b6hfLdT3L1716" target="_blank" class="btn" style="width: auto; padding: 10px 25px; border-radius: 50px; margin: 0; background: var(--item-bg); font-weight: bold; border: 1px solid var(--border-color); text-decoration: none; color: var(--text); display: flex; align-items: center; gap: 8px;">
+                    💬 Help improve these tools: Submit Feedback
+                </a>
             </div>
         </footer>
-        <p style="text-align: center; color: #888; margin-top: 20px; font-size: 0.8rem;">Version 1.1 | Updated March 2026</p>
+
+        <p style="text-align: center; color: #888; margin-top: 20px; font-size: 0.8rem;">
+            Version 1.1 | Updated March 2026 | Adapted from the 2020 SOGC Fetal Health Surveillance Guidelines
+        </p>
     </div>
 
     <script>
         const toggleBtn = document.getElementById('darkModeToggle');
         const body = document.body;
+
         if (localStorage.getItem('theme') === 'dark') {
             body.classList.add('dark-mode');
             toggleBtn.innerText = "☀️ Switch to Light Mode";
         }
+
         toggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const isDark = body.classList.contains('dark-mode');
