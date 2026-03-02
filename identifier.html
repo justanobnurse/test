@@ -57,19 +57,20 @@
 
     <div id="page5" class="hidden">
         <h3>Does the deceleration last ≥ 2 minutes?</h3>
-        <button class="btn" onclick="goTo('page5b')">Yes</button>
-        <button class="btn" onclick="goTo('page6')">No</button>
+         <button class="btn" onclick="goTo('page6')">No, the deceleration has a duration under 2 minutes</button>
+        <button class="btn" onclick="goTo('page5b')">Yes, the deceleration has a duration ≥2 minutes</button>
+       
     </div>
 
     <div id="page5b" class="hidden">
         <h3>Does the nadir drop at least 15bpm below baseline?</h3>
-        <button class="btn" onclick="goTo('page12')">Yes, nadir ≥ 15bpm below baseline</button>
-        <button class="btn" onclick="goTo('page8c')">No, nadir < 15bpm drop</button>
+        <button class="btn" onclick="goTo('page12')">Yes, the nadir of the deceleration is ≥ 15bpm below the baseline</button>
+        <button class="btn" onclick="goTo('page8c')">No, the nadir of the deceleration is < 15bpm below the baseline</button>
     </div>
 
     <div id="page6" class="hidden">
         <h3>What is the slope of the deceleration?</h3>
-        <p><small>Tip: Time from onset of decrease to the nadir.</small></p>
+        <p><small>Tip: The slope refers to the time from the onset of the FHR decrease to the nadir of the deceleration.</small></p>
         <button class="btn" onclick="goTo('page7')">Less than 30 seconds (Abrupt)</button>
         <button class="btn" onclick="goTo('page14')">≥ 30 seconds (Gradual)</button>
     </div>
@@ -89,28 +90,28 @@
     <div id="page8b" class="hidden">
         <div class="result-box" style="border-left-color: #3498db;">
             <h3 style="color: #3498db;">VARIABILITY</h3>
-            <p>An abrupt decrease that does not meet the 15bpm depth AND 15s duration rule is considered variability.</p>
+            <p>An abrupt (<30 seconds) FHR decrease that does not meet the 15bpm depth AND 15s duration rule is considered variability and NOT a deceleration.</p>
         </div>
         <button class="btn btn-primary" onclick="location.reload()">Identify Another</button>
     </div>
 
     <div id="page8c" class="hidden">
         <div class="result-box" style="border-left-color: #3498db;">
-            <h3 style="color: #3498db;">POSSIBLY NOT A DECELERATION</h3>
+            <h3 style="color: #3498db;">MAY NOT BE A DECELERATION: EVALUATE WHOLE CLINICAL PICTURE</h3>
             <p>For a deceleration to be prolonged, it must have a nadir ≥ 15bpm below baseline.</p>
         </div>
         <button class="btn btn-primary" onclick="location.reload()">Reset</button>
     </div>
 
     <div id="page9" class="hidden">
-        <h3>Are any of the following present?</h3>
+        <h3>Do any of the following apply?</h3>
         <div class="checklist">
             <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Failure to recover to baseline"> Fails to recover to baseline by end of contraction</label>
             <label class="check-item"><input type="checkbox" id="c-60s"> Deceleration lasts ≥ 60s</label>
             <label class="check-item"><input type="checkbox" id="c-60bpm"> Nadir reaches 60bpm or below</label>
             <label class="check-item"><input type="checkbox" id="c-60drop"> Nadir is ≥ 60bpm below baseline</label>
-            <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Baseline Tachycardia"> FHR baseline > 160 bpm</label>
-            <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Minimal/Absent Variability"> Baseline variability is minimal or absent</label>
+            <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Baseline Tachycardia"> FHR baseline is > 160 bpm</label>
+            <label class="check-item"><input type="checkbox" class="comp-auto" data-label="Minimal/Absent Variability"> FHR variability at baseline is minimal or absent</label>
         </div>
         <button class="btn btn-primary" onclick="checkVariable()">Classify Variable</button>
     </div>
@@ -132,9 +133,9 @@
     <div id="page14" class="hidden">
         <h3>Relationship to Contraction</h3>
         
-        <p>Does the nadir match the peak of the contraction and return to baseline by the end of it?</p>
-        <button class="btn" onclick="showResult('EARLY DECELERATION', 'Gradual onset (≥30s) that mirrors the contraction.')">Yes (Mirrors)</button>
-        <button class="btn" onclick="showResult('LATE DECELERATION', 'Gradual onset (≥30s) where the nadir occurs after the peak of the contraction.')">No (Delayed)</button>
+        <p>Does the FHR deceleration onset, nadir, and return to baseline match the onset, peak, and end of the contraction respectively?</p>
+        <button class="btn" onclick="showResult('EARLY DECELERATION', 'Gradual onset (≥30s) that mirrors the contraction.')">Yes, meets all 3 (mirrors the contraction)</button>
+        <button class="btn" onclick="showResult('LATE DECELERATION', 'Gradual onset (≥30s) where the nadir occurs after the peak of the contraction.')">No, one or more not met (delayed)</button>
     </div>
 
 </div>
@@ -156,7 +157,7 @@
         header.innerHTML = `<h2 style="color: ${neutralBlue}; text-align: center; text-transform: uppercase;">${title}</h2>`;
         const resBox = document.getElementById('resRationale');
         resBox.style.borderLeftColor = neutralBlue;
-        resBox.innerHTML = `<strong>Definition & Logic:</strong><br>${rationale}`;
+        resBox.innerHTML = `<strong>Definition</strong><br>${rationale}`;
         goTo('resPage');
     }
 
