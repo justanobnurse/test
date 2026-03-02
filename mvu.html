@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVU Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div id="page1">
+        <h2>MVU Calculator</h2>
+        <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+            <strong>Disclaimer:</strong> Educational logic for Montevideo Units. User assumes all clinical responsibility.
+        </div>
+        <button class="btn btn-primary" onclick="goTo('page2')">Begin</button>
+        <a href="index.html" class="btn btn-exit">Exit</a>
+    </div>
+
+    <div id="page2" class="hidden">
+        <h3>Uterine Resting Tone</h3>
+        <p>Resting tone baseline (mmHg):</p>
+        <input type="number" id="restingTone" placeholder="0-25" oninput="validateRT()">
+        <br><br>
+        <button id="rtBtn" class="btn btn-primary" onclick="goTo('page3')" disabled style="opacity:0.5">Continue</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page3" class="hidden">
+        <h3>Contraction Peaks (mmHg)</h3>
+        <p>Input peaks in a 10-minute window.</p>
+        <div id="peakInputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <input type="number" class="peak-box" placeholder="Peak 1" oninput="validatePeaks()">
+            <input type="number" class="peak-box" placeholder="Peak 2">
+            <input type="number" class="peak-box" placeholder="Peak 3">
+            <input type="number" class="peak-box" placeholder="Peak 4">
+            <input type="number" class="peak-box" placeholder="Peak 5">
+            <input type="number" class="peak-box" placeholder="Peak 6">
+        </div>
+        <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page4" class="hidden">
+        <h2 style="text-align:center">Result</h2>
+        <div style="text-align:center; margin: 20px 0;">
+            <span id="mvuDisplay" style="font-size: 4rem; font-weight: bold; color: var(--accent);">0</span>
+            <p>MVUs (mmHg)</p>
+        </div>
+        <div id="mvuSummary" class="result-box"></div>
+        <button class="btn btn-primary" onclick="location.reload()">Reset</button>
+        <a href="index.html" class="btn btn-exit">Home</a>
+    </div>
+</div>
+<script>
+    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+    let state = { history: [] };
+    function goTo(id) {
+        const curr = document.querySelector('.container > div:not(.hidden)')?.id;
+        if(curr && curr !== id) state.history.push(curr);
+        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+    }
+    function goBack() { if(state.history.length > 0) document.getElementById(state.history.pop()).classList.remove('hidden'); }
+    function validateRT() { 
+        const v = document.getElementById('restingTone').value;
+        const b = document.getElementById('rtBtn');
+        b.disabled = !(v !== "" && v >= 0); b.style.opacity = b.disabled ? "0.5" : "1";
+    }
+    function validatePeaks() {
+        const v = document.querySelectorAll('.peak-box')[0].value;
+        const b = document.getElementById('calcBtn');
+        b.disabled = !(v !== "" && v > 0); b.style.opacity = b.disabled ? "0.5" : "1";
+    }
+    function calculateMVU() {
+        const tone = parseFloat(document.getElementById('restingTone').value);
+        const peaks = Array.from(document.querySelectorAll('.peak-box')).map(i => parseFloat(i.value)).filter(v => !isNaN(v));
+        let total = peaks.reduce((acc, p) => acc + (p - tone), 0);
+        document.getElementById('mvuDisplay').innerText = Math.round(total);
+        document.getElementById('mvuSummary').innerHTML = `<strong>Contractions:</strong> ${peaks.length}<br><strong>Resting Tone:</strong> ${tone}mmHg`;
+        goTo('page4');
+    }
+</script>
+</body>
+</html>

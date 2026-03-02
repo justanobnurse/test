@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FHS Educational Tools</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="home-hero">
+            <h1>Canadian Fetal Health Surveillance Tools</h1>
+            <p>Educational reference and logic-based tools adapted from the SOGC 2020 Fetal Health Surveillance guidelines.</p>
+            <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border: 1px solid #ffeeba; font-size: 0.85rem;">
+                <strong>Note:</strong> These tools are for educational reference only and are not a substitute for clinical knowledge, judgement, or decision-making.
+            </div>
+        </div>
+
+        <div class="home-grid">
+            <a href="cefm.html" style="text-decoration: none; color: inherit;">
+                <div class="tool-card" style="border-left-color: #27ae60;">
+                    <h3 style="color: #27ae60;">CEFM Classifier</h3>
+                    <p>A systematic tool for FHS CEFM classification (Normal, Atypical, Abnormal) based on the SOGC 2020 FHS Guidelines.</p>
+                    <strong style="color: #27ae60;">Launch CEFM Classifier →</strong>
+                </div>
+            </a>
+
+            <a href="identifier.html" style="text-decoration: none; color: inherit;">
+                <div class="tool-card" style="border-left-color: #3498db;">
+                    <h3 style="color: #3498db;">Deceleration Identifier</h3>
+                    <p>A step-by-step tool to identify the type of deceleration.</p>
+                    <strong style="color: #3498db;">Launch Deceleration Identifier →</strong>
+                </div>
+            </a>
+
+            <a href="tachy.html" style="text-decoration: none; color: inherit;">
+                <div class="tool-card" style="border-left-color: #e91e63;">
+                    <h3 style="color: #e91e63;">Is it Tachysystole?</h3>
+                    <p>Identify uterine tachysystole.</p>
+                    <strong style="color: #e91e63;">Launch Tachysystole Tool →</strong>
+                </div>
+            </a>
+
+            <a href="mvu.html" style="text-decoration: none; color: inherit;">
+                <div class="tool-card" style="border-left-color: #f39c12;">
+                    <h3 style="color: #f39c12;">MVU Calculator</h3>
+                    <p>Quantify uterine activity when using an IUPC using the Montevideo Units formula.</p>
+                    <strong style="color: #f39c12;">Launch MVU Calculator →</strong>
+                </div>
+            </a>
+
+            <a href="ia.html" style="text-decoration: none; color: inherit;">
+                <div class="tool-card" style="border-left-color: #9b59b6;">
+                    <h3 style="color: #9b59b6;">IA Classifier</h3>
+                    <p>A systematic tool for classifying Intermittent Auscultation (IA) based on the SOGC 2020 FHS Guidelines.</p>
+                    <strong style="color: #9b59b6;">Launch IA Classifier →</strong>
+                </div>
+            </a>
+        </div>
+
+        <footer style="margin-top: 50px; padding: 20px; font-size: 0.75rem; color: #7f8c8d; border-top: 1px solid var(--border-color); text-align: center;">
+            <p><strong>Notice:</strong> By using this tool, you acknowledge that it is for educational purposes only. It is not a substitute for clinical judgment.</p>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 15px;">
+                <button id="darkModeToggle" class="btn" style="width: auto; padding: 10px 20px; border-radius: 20px;">🌙 Switch to Dark Mode</button>
+                <div style="padding: 10px; background: var(--item-bg); border-radius: 8px; border: 1px solid var(--border-color);">
+                    <strong>Help improve these tools:</strong> 
+                    <a href="https://forms.gle/uty6b6hfLdT3L1716" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: bold;">Submit Feedback</a>
+                </div>
+            </div>
+        </footer>
+        <p style="text-align: center; color: #888; margin-top: 20px; font-size: 0.8rem;">Version 1.1 | Updated March 2026</p>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('darkModeToggle');
+        const body = document.body;
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggleBtn.innerText = "☀️ Switch to Light Mode";
+        }
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            toggleBtn.innerText = isDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
+        });
+    </script>
+</body>
+</html>

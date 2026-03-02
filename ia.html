@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Logic Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+    <div id="page1">
+        <h2>Terms of Use & Disclaimer</h2>
+        <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border: 1px solid #ffeeba; font-size: 0.9rem; margin-bottom: 20px;">
+            <p><strong>READ CAREFULLY:</strong> Educational reference for IA protocols (SOGC 2020). <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
+        </div>
+        <button class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+        <div style="margin-top: 10px;">
+            <a href="index.html" class="btn btn-exit">Exit to Home</a>
+        </div>
+    </div>
+
+    <div id="page2" class="hidden">
+        <h3>What device is being used for IA?</h3>
+        <button class="btn" onclick="setAudit('device', 'Handheld Doppler'); goTo('page3')">Handheld Doppler</button>
+        <button class="btn" onclick="setAudit('device', 'EFM Ultrasound'); goTo('page3')">EFM Ultrasound</button>
+        <button class="btn" onclick="setAudit('device', 'Other'); goTo('page3')">Other</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page3" class="hidden">
+        <h3>Uterine Activity</h3>
+        <button class="btn" onclick="log('NORMAL', 'Uterine Activity', 'Normal'); goTo('page4')">Normal</button>
+        <button class="btn" onclick="log('ABNORMAL', 'Uterine Activity', 'Tachysystole'); goTo('page4')">Tachysystole</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page4" class="hidden">
+        <h3>Are the maternal vitals normal?</h3>
+        <button class="btn" onclick="log('NORMAL', 'Maternal Vitals', 'Normal'); goTo('page5')">Yes, maternal vitals are normal</button>
+        <button class="btn" onclick="log('ABNORMAL', 'Maternal Vitals', 'Not all normal'); goTo('page5')">No, maternal vitals are not all normal</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page5" class="hidden">
+        <h3>Baseline Fetal Heart Rate?</h3>
+        <button class="btn" onclick="log('ABNORMAL', 'Baseline Fetal Heart Rate', 'Less than 110bpm'); goTo('page6')">Less than 110bpm</button>
+        <button class="btn" onclick="log('NORMAL', 'Baseline Fetal Heart Rate', '110bpm to 160bpm'); goTo('page6')">110bpm to 160bpm</button>
+        <button class="btn" onclick="log('ABNORMAL', 'Baseline Fetal Heart Rate', 'Greater than 160bpm'); goTo('page6')">Greater than 160bpm</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page6" class="hidden">
+        <h3>Baseline FHR Trend?</h3>
+        <button class="btn" onclick="log('NORMAL', 'Baseline Trend', 'Stable'); goTo('page7')">Stable</button>
+        <button class="btn" onclick="log('ABNORMAL', 'Baseline Trend', 'Persistently Rising'); goTo('page7')">Persistently Rising</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page7" class="hidden">
+        <h3>Fetal Heart Rhythm?</h3>
+        <button class="btn" onclick="log('NORMAL', 'Fetal Heart Rhythm', 'Regular'); goTo('page8')">Regular</button>
+        <button class="btn" onclick="log('ABNORMAL', 'Fetal Heart Rhythm', 'Irregular'); goTo('page8')">Irregular</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page8" class="hidden">
+        <h3>Accelerations?</h3>
+        <button class="btn" onclick="log('NORMAL', 'Accelerations', 'Audible'); goTo('page9')">Audible</button>
+        <button class="btn" onclick="log('NORMAL', 'Accelerations', 'Not heard'); goTo('page9')">Not heard</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page9" class="hidden">
+        <h3>Decelerations?</h3>
+        <button class="btn" onclick="log('NORMAL', 'Decelerations', 'None heard'); finalizeIA()">None heard</button>
+        <button class="btn" onclick="log('ABNORMAL', 'Decelerations', 'Deceleration heard'); finalizeIA()">Deceleration heard</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page10" class="hidden">
+        <h1 id="finalRank" style="font-size: 3rem; text-align: center; margin-bottom: 10px; text-transform: uppercase;"></h1>
+        <div id="resBox"></div>
+        <hr style="margin: 30px 0; border: 0; border-top: 2px solid var(--border-color);">
+        <h3>Systematic Assessment Summary</h3>
+        <div id="audit" class="result-box"></div>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
+    </div>
+
+</div>
+
+<script>
+    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+    
+    let state = { history: [], findings: {}, audit: { device: '' } };
+
+    function goTo(id) {
+        const curr = document.querySelector('.container > div:not(.hidden)')?.id;
+        if(curr && curr !== id) state.history.push(curr);
+        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        window.scrollTo(0, 0);
+    }
+
+    function goBack() {
+        if(state.history.length > 0) {
+            const last = state.history.pop();
+            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById(last).classList.remove('hidden');
+        }
+    }
+
+    function setAudit(k,v) { state.audit[k]=v; }
+
+    function log(cat, label, detail) { 
+        state.findings[label] = { cat, detail }; 
+    }
+
+    function finalizeIA() {
+        const fhrFeatures = [
+            state.findings['Uterine Activity'], 
+            state.findings['Baseline Fetal Heart Rate'],
+            state.findings['Baseline Trend'], 
+            state.findings['Fetal Heart Rhythm'],
+            state.findings['Decelerations']
+        ];
+
+        let abnormalFHR = fhrFeatures.filter(f => f && f.cat === 'ABNORMAL');
+        let finalRank = (abnormalFHR.length > 0) ? 'ABNORMAL' : 'NORMAL';
+        let rankColor = (finalRank === 'ABNORMAL') ? '#e74c3c' : '#27ae60';
+
+        const rEl = document.getElementById('finalRank');
+        rEl.innerText = finalRank;
+        rEl.style.color = rankColor;
+
+        let resHtml = "";
+        
+        // Maternal vitals alert logic
+        if (state.findings['Maternal Vitals']?.detail === 'Not all normal') {
+            resHtml += `<div class="result-box" style="border-left-color:#f39c12; background:rgba(243,156,18,0.05); color: var(--text);">
+                            <strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals.
+                        </div>`;
+        }
+
+        if (finalRank === 'ABNORMAL') {
+            resHtml += `<div style="margin-bottom:20px;"><strong>Why it's Abnormal:</strong><ul>`;
+            abnormalFHR.forEach(f => resHtml += `<li>${f.detail}</li>`);
+            resHtml += `</ul></div>`;
+        } else {
+            resHtml += `<p style="color:#27ae60; font-weight:bold; font-size:1.1rem;">Meets Normal IA criteria.</p>`;
+        }
+
+        document.getElementById('resBox').innerHTML = resHtml;
+
+        // Populate the audit summary
+        document.getElementById('audit').innerHTML = Object.keys(state.findings)
+            .map(k => `<div style="margin-bottom:5px;"><strong>${k}:</strong> ${state.findings[k].detail}</div>`)
+            .join('');
+
+        goTo('page10');
+    }
+</script>
+</body>
+</html>

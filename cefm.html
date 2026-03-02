@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FHS CEFM Classifier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+   <div id="page1">
+        <h2>Terms of Use & Disclaimer</h2>
+        
+        <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border: 1px solid #ffeeba; font-size: 0.9rem; max-height: 250px; overflow-y: auto; margin-bottom: 20px; text-align: left;">
+            <p><strong>READ CAREFULLY:</strong> This logic-based tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
+            <ul style="padding-left: 20px;">
+                <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
+                <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
+                <li><strong>Logic Limitations:</strong> Algorithmic logic may not capture all clinical nuances (e.g., maternal pulse interference, signal loss, or evolving clinical pictures).</li>
+                <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
+                <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
+            </ul>
+            <p><em>By clicking "I Understand," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</em></p>
+        </div>
+
+        <button class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+        <div style="margin-top: 10px;">
+            <a href="index.html" class="btn btn-exit">Exit to Home</a>
+        </div>
+    </div>
+
+    <div id="page2" class="hidden">
+        <h3>What type of monitors are being used?</h3>
+        <p><strong>Fetal Heart Monitor:</strong></p>
+        <button id="f-us" class="btn" onclick="selF('External Ultrasound', 'us')">External Ultrasound</button>
+        <button id="f-fse" class="btn" onclick="selF('Internal Fetal Scalp Electrode (FSE)', 'fse')">Internal Fetal Scalp Electrode (FSE)</button>
+        <p><strong>Uterine Activity Monitor:</strong></p>
+        <button id="u-toco" class="btn" onclick="selU('External Tocodynamometer (TOCO)', 'toco')">External Tocodynamometer (TOCO)</button>
+        <button id="u-iupc" class="btn" onclick="selU('Internal Uterine Pressure Catheter (IUPC)', 'iupc')">Internal Uterine Pressure Catheter (IUPC)</button>
+        <button id="page2-next" class="btn btn-primary" disabled onclick="goTo('page3')">Continue</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page3" class="hidden">
+        <h3>Is the FHS CEFM Strip Interpretable?</h3>
+        <button class="btn" onclick="handleInt()">Interpretable</button>
+        <button class="btn" onclick="goTo('page4a')">Uninterpretable</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+   <div id="page4a" class="hidden">
+        <div class="result-box">
+            <h3>UNABLE TO CLASSIFY UNINTERPRETABLE STRIP</h3>
+            <p>Consider the following troubleshooting tips to improve quality:</p>
+            <ul style="text-align: left;">
+                <li>Reposition the monitor; add ultrasound gel; minimize motion when clinically necessary</li>
+                <li>If using wireless monitors confirm battery and connection; Consider switching to wired monitors; Try different monitoring equipment if necessary</li>
+                <li>Consider internal monitoring if clinically indicated and patient consents</li>
+            </ul>
+        </div>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another CEFM Strip</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
+    </div>
+
+    <div id="page4" class="hidden">
+        <h3>Uterine Activity (External)</h3>
+        <button class="btn" onclick="setUA('Normal')">Normal</button>
+        <button class="btn" onclick="setUA('Tachysystole')">Tachysystole</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page4b" class="hidden">
+        <h3>Uterine Activity (IUPC)</h3>
+        <p>Montevideo Units (Optional): <input type="number" id="mvu" style="width:60px"></p>
+        <button class="btn" onclick="setUA('Normal (Internal)')">Normal</button>
+        <button class="btn" onclick="setUA('Tachysystole (Internal)')">Tachysystole</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+   <div id="page5" class="hidden">
+    <h3>Maternal Factors</h3>
+    <div class="checklist">
+        <label class="check-item" style="border-left-color: #27ae60;">
+            <input type="checkbox" id="mat-none" value="None" onchange="validateMat()"> <strong>None</strong>
+        </label>
+        <hr>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Tachycardia" onchange="validateMat()"> Maternal Tachycardia (>110bpm)</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Fever" onchange="validateMat()"> Maternal Fever (>38.0°C)</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Cardiac Arrhythmia" onchange="validateMat()"> Maternal Cardiac Arrhythmia</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypotension" onchange="validateMat()"> Maternal Hypotension</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypoxia" onchange="validateMat()"> Maternal Hypoxia (Oxygen Saturation < 95%)</label>
+    </div>
+    <button id="mat-next" class="btn btn-primary" disabled onclick="setMat()">Continue</button>
+    <button class="btn btn-back" onclick="goBack()">← Back</button>
+</div>
+
+    <div id="page6" class="hidden">
+        <h3>Maternal-Fetal Heart Rate Coincidence?</h3>
+        <button class="btn" onclick="goTo('page7')">No Coincidence</button>
+        <button class="btn" onclick="goTo('page7a')">Yes, repetitive or persistent coincidence</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page7a" class="hidden">
+        <div class="result-box" style="border-left-color:red">
+            <h3>UNABLE TO CLASSIFY STRIP: IMMEDIATE ACTION REQUIRED</h3>
+            <p>Promptly take all necessary steps to resolve maternal-fetal heart rate coincidence and reassess the strip once resolved. Some steps to consider are:</p>
+            <ul style="text-align: left;">
+                <li>Place oximeter on maternal finger / Manually assess maternal pulse rate</li>
+                <li>Reposition external fetal monitor</li>
+                <li>Consider Internal Fetal Scalp Electrode (FSE)</li>
+                <li>If coincidence continues with FSE in place, consider a real-time bedside ultrasound to verify fetal heart rate and distinguish from maternal heart rate</li>
+            </ul>
+        </div>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another CEFM Strip</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
+    </div>
+                
+   <div id="page7" class="hidden">
+        <h3>What is the fetal heart rate baseline (rounded to the nearest 5bpm)?</h3>
+        <input type="number" id="baseIn" placeholder="BPM" style="padding:10px; width:100px; margin-bottom:10px;" oninput="validateBaseInput()"><br>
+        
+        <button id="baseContinueBtn" class="btn btn-primary" onclick="evalBase()" disabled>Continue</button>
+        
+        <button class="btn" onclick="goTo('page7c')">Indeterminate</button>
+        <button class="btn" onclick="setTachy('ABNORMAL','Erratic Baseline (>10 minutes)', true)">Erratic Baseline</button>
+        
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page7b" class="hidden">
+        <h3>Tachycardia Duration (>160bpm)?</h3>
+        <button class="btn" onclick="setTachy('NORMAL','Tachycardia < 30 minutes')">&lt; 30 minutes</button>
+        <button class="btn" onclick="setTachy('ATYPICAL','Tachycardia 30-80 minutes')">30 - 80 minutes</button>
+        <button class="btn" onclick="setTachy('ABNORMAL','Tachycardia &ge; 80 minutes')">&ge; 80 minutes</button>
+    </div>
+
+    <div id="page7c" class="hidden">
+        <h3>Why is the baseline Indeterminate?</h3>
+        <button class="btn" onclick="goTo('page4a')">Poor Tracing Quality</button>
+        <button class="btn" onclick="setTachy('ABNORMAL','Marked Variability &ge; 10 minutes', true)">Marked Variability (&ge; 10 minutes)</button>
+        <button class="btn" onclick="setTachy('ABNORMAL','Sinusoidal Pattern', true)">Sinusoidal</button>
+    </div>
+
+    <div id="page8" class="hidden">
+        <h3>FHR Baseline Trend</h3>
+        <button class="btn" onclick="setTrend('NORMAL','Stable Trend')">Stable</button>
+        <button class="btn" onclick="setTrend('ATYPICAL','Persistently Rising Trend')">Persistently Rising</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page9" class="hidden">
+        <h3>Baseline Variability</h3>
+        <button class="btn" onclick="setVar('NORMAL','Moderate Variability','page10')">Moderate (6-25bpm)</button>
+        <button class="btn" onclick="goTo('page9a')">Minimal (&le;5bpm) or Absent</button>
+        <button class="btn" onclick="goTo('page9b')">Marked (>25bpm)</button>
+        <button class="btn" onclick="setVar('ABNORMAL','Sinusoidal Pattern','FINAL')">Sinusoidal</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page9a" class="hidden">
+        <h3>Minimal/Absent Variability Duration?</h3>
+        <button class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
+        <button class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
+        <button class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
+    </div>
+
+    <div id="page9b" class="hidden">
+        <h3>Marked Variability Duration?</h3>
+        <button class="btn" onclick="setVar('NORMAL','Marked Variability < 10 minutes','page10')">&lt; 10 minutes</button>
+        <button class="btn" onclick="setVar('ABNORMAL','Marked Variability &ge; 10 minutes','FINAL')">&ge; 10 minutes</button>
+    </div>
+
+    <div id="page10" class="hidden">
+        <h3>Accelerations</h3>
+        <button class="btn" onclick="setAcc('NORMAL','Spontaneous Accelerations Present')">Spontaneous Present</button>
+        <button class="btn" onclick="setAcc('NORMAL','Accelerations Present with Scalp Stimulation')">Present with Scalp Stimulation</button>
+        <button class="btn" onclick="setAcc('ATYPICAL','No Accelerations with Scalp Stimulation')">No Accelerations with Scalp Stimulation</button>
+        <button class="btn" onclick="setAcc('NORMAL','No Spontaneous Accelerations (Scalp Stimulation Not Assessed)')">No Spontaneous Accelerations, Scalp Stimulation Not Assessed</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+<div id="page11" class="hidden">
+    <h3>Are there any decelerations?</h3>
+    <p class="tip">Select all that apply.</p>
+    <div class="checklist">
+        <label class="check-item"><input type="checkbox" id="d-none" onchange="validateDecel()"> None</label>
+        
+        <label class="check-item">
+            <input type="checkbox" id="d-uv" class="decel-factor" onchange="validateDecel()"> Uncomplicated Variable Deceleration
+        </label>
+
+        <div id="uv-caution" class="hidden" style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; border: 1px solid #ffeeba; font-size: 0.85rem; margin: 5px 0 15px 25px; text-align: left; border-left: 4px solid #f39c12;">
+            <strong>⚠️ Logic Caution:</strong> A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.
+        </div>
+
+        <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor" onchange="validateDecel()"> Complicated Variable Deceleration</label>
+        <label class="check-item"><input type="checkbox" id="d-early" class="decel-factor" onchange="validateDecel()"> Early Deceleration</label>
+        <label class="check-item"><input type="checkbox" id="d-late" class="decel-factor" onchange="validateDecel()"> Late Deceleration</label>
+        <label class="check-item"><input type="checkbox" id="d-pro" class="decel-factor" onchange="validateDecel()"> Prolonged Deceleration</label>
+    </div>
+    <button id="decel-next" class="btn btn-primary" disabled onclick="startDecelFlow()">Process Selected</button>
+    <button class="btn btn-back" onclick="goBack()">← Back</button>
+</div>
+
+    <div id="page11a" class="hidden">
+        <h3>Uncomplicated Variable Decelerations are:</h3>
+        <button class="btn" onclick="logDecel('uv','ATYPICAL','Repetitive Uncomplicated Variable Decelerations')">Repetitive (&ge;3)</button>
+        <button class="btn" onclick="logDecel('uv','NORMAL','Non-Repetitive Uncomplicated Variable Decelerations')">Non-Repetitive (1-2)</button>
+    </div>
+    <div id="page11b" class="hidden">
+        <h3>Complicated Variable Decelerations are:</h3>
+        <button class="btn" onclick="logDecel('cv','ABNORMAL','Repetitive Complicated Variable Decelerations')">Repetitive (&ge;3)</button>
+        <button class="btn" onclick="logDecel('cv','ATYPICAL','Non-Repetitive Complicated Variable Decelerations')">Non-Repetitive (1-2)</button>
+    </div>
+    <div id="page11c" class="hidden">
+        <h3>Late Decelerations are:</h3>
+        <button class="btn" onclick="logDecel('late','ABNORMAL','Recurrent Late Decelerations (&ge;50%)')">Recurrent (&ge;50%)</button>
+        <button class="btn" onclick="logDecel('late','ATYPICAL','Intermittent Late Decelerations (<50%)')">Intermittent (< 50%)</button>
+    </div>
+    <div id="page11d" class="hidden">
+        <h3>Prolonged Decelerations Count?</h3>
+        <button class="btn" onclick="goTo('page11e')">Exactly 1</button>
+        <button class="btn" onclick="logDecel('pro','ABNORMAL','More than 1 Prolonged Deceleration')">More than 1</button>
+    </div>
+    <div id="page11e" class="hidden">
+        <h3>Prolonged Deceleration Duration?</h3>
+        <button class="btn" onclick="logDecel('pro','ATYPICAL','Prolonged Deceleration 2-3 minutes')">2 to 3 minutes</button>
+        <button class="btn" onclick="logDecel('pro','ABNORMAL','Prolonged Deceleration 3-10 minutes')">3 to 10 minutes</button>
+    </div>
+
+    <div id="page12" class="hidden">
+        <h1 id="finalRank" style="font-size: 3rem; text-align: center; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;"></h1>
+        <div id="resBox"></div>
+        <hr style="margin: 30px 0; border: 0; border-top: 2px solid #eee;">
+        <h3>Systematic Assessment Summary</h3>
+       <div id="audit" class="result-box" style="line-height: 1.8;"></div>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
+    </div>
+
+</div>
+
+<script>
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+
+    let state = {
+        history: [],
+        audit: {
+            fhrMon: null, uaMon: null, ua: '', maternal: 'None', base: '',
+            baseDetail: { cat: 'NORMAL', detail: 'Baseline 110-160' },
+            trend: { cat: 'NORMAL', detail: 'Stable Trend' },
+            variability: { cat: 'NORMAL', detail: 'Moderate Variability' },
+            accels: { cat: 'NORMAL', detail: 'Accelerations Present' },
+            decels: {}
+        },
+        decelQueue: []
+    };
+
+    function goTo(id) {
+        const curr = document.querySelector('.container > div:not(.hidden)')?.id;
+        if(curr && curr !== id) state.history.push(curr);
+        
+        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+        
+        const targetPage = document.getElementById(id);
+        if (targetPage) {
+            targetPage.classList.remove('hidden');
+        }
+        
+        if (id === 'page2') chkM();
+        if (id === 'page5') validateMat();
+        if (id === 'page11') validateDecel();
+        
+        if (id === 'page7') {
+            document.getElementById('baseIn').value = ''; 
+            validateBaseInput(); 
+        }
+
+        if (id === 'page11') {
+    const uvCaution = document.getElementById('uv-caution');
+    
+    // 1. Check Baseline BPM (stored in state.audit.base as a string like "180 bpm")
+    const bpm = parseInt(state.audit.base); 
+    const isBaselineAbnormal = (bpm > 160 || bpm < 110);
+
+    // 2. Check Variability
+    const varDetail = state.audit.variability.detail;
+    const isVarAbnormal = varDetail.includes('Minimal') || varDetail.includes('Absent');
+
+    // Show caution if EITHER is true
+    if (isBaselineAbnormal || isVarAbnormal) {
+        uvCaution.classList.remove('hidden');
+    } else {
+        uvCaution.classList.add('hidden');
+    }
+}
+
+        window.scrollTo(0, 0);
+    }
+
+    function goBack() {
+        if(state.history.length > 0) {
+            const last = state.history.pop();
+            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById(last).classList.remove('hidden');
+            
+            if (last === 'page2') chkM();
+            if (last === 'page5') validateMat();
+            if (last === 'page11') validateDecel();
+        }
+    }
+
+    function selF(l, c) {
+        state.audit.fhrMon = l;
+        const isDark = document.body.classList.contains('dark-mode');
+        const activeColor = isDark ? '#34495e' : '#e3f2fd';
+        const inactiveColor = 'var(--card-bg)';
+
+        document.getElementById('f-us').style.background = (c === 'us') ? activeColor : inactiveColor;
+        document.getElementById('f-fse').style.background = (c === 'fse') ? activeColor : inactiveColor;
+        chkM();
+    }
+
+    function selU(l, c) {
+        state.audit.uaMon = l;
+        const isDark = document.body.classList.contains('dark-mode');
+        const activeColor = isDark ? '#34495e' : '#e3f2fd';
+        const inactiveColor = 'var(--card-bg)';
+
+        document.getElementById('u-toco').style.background = (c === 'toco') ? activeColor : inactiveColor;
+        document.getElementById('u-iupc').style.background = (c === 'iupc') ? activeColor : inactiveColor;
+        chkM();
+    }
+
+    function chkM() { 
+        const btn = document.getElementById('page2-next');
+        if(state.audit.fhrMon && state.audit.uaMon) {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        } else {
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+        }
+    }
+
+    function validateMat() {
+        const noneChecked = document.getElementById('mat-none').checked;
+        const factorsChecked = document.querySelectorAll('.mat-factor:checked').length > 0;
+        const btn = document.getElementById('mat-next');
+        
+        if (noneChecked || factorsChecked) {
+            btn.classList.remove('hidden');
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        } else {
+            btn.classList.remove('hidden');
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+        }
+    }
+
+    function validateDecel() {
+        const noneChecked = document.getElementById('d-none').checked;
+        const factorsChecked = document.querySelectorAll('.decel-factor:checked').length > 0;
+        const btn = document.getElementById('decel-next');
+        
+        if (noneChecked || factorsChecked) {
+            btn.classList.remove('hidden');
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        } else {
+            btn.classList.remove('hidden');
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+        }
+    }
+
+    function validateBaseInput() {
+        const val = document.getElementById('baseIn').value;
+        const btn = document.getElementById('baseContinueBtn');
+        if (val && val > 0) {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        } else {
+            btn.disabled = true;
+            btn.style.opacity = "0.5";
+        }
+    }
+
+    function handleInt() {
+        if(state.audit.uaMon.includes('Internal')) goTo('page4b');
+        else goTo('page4');
+    }
+
+    function setUA(v) { state.audit.ua = v; goTo('page5'); }
+
+    function setMat() {
+        const noneBox = document.getElementById('mat-none');
+        const checkedFactors = Array.from(document.querySelectorAll('.mat-factor:checked')).map(i => i.value);
+        state.audit.maternal = (noneBox && noneBox.checked) || checkedFactors.length === 0 ? 'None' : checkedFactors.join(', ');
+        goTo('page6');
+    }
+
+    function evalBase() {
+        let b = document.getElementById('baseIn').value;
+        state.audit.base = b + ' bpm';
+        if(b < 100) { state.audit.baseDetail = {cat:'ABNORMAL', detail:'Baseline Bradycardia < 100'}; goTo('page8'); }
+        else if(b >= 100 && b < 110) { state.audit.baseDetail = {cat:'ATYPICAL', detail:'Baseline 100-110'}; goTo('page8'); }
+        else if(b > 160) goTo('page7b');
+        else { state.audit.baseDetail = {cat:'NORMAL', detail:'Baseline 110-160'}; goTo('page8'); }
+    }
+
+    function setTachy(cat, detail, bypass = false) { 
+        state.audit.baseDetail = {cat, detail}; 
+        if(bypass) {
+            state.audit.trend = {cat: 'NORMAL', detail: 'N/A'};
+            state.audit.variability = {cat: 'NORMAL', detail: 'N/A'};
+            state.audit.accels = {cat: 'NORMAL', detail: 'N/A'};
+            state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'No Decelerations'} };
+            finalize();
+        } else {
+            goTo('page8'); 
+        }
+    }
+
+    function setTrend(cat, detail) { state.audit.trend = {cat, detail}; goTo('page9'); }
+    
+    function setVar(cat, detail, next) {
+        state.audit.variability = {cat, detail};
+        if(next === 'FINAL') {
+             state.audit.accels = {cat: 'NORMAL', detail: 'N/A'};
+             state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'No Decelerations'} };
+             finalize();
+        } else {
+             goTo(next);
+        }
+    }
+
+    function setAcc(cat, detail) { state.audit.accels = {cat, detail}; goTo('page11'); }
+
+    function startDecelFlow() {
+        state.audit.decels = {}; 
+        state.decelQueue = [];
+        let d = document.querySelectorAll('#page11 input:checked');
+        
+        if (document.getElementById('d-none').checked) {
+            state.audit.decels['none'] = {cat:'NORMAL', detail:'No Decelerations'};
+        } else {
+            d.forEach(i => {
+                if(i.id === 'd-uv') state.decelQueue.push('page11a');
+                if(i.id === 'd-cv') state.decelQueue.push('page11b');
+                if(i.id === 'd-late') state.decelQueue.push('page11c');
+                if(i.id === 'd-pro') state.decelQueue.push('page11d');
+                if(i.id === 'd-early') state.audit.decels['early'] = {cat:'NORMAL', detail:'Early Decelerations'};
+            });
+        }
+        nextDecel();
+    }
+
+    function nextDecel() {
+        if(state.decelQueue.length > 0) goTo(state.decelQueue.shift());
+        else finalize();
+    }
+
+    function logDecel(key, cat, detail) {
+        state.audit.decels[key] = {cat, detail};
+        nextDecel();
+    }
+
+  function finalize() {
+        let allFindings = [
+            state.audit.baseDetail, state.audit.trend, state.audit.variability,
+            state.audit.accels, ...Object.values(state.audit.decels)
+        ];
+        let abnormalFeatures = allFindings.filter(f => f.cat === 'ABNORMAL');
+        let atypicalFeatures = allFindings.filter(f => f.cat === 'ATYPICAL');
+        
+        let finalRank = 'NORMAL';
+        let rankColor = '#27ae60';
+        if (abnormalFeatures.length > 0) { finalRank = 'ABNORMAL'; rankColor = '#e74c3c'; }
+        else if (atypicalFeatures.length > 0) { finalRank = 'ATYPICAL'; rankColor = '#f39c12'; }
+        
+        const rEl = document.getElementById('finalRank');
+        rEl.innerText = finalRank;
+        rEl.style.color = rankColor;
+
+        let resHtml = "";
+
+        // NEW: Tachysystole Alert (Shows regardless of classification)
+        if (state.audit.ua.includes('Tachysystole')) {
+            resHtml += `
+                <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border-left: 5px solid #f39c12; margin-bottom: 20px; font-size: 0.95rem;">
+                    <strong>⚠️ Clinical Note:</strong> Tachysystole is present. While tachysytole alone does not change the classification of the CEFM strip, steps should be taken to resolve tachysystole to optimize fetal oxygenation, regardless of the fetal heart rate classification.
+                </div>
+            `;
+        }
+
+        if (finalRank === 'ABNORMAL') {
+            resHtml += `<div style="margin-bottom:20px;"><strong style="color:#e74c3c; font-size:1.2rem;">Why it's Abnormal:</strong><ul style="margin-top:5px;">`;
+            abnormalFeatures.forEach(f => { if(f.detail !== 'N/A') resHtml += `<li>${f.detail}</li>` });
+            resHtml += `</ul></div>`;
+            if (atypicalFeatures.length > 0) {
+                resHtml += `<div style="margin-bottom:20px;"><strong style="color:#f39c12;">Atypical Features:</strong><ul style="margin-top:5px;">`;
+                atypicalFeatures.forEach(f => { if(f.detail !== 'N/A') resHtml += `<li>${f.detail}</li>` });
+                resHtml += `</ul></div>`;
+            }
+        } else if (finalRank === 'ATYPICAL') {
+            resHtml += `<div style="margin-bottom:20px;"><strong style="color:#f39c12; font-size:1.2rem;">Why it's Atypical:</strong><ul style="margin-top:5px;">`;
+            atypicalFeatures.forEach(f => { if(f.detail !== 'N/A') resHtml += `<li>${f.detail}</li>` });
+            resHtml += `</ul></div>`;
+        } else {
+            resHtml += `<p style="color:#27ae60; font-weight:bold; font-size:1.1rem;">All assessed parameters meet Normal criteria.</p>`;
+        }
+        document.getElementById('resBox').innerHTML = resHtml;
+
+        let decelSummary = Object.values(state.audit.decels).map(f => f.detail).join(', ');
+        if (!decelSummary || decelSummary === "") decelSummary = "No Decelerations";
+
+        document.getElementById('audit').innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px;">
+                <div><strong>Monitors in Use:</strong></div><div>${state.audit.fhrMon} / ${state.audit.uaMon}</div>
+                <div><strong>Maternal Factors:</strong></div><div>${state.audit.maternal}</div>
+                <div><strong>Uterine Activity:</strong></div><div>${state.audit.ua}</div>
+                <div><strong>Fetal Heart Rate Baseline:</strong></div><div>${state.audit.base}</div>
+                <div><strong>Baseline Trend:</strong></div><div>${state.audit.trend.detail}</div>
+                <div><strong>Variability:</strong></div><div>${state.audit.variability.detail}</div>
+                <div><strong>Accelerations:</strong></div><div>${state.audit.accels.detail}</div>
+                <div><strong>Decelerations:</strong></div><div>${decelSummary}</div>
+            </div>
+        `;
+        goTo('page12');
+    }
+
+    function setupSmartToggles() {
+        const matNone = document.getElementById('mat-none');
+        const matFactors = document.querySelectorAll('.mat-factor');
+        matNone.addEventListener('change', function() {
+            if (this.checked) matFactors.forEach(f => f.checked = false);
+            validateMat();
+        });
+        matFactors.forEach(f => {
+            f.addEventListener('change', function() {
+                if (this.checked) matNone.checked = false;
+                validateMat();
+            });
+        });
+
+        const decelNone = document.getElementById('d-none');
+        const decelFactors = document.querySelectorAll('.decel-factor');
+        decelNone.addEventListener('change', function() {
+            if (this.checked) decelFactors.forEach(d => d.checked = false);
+            validateDecel();
+        });
+        decelFactors.forEach(d => {
+            d.addEventListener('change', function() {
+                if (this.checked) decelNone.checked = false;
+                validateDecel();
+            });
+        });
+    }
+
+    window.onload = setupSmartToggles;
+</script>
+</body>
+</html>

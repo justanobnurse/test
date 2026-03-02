@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is it Tachysystole?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+    <div id="page1" class="home-hero">
+        <h2>Tachysystole Identifier</h2>
+        <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; text-align: left; margin-bottom: 20px;">
+            <strong>SOGC 2020:</strong> Educational logic-based tool. <strong>It can make mistakes.</strong> Clinical judgment is paramount.
+        </div>
+        <button class="btn btn-primary" onclick="goTo('page2')">Begin Assessment</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
+    </div>
+
+    <div id="page2" class="hidden">
+        <h3>What type of uterine monitor is in use?</h3>
+        <button class="btn" onclick="goTo('page3')">External Tocodynamometer (TOCO)</button>
+        <button class="btn" onclick="goTo('page3c')">Internal Uterine Pressure Catheter (IUPC)</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page3" class="hidden">
+        <div class="result-box" style="border-left-color: #3498db; background: rgba(52, 152, 219, 0.05);">
+            <strong>Reminder:</strong> TOCO does not measure intensity. Palpation is required to verify uterine tone and contraction strength.
+        </div>
+        <h3>Is the contraction tracing adequate and aligns with palpation?</h3>
+        <button class="btn" onclick="goTo('page4')">Yes</button>
+        <button class="btn" onclick="goTo('page3b')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page3b" class="hidden">
+        <h3>Adjust monitor and assess via palpation.</h3>
+        <button class="btn" onclick="goTo('page4')">Continue based on palpation</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page3c" class="hidden">
+        <h3>Does the IUPC tracing match the clinical picture and palpation?</h3>
+        <button class="btn" onclick="goTo('page4b')">Yes</button>
+        <button class="btn" onclick="goTo('page3d')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page3d" class="hidden">
+        <h3>Adjust and zero the IUPC.</h3>
+        <button class="btn" onclick="goTo('page4b')">Continue once aligned</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page4" class="hidden">
+        <h3>Uterine Contraction Frequency</h3>
+        <p>Are there > 5 contractions in 10 minutes, averaged over 30 minutes?</p>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Frequency exceeds > 5 contractions in 10 minutes.')">Yes</button>
+        <button class="btn" onclick="goTo('page5')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page4b" class="hidden">
+        <h3>Contraction Peak Intensity (IUPC)</h3>
+        <p>Are there any contractions with a peak &ge; 75 mmHg (outside 2nd stage)?</p>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Internal monitoring identifies peak &ge; 75 mmHg.')">Yes</button>
+        <button class="btn" onclick="goTo('page4c')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page4c" class="hidden">
+        <h3>Resting Tone (IUPC)</h3>
+        <p>Is the resting tone &ge; 25 mmHg?</p>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone is &ge; 25 mmHg (Hypertonus).')">Yes</button>
+        <button class="btn" onclick="goTo('page4')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page5" class="hidden">
+        <h3>Contraction Duration</h3>
+        <p>Are any contractions > 90 seconds in duration?</p>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one contraction lasts > 90 seconds.')">Yes</button>
+        <button class="btn" onclick="goTo('page7')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page7" class="hidden">
+        <h3>Resting Tone Duration</h3>
+        <p>Is there &ge; 30 seconds of resting tone between all contractions?</p>
+        <button class="btn" onclick="goTo('page8')">Yes</button>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone between contractions is < 30 seconds.')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page8" class="hidden">
+        <h3>Clinical Presentation</h3>
+        <p>Is the patient in constant pain with no periods of relief?</p>
+        <button class="btn" onclick="showResult('POSSIBLE TACHYSYSTOLE', 'Patient reports constant pain with no relief; requires further clinical assessment.')">Yes</button>
+        <button class="btn" onclick="showResult('NORMAL UTERINE ACTIVITY', 'Uterine activity meets all assessed normal criteria.')">No</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="resPage" class="hidden">
+        <div id="resHeader"></div>
+        <div id="resRationale" class="result-box"></div>
+        <button class="btn btn-primary" onclick="location.reload()">Identify Another</button>
+        <a href="index.html" class="btn btn-exit">Home</a>
+    </div>
+
+</div>
+
+<script>
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+
+    let history = [];
+
+    function goTo(id) {
+        const curr = document.querySelector('.container > div:not(.hidden)')?.id;
+        if(curr && curr !== id) history.push(curr);
+        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        window.scrollTo(0, 0);
+    }
+
+    function goBack() {
+        if(history.length > 0) {
+            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById(history.pop()).classList.remove('hidden');
+        }
+    }
+
+    function showResult(title, rationale) {
+        const h = document.getElementById('resHeader');
+        h.innerHTML = `<h2 style="color: var(--accent); text-align: center; text-transform: uppercase;">${title}</h2>`;
+        document.getElementById('resRationale').innerHTML = `<strong>Definition & Logic:</strong><br>${rationale}`;
+        goTo('resPage');
+    }
+</script>
+</body>
+</html>
