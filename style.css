@@ -113,7 +113,8 @@ input[type="number"] {
 .disclaimer-banner {
     background: var(--item-bg);
     border: 1px solid var(--border-color);
-    border-top: 3px solid #f39c12; /* Keeps the warning orange but as a sleek top bar */
+    /* Changed #f39c12 (orange) to #008080 (teal) */
+    border-top: 3px solid #008080; 
     color: var(--text);
     padding: 20px;
     border-radius: 12px;
@@ -125,7 +126,8 @@ input[type="number"] {
 }
 
 .disclaimer-banner strong {
-    color: #f39c12;
+    /* Changed #f39c12 (orange) to #008080 (teal) */
+    color: #008080;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
