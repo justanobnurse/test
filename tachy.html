@@ -72,30 +72,31 @@
     <div id="page4" class="hidden">
         <h3>Uterine Contraction Frequency</h3>
         <p>Are there > 5 contractions in 10 minutes, averaged over 30 minutes?</p>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Frequency exceeds > 5 contractions in 10 minutes.')">Yes</button>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Frequency exceeds > 5 contractions in 10 minutes averaged over the last 30 minutes.')">Yes</button>
         <button class="btn" onclick="goTo('page5')">No</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page4b" class="hidden">
         <h3>Contraction Peak Intensity (IUPC)</h3>
-        <p>Are there any contractions with a peak &ge; 75 mmHg (outside 2nd stage)?</p>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Internal monitoring identifies peak &ge; 75 mmHg.')">Yes</button>
+        <p>Are there any contractions with a peak &ge; 75 mmHg (not applicable in the second stage)?</p>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Internal monitoring identifies at least one peak &ge; 75 mmHg.')">Yes</button>
         <button class="btn" onclick="goTo('page4c')">No</button>
+        <button class="btn" onclick="goTo('page4c')">Not Applicable - Second Stage</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page4c" class="hidden">
         <h3>Resting Tone (IUPC)</h3>
         <p>Is the resting tone &ge; 25 mmHg?</p>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone is &ge; 25 mmHg (Hypertonus).')">Yes</button>
         <button class="btn" onclick="goTo('page4')">No</button>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone is &ge; 25 mmHg.')">Yes</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page5" class="hidden">
         <h3>Contraction Duration</h3>
-        <p>Are any contractions > 90 seconds in duration?</p>
+        <p>Are there any contractions lasting > 90 seconds in duration?</p>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one contraction lasts > 90 seconds.')">Yes</button>
         <button class="btn" onclick="goTo('page7')">No</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
