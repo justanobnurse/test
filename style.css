@@ -112,7 +112,9 @@ body.dark-mode .btn:hover:not(:disabled) {
 }
 
 .btn-primary:hover:not(:disabled) {
-    opacity: 0.9;
+    background: #2980b9 !important; /* A darker, professional blue */
+    color: white !important;
+    opacity: 1;
 }
 
 /* Exit/Red Button Styling */
