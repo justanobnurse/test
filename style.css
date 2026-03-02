@@ -109,3 +109,23 @@ input[type="number"] {
     padding: 12px; font-size: 1rem; width: 100%; max-width: 120px;
 }
 .hidden { display: none; }
+
+.disclaimer-banner {
+    background: var(--item-bg);
+    border: 1px solid var(--border-color);
+    border-top: 3px solid #f39c12; /* Keeps the warning orange but as a sleek top bar */
+    color: var(--text);
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    margin: 20px auto 0 auto;
+    max-width: 85%;
+    line-height: 1.5;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.disclaimer-banner strong {
+    color: #f39c12;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
