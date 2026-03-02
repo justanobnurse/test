@@ -9,22 +9,25 @@
 <body>
 <div class="container">
 
-   <div id="page1">
+  <div id="page1">
         <h2>Terms of Use & Disclaimer</h2>
         
-        <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border: 1px solid #ffeeba; font-size: 0.9rem; max-height: 250px; overflow-y: auto; margin-bottom: 20px; text-align: left;">
-            <p><strong>READ CAREFULLY:</strong> This logic-based tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
-            <ul style="padding-left: 20px;">
+        <div class="disclaimer-banner">
+            <strong style="display: block; margin-bottom: 8px;">Notice:</strong>
+            <p>This logic-based tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
+            
+            <ul style="padding-left: 20px; margin-top: 10px; font-size: 0.85rem; line-height: 1.4;">
                 <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
                 <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
                 <li><strong>Logic Limitations:</strong> Algorithmic logic may not capture all clinical nuances (e.g., maternal pulse interference, signal loss, or evolving clinical pictures).</li>
                 <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
                 <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
             </ul>
-            <p><em>By clicking "I Understand," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</em></p>
+            
+            <p style="margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "I Understand," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
 
-        <button class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+        <button class="btn btn-primary" style="margin-top: 20px;" onclick="goTo('page2')">I Understand & Accept - Begin</button>
         <div style="margin-top: 10px;">
             <a href="index.html" class="btn btn-exit">Exit to Home</a>
         </div>
