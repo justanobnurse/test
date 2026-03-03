@@ -64,9 +64,13 @@
     </div>
 
     <div id="page3d" class="hidden">
-        <h3>Adjust and zero the IUPC.</h3>
-        <button class="btn" onclick="goTo('page4b')">Continue once aligned</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <div class="result-box" style="border-left-color: #e74c3c;">
+            <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include flushing the system and/or zeroing the IUPC. 
+        </div>
+        <p>If the IUPC remains unreliable, uterine activity must be assessed via manual palpation.</p>
+        <button class="btn" onclick="goTo('page4')">Continue based on manual palpation</button>
+        <button class="btn btn-primary" onclick="location.reload()">Start Over</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
     <div id="page4" class="hidden">
