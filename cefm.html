@@ -456,11 +456,14 @@ function setTachy(cat, detail, bypass = false) {
     function setVar(cat, detail, next) {
         state.audit.variability = {cat, detail};
         if(next === 'FINAL') {
-             // NEW: If Sinusoidal is selected here, update the baseline label as well
+             // NEW: Overrides the numerical baseline if Indeterminate patterns are selected
              if (detail === 'Sinusoidal Pattern') {
                  state.audit.base = 'Indeterminate (Sinusoidal)';
+             } else if (detail.includes('Marked')) {
+                 state.audit.base = 'Indeterminate (Marked)';
              }
              
+             // Ensures consistency across all Indeterminate-bypass summaries
              state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
              state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
              state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
