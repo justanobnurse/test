@@ -42,19 +42,16 @@
     </div>
 
     <div id="page3" class="hidden">
-        <h3>Contraction Peaks (mmHg)</h3>
-        <p>Input peaks in a 10-minute window.</p>
-        <div id="peakInputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <input type="number" class="peak-box" placeholder="Peak 1" oninput="validatePeaks()">
-            <input type="number" class="peak-box" placeholder="Peak 2">
-            <input type="number" class="peak-box" placeholder="Peak 3">
-            <input type="number" class="peak-box" placeholder="Peak 4">
-            <input type="number" class="peak-box" placeholder="Peak 5">
-            <input type="number" class="peak-box" placeholder="Peak 6">
-        </div>
-        <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    <h3>Contraction Peaks (mmHg)</h3>
+    <p>Input the peak of each contraction within a 10-minute window.</p>
+    
+    <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <input type="number" class="peak-box" placeholder="Peak 1" oninput="handlePeakInput(this)">
     </div>
+
+    <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate MVUs</button>
+    <button class="btn btn-back" onclick="goBack()">← Back</button>
+</div>
 
     <div id="page4" class="hidden">
         <h2 style="text-align:center">Result</h2>
@@ -93,11 +90,33 @@
         const b = document.getElementById('rtBtn');
         b.disabled = !(v !== "" && v >= 0); b.style.opacity = b.disabled ? "0.5" : "1";
     }
-    function validatePeaks() {
-        const v = document.querySelectorAll('.peak-box')[0].value;
-        const b = document.getElementById('calcBtn');
-        b.disabled = !(v !== "" && v > 0); b.style.opacity = b.disabled ? "0.5" : "1";
+    function handlePeakInput(element) {
+    const container = document.getElementById('peakInputsContainer');
+    const allInputs = container.querySelectorAll('.peak-box');
+    const lastInput = allInputs[allInputs.length - 1];
+    
+    // 1. If the user typed in the last available box and we have less than 8 boxes
+    if (element === lastInput && element.value !== "" && allInputs.length < 8) {
+        const newInput = document.createElement('input');
+        newInput.type = 'number';
+        newInput.className = 'peak-box';
+        newInput.placeholder = `Peak ${allInputs.length + 1}`;
+        newInput.oninput = function() { handlePeakInput(this); };
+        container.appendChild(newInput);
     }
+
+    // 2. Run validation to enable/disable calculate button
+    validatePeaks();
+}
+
+function validatePeaks() {
+    const peaks = Array.from(document.querySelectorAll('.peak-box'));
+    // Check if at least one box has a valid number
+    const hasValue = peaks.some(input => input.value !== "" && parseFloat(input.value) > 0);
+    const b = document.getElementById('calcBtn');
+    b.disabled = !hasValue;
+    b.style.opacity = b.disabled ? "0.5" : "1";
+}
     function calculateMVU() {
         const tone = parseFloat(document.getElementById('restingTone').value);
         const peaks = Array.from(document.querySelectorAll('.peak-box')).map(i => parseFloat(i.value)).filter(v => !isNaN(v));
