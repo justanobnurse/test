@@ -417,14 +417,27 @@
         else { state.audit.baseDetail = {cat:'NORMAL', detail:'Baseline 110-160'}; goTo('page8'); }
     }
 
-    function setTachy(cat, detail, bypass = false) { 
+   function setTachy(cat, detail, bypass = false) { 
         state.audit.baseDetail = {cat, detail}; 
         if(bypass) {
-            state.audit.base = 'Erratic';
+            // Set summary baseline to reflect 'Erratic' if that was the trigger
+            if (detail.includes('Erratic')) state.audit.base = 'Erratic';
+            
+            // Set other features to 'Unable to Determine' as requested
             state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
             state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
             state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
             state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
+            
+            // If Sinusoidal or Marked were selected via Page 7c, update variability specifically
+            if (detail.includes('Sinusoidal')) {
+                state.audit.base = 'Indeterminate (Sinusoidal)';
+                state.audit.variability = {cat: 'ABNORMAL', detail: 'Sinusoidal Pattern'};
+            } else if (detail.includes('Marked')) {
+                state.audit.base = 'Indeterminate (Marked)';
+                state.audit.variability = {cat: 'ABNORMAL', detail: 'Marked Variability'};
+            }
+
             finalize();
         } else {
             goTo('page8'); 
@@ -436,8 +449,9 @@
     function setVar(cat, detail, next) {
         state.audit.variability = {cat, detail};
         if(next === 'FINAL') {
-             state.audit.accels = {cat: 'NORMAL', detail: 'N/A'};
-             state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'No Decelerations'} };
+             state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
+             state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
+             state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
              finalize();
         } else {
              goTo(next);
