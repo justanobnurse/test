@@ -420,10 +420,11 @@
     function setTachy(cat, detail, bypass = false) { 
         state.audit.baseDetail = {cat, detail}; 
         if(bypass) {
-            state.audit.trend = {cat: 'NORMAL', detail: 'N/A'};
-            state.audit.variability = {cat: 'NORMAL', detail: 'N/A'};
-            state.audit.accels = {cat: 'NORMAL', detail: 'N/A'};
-            state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'No Decelerations'} };
+            state.audit.base = 'Erratic';
+            state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
+            state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
+            state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
+            state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
             finalize();
         } else {
             goTo('page8'); 
