@@ -41,11 +41,11 @@
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-    <div id="page3" class="hidden">
+   <div id="page3" class="hidden">
     <h3>Contraction Peaks (mmHg)</h3>
     <p>Input the peak of each contraction within a 10-minute window.</p>
     
-    <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 300px; margin: 0 auto;">
         <input type="number" class="peak-box" placeholder="Peak 1" oninput="handlePeakInput(this)">
     </div>
 
