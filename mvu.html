@@ -76,7 +76,18 @@
         document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
     }
-    function goBack() { if(state.history.length > 0) document.getElementById(state.history.pop()).classList.remove('hidden'); }
+    function goBack() {
+    if (state.history.length > 0) {
+        // 1. Hide all pages first to prevent "stacking"
+        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+        
+        // 2. Show the last page from history
+        const lastPageId = state.history.pop();
+        document.getElementById(lastPageId).classList.remove('hidden');
+        
+        window.scrollTo(0, 0);
+    }
+}
     function validateRT() { 
         const v = document.getElementById('restingTone').value;
         const b = document.getElementById('rtBtn');
