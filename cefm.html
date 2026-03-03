@@ -14,7 +14,7 @@
         
         <div class="disclaimer-banner">
             <strong style="display: block; margin-bottom: 8px;">Terms of Use & Disclaimer:</strong>
-            <p>This logic-based tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
+            <p>This tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
             
             <ul style="padding-left: 20px; margin-top: 10px; font-size: 0.85rem; line-height: 1.4;">
                 <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
@@ -108,7 +108,7 @@
     <div id="page7a" class="hidden">
         <div class="result-box" style="border-left-color:red">
             <h3>UNABLE TO CLASSIFY STRIP: IMMEDIATE ACTION REQUIRED</h3>
-            <p>Promptly take all necessary steps to resolve maternal-fetal heart rate coincidence and reassess the strip once resolved. Some steps to consider are:</p>
+            <p>Promptly take all necessary steps to resolve maternal-fetal heart rate coincidence and reassess the fetal status once resolved. Some steps to consider are:</p>
             <ul style="text-align: left;">
                 <li>Place oximeter on maternal finger / Manually assess maternal pulse rate</li>
                 <li>Reposition external fetal monitor</li>
@@ -165,7 +165,7 @@
     </div>
 
    <div id="page9a" class="hidden">
-    <h3>Variability Duration?</h3>
+    <h3>Minimal or Absent Variability Duration?</h3>
     <button class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
     <button class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
     <button class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
@@ -198,7 +198,7 @@
         </label>
 
         <div id="uv-caution" class="hidden" style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; border: 1px solid #ffeeba; font-size: 0.85rem; margin: 5px 0 15px 25px; text-align: left; border-left: 4px solid #f39c12;">
-            <strong>⚠️ Logic Caution:</strong> A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.
+            <strong>⚠️ Caution:</strong> A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.
         </div>
 
         <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor" onchange="validateDecel()"> Complicated Variable Deceleration</label>
