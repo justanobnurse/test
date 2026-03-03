@@ -418,40 +418,38 @@
     }
 
 function setTachy(cat, detail, bypass = false) { 
-        state.audit.baseDetail = {cat, detail}; 
-        if(bypass) {
-            // 1. Handle the Baseline Label for the Summary
-            if (detail.includes('Erratic')) {
-                state.audit.base = 'Erratic';
-            } else if (detail.includes('Sinusoidal')) {
-                state.audit.base = 'Indeterminate (Sinusoidal)';
-            } else if (detail.includes('Marked')) {
-                state.audit.base = 'Indeterminate (Marked)';
-            }
-            
-            // 2. Set default "Unable to Determine" for all other summary fields
-            state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
-            state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
-            state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
-            
-            // 3. Handle Variability Specifically
-            if (detail.includes('Sinusoidal')) {
-                // This object is for the Summary Table
-                state.audit.variability = {cat: 'ABNORMAL', detail: 'Sinusoidal Pattern'};
-                // This temporary flag prevents finalize() from listing it twice in "Why it's Abnormal"
-                state.audit.variability.isBypass = true; 
-            } else if (detail.includes('Marked')) {
-                state.audit.variability = {cat: 'ABNORMAL', detail: 'Marked Variability'};
-                state.audit.variability.isBypass = true;
-            } else {
-                state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
-            }
-
-            finalize();
-        } else {
-            goTo('page8'); 
+    state.audit.baseDetail = {cat, detail}; 
+    if(bypass) {
+        // Handle the Baseline Label for the Summary
+        if (detail.includes('Erratic')) {
+            state.audit.base = 'Erratic';
+        } else if (detail.includes('Sinusoidal')) {
+            state.audit.base = 'Indeterminate (Sinusoidal)';
+        } else if (detail.includes('Marked')) {
+            state.audit.base = 'Indeterminate (Marked)';
         }
+        
+        // Set default "Unable to Determine" for other summary fields
+        state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
+        state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
+        state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
+        
+        // Handle Variability Specifically for the Summary Table
+        if (detail.includes('Sinusoidal')) {
+            state.audit.variability = {cat: 'ABNORMAL', detail: 'Sinusoidal Pattern'};
+            state.audit.variability.isBypass = true; // Flag to prevent double-listing
+        } else if (detail.includes('Marked')) {
+            state.audit.variability = {cat: 'ABNORMAL', detail: 'Marked Variability'};
+            state.audit.variability.isBypass = true; // Flag to prevent double-listing
+        } else {
+            state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
+        }
+
+        finalize();
+    } else {
+        goTo('page8'); 
     }
+}
 
     function setTrend(cat, detail) { state.audit.trend = {cat, detail}; goTo('page9'); }
     
@@ -526,10 +524,13 @@ function setTachy(cat, detail, bypass = false) {
             `;
         }
 
-        if (finalRank === 'ABNORMAL') {
-            resHtml += `<div style="margin-bottom:20px;"><strong style="color:#e74c3c; font-size:1.2rem;">Why it's Abnormal:</strong><ul style="margin-top:5px;">`;
-            abnormalFeatures.forEach(f => { if(f.detail !== 'N/A') resHtml += `<li>${f.detail}</li>` });
-            resHtml += `</ul></div>`;
+      if (finalRank === 'ABNORMAL') {
+    resHtml += `<div style="margin-bottom:20px;"><strong style="color:#e74c3c; font-size:1.2rem;">Why it's Abnormal:</strong><ul style="margin-top:5px;">`;
+    // Only list features that aren't marked as N/A or flagged as a bypass
+    abnormalFeatures.forEach(f => { 
+        if(f.detail !== 'N/A' && !f.isBypass) resHtml += `<li>${f.detail}</li>` 
+    });
+    resHtml += `</ul></div>`;
             if (atypicalFeatures.length > 0) {
                 resHtml += `<div style="margin-bottom:20px;"><strong style="color:#f39c12;">Atypical Features:</strong><ul style="margin-top:5px;">`;
                 atypicalFeatures.forEach(f => { if(f.detail !== 'N/A') resHtml += `<li>${f.detail}</li>` });
