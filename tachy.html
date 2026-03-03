@@ -34,7 +34,7 @@
     </div>
 
     <div id="page2" class="hidden">
-        <h3>What type of uterine monitor is in use?</h3>
+        <h3>What type of uterine activity monitor is in use?</h3>
         <button class="btn" onclick="goTo('page3')">External Tocodynamometer (TOCO)</button>
         <button class="btn" onclick="goTo('page3c')">Internal Uterine Pressure Catheter (IUPC)</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
@@ -42,7 +42,7 @@
 
     <div id="page3" class="hidden">
         <div class="result-box" style="border-left-color: #3498db; background: rgba(52, 152, 219, 0.05);">
-            <strong>Reminder:</strong> TOCO does not measure intensity. Palpation is required to verify uterine tone and contraction strength.
+            <strong>Reminder:</strong> TOCO does not measure contraction intensity or resting tone. Palpation is required to verify uterine tone and contraction strength.
         </div>
         <h3>Is the contraction tracing adequate and aligns with palpation?</h3>
         <button class="btn" onclick="goTo('page4')">Yes</button>
@@ -71,7 +71,7 @@
 
     <div id="page4" class="hidden">
         <h3>Uterine Contraction Frequency</h3>
-        <p>Are there > 5 contractions in 10 minutes, averaged over 30 minutes?</p>
+        <p>Are there greater than 5 contractions in 10 minutes, averaged over 30 minutes?</p>
         <button class="btn" onclick="goTo('page5')">No</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Frequency exceeds > 5 contractions in 10 minutes averaged over the last 30 minutes.')">Yes</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
