@@ -469,7 +469,7 @@ function setTachy(cat, detail, bypass = false) {
     function setVar(cat, detail, next) {
         // If coming from the duration page (page9a), use the specific type stored
         let finalDetail = detail;
-        if (state.tempVarType && (detail.includes('Minimal') || detail.includes('Absent'))) {
+        if (state.tempVarType && detail.includes('Minimal/Absent')) {
             finalDetail = detail.replace('Minimal/Absent', state.tempVarType);
         }
 
