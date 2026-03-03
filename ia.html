@@ -11,10 +11,23 @@
 
     <div id="page1">
         <h2>Terms of Use & Disclaimer</h2>
-        <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border: 1px solid #ffeeba; font-size: 0.9rem; margin-bottom: 20px;">
-            <p><strong>READ CAREFULLY:</strong> Educational reference for IA protocols (SOGC 2020). <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
+        
+        <div class="disclaimer-banner">
+            <strong style="display: block; margin-bottom: 8px;">Notice:</strong>
+            <p>This logic-based tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
+            
+            <ul style="padding-left: 20px; margin-top: 10px; font-size: 0.85rem; line-height: 1.4;">
+                <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
+                <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
+                <li><strong>Logic Limitations:</strong> Algorithmic logic may not capture all clinical nuances (e.g., subtle rhythm changes, signal interference, or evolving clinical pictures).</li>
+                <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
+                <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
+            </ul>
+            
+            <p style="margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "Begin," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
-        <button class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+
+        <button class="btn btn-primary" style="margin-top: 20px;" onclick="goTo('page2')">I Understand & Accept - Begin</button>
         <div style="margin-top: 10px;">
             <a href="index.html" class="btn btn-exit">Exit to Home</a>
         </div>
@@ -105,9 +118,12 @@
 
     function goBack() {
         if(state.history.length > 0) {
-            const last = state.history.pop();
+            // Hide current page first
             document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+            // Show previous page
+            const last = state.history.pop();
             document.getElementById(last).classList.remove('hidden');
+            window.scrollTo(0, 0);
         }
     }
 
@@ -136,7 +152,6 @@
 
         let resHtml = "";
         
-        // Maternal vitals alert logic
         if (state.findings['Maternal Vitals']?.detail === 'Not all normal') {
             resHtml += `<div class="result-box" style="border-left-color:#f39c12; background:rgba(243,156,18,0.05); color: var(--text);">
                             <strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals.
@@ -153,7 +168,6 @@
 
         document.getElementById('resBox').innerHTML = resHtml;
 
-        // Populate the audit summary
         document.getElementById('audit').innerHTML = Object.keys(state.findings)
             .map(k => `<div style="margin-bottom:5px;"><strong>${k}:</strong> ${state.findings[k].detail}</div>`)
             .join('');
