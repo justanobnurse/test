@@ -79,10 +79,11 @@ body {
     padding: 16px; 
     margin: 12px 0; 
     border: 1px solid var(--border-color); 
-    border-radius: 10px; /* Kept as rounded squares */
+    border-radius: 10px;
     background: var(--card-bg); 
     cursor: pointer; 
     font-size: 16px; 
+    line-height: 1.2; /* Added for vertical consistency */
     text-decoration: none; 
     text-align: left; 
     color: var(--text); 
@@ -90,11 +91,11 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-/* The "Bump Up" Effect for all buttons */
+/* The "Bump Up" Effect */
 .btn:hover:not(:disabled) { 
     transform: translateY(-3px); 
     box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    background: #f0f7ff; /* Very subtle blue tint */
+    background: #f0f7ff; 
     border-color: var(--accent);
 }
 
@@ -102,41 +103,47 @@ body.dark-mode .btn:hover:not(:disabled) {
     background: #444;
 }
 
-/* Primary Button Styling */
+/* Primary Button Styling (Blue) */
 .btn-primary { 
     background: var(--accent); 
     color: white !important; 
     border: none; 
     text-align: center; 
     font-weight: bold; 
+    display: flex; /* Ensures center alignment in all browsers */
+    align-items: center;
+    justify-content: center;
+    min-height: 52px; /* Fixed minimum height */
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: #2980b9 !important; /* Professional darker blue */
+    background: #2980b9 !important; 
     color: white !important;
 }
 
+/* Red Button Styling (Exit/Back) */
 .btn-exit, .btn-back { 
-    background: #e74c3c; /* Professional solid red */
+    background: #e74c3c; 
     color: white !important; 
     border: none; 
     text-align: center; 
     font-weight: bold;
     margin-top: 20px; 
+    display: flex; /* Matches Primary button structure */
+    align-items: center;
+    justify-content: center;
+    min-height: 52px; /* Matches Primary button height exactly */
 }
 
 .btn-exit:hover:not(:disabled), .btn-back:hover:not(:disabled) {
-    background: #c0392b !important; /* Darker red on hover */
+    background: #c0392b !important; 
     color: white !important;
 }
-/* Dark Mode Adjustments for Red Buttons */
+
+/* Dark Mode Red Buttons */
 body.dark-mode .btn-exit, body.dark-mode .btn-back { 
     background: #c0392b; 
     color: #f8d7da !important; 
-}
-
-body.dark-mode .btn-exit:hover, body.dark-mode .btn-back:hover {
-    background: #a93226 !important;
 }
 /* NEW: Pill Buttons (Dark Mode & Feedback) with Bump Effect */
 .footer-btn {
