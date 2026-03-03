@@ -32,26 +32,26 @@
         </div>
     </div>
 
-    <div id="page2" class="hidden">
+   <div id="page2" class="hidden" style="text-align: center;">
         <h3>Uterine Resting Tone</h3>
         <p>Resting tone baseline (mmHg):</p>
-        <input type="number" id="restingTone" placeholder="0-25" oninput="validateRT()">
+        <input type="number" id="restingTone" placeholder="0-25" oninput="validateRT()" style="text-align: center;">
         <br><br>
         <button id="rtBtn" class="btn btn-primary" onclick="goTo('page3')" disabled style="opacity:0.5">Continue</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-   <div id="page3" class="hidden">
-    <h3>Contraction Peaks (mmHg)</h3>
-    <p>Input the peak of each contraction within a 10-minute window.</p>
-    
-    <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 300px; margin: 0 auto;">
-        <input type="number" class="peak-box" placeholder="Peak 1" oninput="handlePeakInput(this)">
-    </div>
+  <div id="page3" class="hidden" style="text-align: center;">
+        <h3>Contraction Peaks (mmHg)</h3>
+        <p>Input the peak of each contraction within a 10-minute window.</p>
+        
+        <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 300px; margin: 0 auto; justify-items: center;">
+            <input type="number" class="peak-box" placeholder="Peak 1" oninput="handlePeakInput(this)" style="text-align: center;">
+        </div>
 
-    <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate MVUs</button>
-    <button class="btn btn-back" onclick="goBack()">← Back</button>
-</div>
+        <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate MVUs</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
 
     <div id="page4" class="hidden">
         <h2 style="text-align:center">Result</h2>
@@ -91,23 +91,21 @@
         b.disabled = !(v !== "" && v >= 0); b.style.opacity = b.disabled ? "0.5" : "1";
     }
     function handlePeakInput(element) {
-    const container = document.getElementById('peakInputsContainer');
-    const allInputs = container.querySelectorAll('.peak-box');
-    const lastInput = allInputs[allInputs.length - 1];
-    
-    // 1. If the user typed in the last available box and we have less than 8 boxes
-    if (element === lastInput && element.value !== "" && allInputs.length < 8) {
-        const newInput = document.createElement('input');
-        newInput.type = 'number';
-        newInput.className = 'peak-box';
-        newInput.placeholder = `Peak ${allInputs.length + 1}`;
-        newInput.oninput = function() { handlePeakInput(this); };
-        container.appendChild(newInput);
+        const container = document.getElementById('peakInputsContainer');
+        const allInputs = container.querySelectorAll('.peak-box');
+        const lastInput = allInputs[allInputs.length - 1];
+        
+        if (element === lastInput && element.value !== "" && allInputs.length < 8) {
+            const newInput = document.createElement('input');
+            newInput.type = 'number';
+            newInput.className = 'peak-box';
+            newInput.placeholder = `Peak ${allInputs.length + 1}`;
+            newInput.style.textAlign = 'center'; // NEW: Keeps text centered in new boxes
+            newInput.oninput = function() { handlePeakInput(this); };
+            container.appendChild(newInput);
+        }
+        validatePeaks();
     }
-
-    // 2. Run validation to enable/disable calculate button
-    validatePeaks();
-}
 
 function validatePeaks() {
     const peaks = Array.from(document.querySelectorAll('.peak-box'));
