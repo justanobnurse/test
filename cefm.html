@@ -417,32 +417,35 @@
         else { state.audit.baseDetail = {cat:'NORMAL', detail:'Baseline 110-160'}; goTo('page8'); }
     }
 
-   function setTachy(cat, detail, bypass = false) { 
+function setTachy(cat, detail, bypass = false) { 
         state.audit.baseDetail = {cat, detail}; 
         if(bypass) {
-            // Set summary baseline to reflect 'Erratic' if that was the trigger
-            if (detail.includes('Erratic')) state.audit.base = 'Erratic';
+            if (detail.includes('Erratic')) {
+                state.audit.base = 'Erratic';
+            }
             
-            // Set other features to 'Unable to Determine' as requested
             state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
-            state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
             state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
             state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
             
-            // If Sinusoidal or Marked were selected via Page 7c, update variability specifically
+
+            state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
+
             if (detail.includes('Sinusoidal')) {
                 state.audit.base = 'Indeterminate (Sinusoidal)';
                 state.audit.variability = {cat: 'ABNORMAL', detail: 'Sinusoidal Pattern'};
+                state.audit.variability.detail = 'N/A'; 
             } else if (detail.includes('Marked')) {
                 state.audit.base = 'Indeterminate (Marked)';
                 state.audit.variability = {cat: 'ABNORMAL', detail: 'Marked Variability'};
+                state.audit.variability.detail = 'N/A';
             }
 
             finalize();
         } else {
             goTo('page8'); 
         }
-    }
+    }}
 
     function setTrend(cat, detail) { state.audit.trend = {cat, detail}; goTo('page9'); }
     
