@@ -153,18 +153,19 @@
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-    <div id="page9" class="hidden">
+   <div id="page9" class="hidden">
         <h3>Baseline Variability</h3>
         <button class="btn" onclick="setVar('NORMAL','Moderate Variability','page10')">Moderate (6-25bpm)</button>
-        <button class="btn" onclick="goTo('page9a')">Minimal (&le;5bpm) or Absent</button>
+        <button class="btn" onclick="goToVarDuration('Minimal Variability')">Minimal (≤5bpm)</button>
+        <button class="btn" onclick="goToVarDuration('Absent Variability')">Absent (amplitude undetectable)</button>
+        
         <button class="btn" onclick="goTo('page9b')">Marked (>25bpm)</button>
         <button class="btn" onclick="setVar('ABNORMAL','Sinusoidal Pattern','FINAL')">Sinusoidal</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page9a" class="hidden">
-        <h3>Minimal/Absent Variability Duration?</h3>
-        <button class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
+        <h3>Variability Duration?</h3> <button class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
         <button class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
         <button class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
     </div>
@@ -458,17 +459,29 @@ function setTachy(cat, detail, bypass = false) {
 
     function setTrend(cat, detail) { state.audit.trend = {cat, detail}; goTo('page9'); }
     
+   function goToVarDuration(type) {
+        state.tempVarType = type; // Store whether it's Minimal or Absent
+        goTo('page9a');
+    }
+
     function setVar(cat, detail, next) {
-        state.audit.variability = {cat, detail};
+        // If coming from the duration page (page9a), use the specific type stored
+        let finalDetail = detail;
+        if (state.tempVarType && (detail.includes('Minimal') || detail.includes('Absent'))) {
+            finalDetail = detail.replace('Minimal/Absent', state.tempVarType);
+        }
+
+        state.audit.variability = {cat, detail: finalDetail};
+        
         if(next === 'FINAL') {
-             // NEW: Overrides the numerical baseline if Indeterminate patterns are selected
-             if (detail === 'Sinusoidal Pattern') {
+             if (finalDetail === 'Sinusoidal Pattern') {
                  state.audit.base = 'Indeterminate (Sinusoidal)';
-             } else if (detail.includes('Marked')) {
+                 state.audit.variability.isBypass = true;
+             } else if (finalDetail.includes('Marked')) {
                  state.audit.base = 'Indeterminate (Marked)';
+                 state.audit.variability.isBypass = true;
              }
              
-             // Ensures consistency across all Indeterminate-bypass summaries
              state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
              state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
              state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
