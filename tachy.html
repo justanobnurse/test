@@ -9,7 +9,7 @@
 <body>
 <div class="container">
 
-   <div id="page1">
+    <div id="page1">
         <h2>Terms of Use & Disclaimer</h2>
         
         <div class="disclaimer-banner">
@@ -97,8 +97,16 @@
     <div id="page5" class="hidden">
         <h3>Contraction Duration</h3>
         <p>Are there any contractions lasting > 90 seconds in duration?</p>
-        <button class="btn" onclick="goTo('page7')">No</button>
+        <button class="btn" onclick="goTo('page6')">No</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one contraction lasts > 90 seconds.')">Yes</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
+
+    <div id="page6" class="hidden">
+        <h3>Coupling or Tripling Contractions</h3>
+        <p>Are there any contractions that are coupling or tripling (without returning to a soft uterine tone in between) that have a total duration > 90 seconds?</p>
+        <button class="btn" onclick="goTo('page7')">No</button>
+        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one set of coupling/tripling contractions has a total duration > 90 seconds.')">Yes</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
