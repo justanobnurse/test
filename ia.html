@@ -55,11 +55,15 @@
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-    <div id="page5" class="hidden">
+   <div id="page5" class="hidden" style="text-align: center;">
         <h3>Baseline Fetal Heart Rate?</h3>
-        <button class="btn" onclick="log('ABNORMAL', 'Baseline Fetal Heart Rate', 'Less than 110bpm'); goTo('page6')">Less than 110bpm</button>
-        <button class="btn" onclick="log('NORMAL', 'Baseline Fetal Heart Rate', '110bpm to 160bpm'); goTo('page6')">110bpm to 160bpm</button>
-        <button class="btn" onclick="log('ABNORMAL', 'Baseline Fetal Heart Rate', 'Greater than 160bpm'); goTo('page6')">Greater than 160bpm</button>
+        <p>Enter the baseline FHR (bpm) heard via audible signal:</p>
+        
+        <div style="margin: 20px 0;">
+            <input type="number" id="fhrInput" placeholder="bpm" oninput="validateFHR()" style="text-align: center;">
+        </div>
+
+        <button id="fhrBtn" class="btn btn-primary" onclick="submitFHR()" disabled style="opacity:0.5">Continue</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
@@ -118,9 +122,7 @@
 
     function goBack() {
         if(state.history.length > 0) {
-            // Hide current page first
             document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-            // Show previous page
             const last = state.history.pop();
             document.getElementById(last).classList.remove('hidden');
             window.scrollTo(0, 0);
@@ -131,6 +133,34 @@
 
     function log(cat, label, detail) { 
         state.findings[label] = { cat, detail }; 
+    }
+
+    // Logic for Numerical FHR Baseline
+    function validateFHR() {
+        const val = document.getElementById('fhrInput').value;
+        const btn = document.getElementById('fhrBtn');
+        const isValid = val !== "" && parseFloat(val) > 0;
+        btn.disabled = !isValid;
+        btn.style.opacity = isValid ? "1" : "0.5";
+    }
+
+    function submitFHR() {
+        const rate = parseFloat(document.getElementById('fhrInput').value);
+        let category = 'NORMAL';
+        let description = `${rate} bpm`;
+
+        if (rate <= 109) {
+            category = 'ABNORMAL';
+            description = `${rate} bpm (Bradycardia)`;
+        } else if (rate >= 161) {
+            category = 'ABNORMAL';
+            description = `${rate} bpm (Tachycardia)`;
+        } else {
+            description = `${rate} bpm (Normal Range)`;
+        }
+
+        log(category, 'Baseline Fetal Heart Rate', description);
+        goTo('page6');
     }
 
     function finalizeIA() {
@@ -152,21 +182,18 @@
 
         let resHtml = "";
         
-        // 1. Maternal vitals alert (Now first and Red)
-        if (state.findings['Maternal Vitals']?.detail === 'Not all normal') {
+        if (state.findings['Maternal Vitals']?.detail === 'Abnormal') {
             resHtml += `<div class="result-box" style="border-left-color:#e74c3c; background:rgba(231,76,60,0.05); color: var(--text);">
                             <strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.
                         </div>`;
         }
 
-        // 2. EFM Ultrasound Safety Warning (Now second and Orange)
         if (state.audit.device === 'EFM Ultrasound') {
             resHtml += `<div class="result-box" style="border-left-color:#e67e22; background:rgba(230,126,34,0.05); color: var(--text);">
                             <strong>⚠️ IA Technique Note:</strong> When using an EFM Ultrasound transducer for IA, you must rely on the <strong>audible signal only</strong>. Do not use the digital display or printed trace to classify FHR characteristics.
                         </div>`;
         }
 
-        // 3. Classification Result
         if (finalRank === 'ABNORMAL') {
             resHtml += `<div style="margin-bottom:20px;"><strong>Why it's Abnormal:</strong><ul>`;
             abnormalFHR.forEach(f => resHtml += `<li>${f.detail}</li>`);
@@ -177,7 +204,6 @@
 
         document.getElementById('resBox').innerHTML = resHtml;
 
-        // 4. Populate Audit
         document.getElementById('audit').innerHTML = Object.keys(state.findings)
             .map(k => `<div style="margin-bottom:5px;"><strong>${k}:</strong> ${state.findings[k].detail}</div>`)
             .join('');
