@@ -199,7 +199,7 @@
             abnormalFHR.forEach(f => resHtml += `<li>${f.detail}</li>`);
             resHtml += `</ul></div>`;
         } else {
-            resHtml += `<p style="color:#27ae60; font-weight:bold; font-size:1.1rem;">Meets Normal IA criteria.</p>`;
+            resHtml += `<p style="color:#27ae60; font-weight:bold; font-size:1.1rem;">Meets all Normal FHS IA criteria.</p>`;
         }
 
         document.getElementById('resBox').innerHTML = resHtml;
