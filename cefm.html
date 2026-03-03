@@ -399,7 +399,12 @@
         else goTo('page4');
     }
 
-    function setUA(v) { state.audit.ua = v; goTo('page5'); }
+    function setUA(v) { 
+        const mvuVal = document.getElementById('mvu') ? document.getElementById('mvu').value : "";
+        // If a value was entered, append it to the display string
+        state.audit.ua = mvuVal ? `${v} (${mvuVal} MVUs)` : v; 
+        goTo('page5'); 
+    }
 
     function setMat() {
         const noneBox = document.getElementById('mat-none');
