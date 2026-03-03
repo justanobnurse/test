@@ -130,12 +130,20 @@
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-    <div id="resPage" class="hidden">
-        <div id="resHeader"></div>
-        <div id="resRationale" class="result-box"></div>
-        <button class="btn btn-primary" onclick="location.reload()">Identify Another</button>
-        <a href="index.html" class="btn btn-exit">Home</a>
+  <div id="resPage" class="hidden">
+    <div id="resHeader"></div>
+    
+    <div id="tachyAlert" class="hidden" style="background: rgba(231, 76, 60, 0.05); border: 1px solid #e74c3c; border-left: 6px solid #e74c3c; padding: 15px; border-radius: 8px; margin-bottom: 20px; color: var(--text);">
+        <strong>⚠️ Clinical Reminder:</strong> 
+        <p style="margin-top: 8px; font-size: 0.95rem;">
+            Excessive uterine activity (tachysystole) can reduce placental blood flow and may impact fetal oxygenation status over time, regardless of the current fetal heart rate classification. Perinatal providers should follow institutional protocols to optimize uterine activity and support fetal well-being.
+        </p>
     </div>
+
+    <div id="resRationale" class="result-box"></div>
+    <button class="btn btn-primary" onclick="location.reload()">Identify Another</button>
+    <a href="index.html" class="btn btn-exit">Home</a>
+</div>
 
 </div>
 
@@ -161,10 +169,19 @@
         }
     }
 
-    function showResult(title, rationale) {
+   function showResult(title, rationale) {
         const h = document.getElementById('resHeader');
         h.innerHTML = `<h2 style="color: var(--accent); text-align: center; text-transform: uppercase;">${title}</h2>`;
         document.getElementById('resRationale').innerHTML = `<strong>Definition & Logic:</strong><br>${rationale}`;
+        
+        // Logic to show/hide the caution banner
+        const alertBox = document.getElementById('tachyAlert');
+        if (title === 'TACHYSYSTOLE') {
+            alertBox.classList.remove('hidden');
+        } else {
+            alertBox.classList.add('hidden');
+        }
+        
         goTo('resPage');
     }
 </script>
