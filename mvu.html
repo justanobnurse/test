@@ -55,6 +55,9 @@
 
     <div id="page4" class="hidden">
         <h2 style="text-align:center">Result</h2>
+        
+        <div id="mvuAlerts" style="margin-bottom: 20px;"></div>
+
         <div style="text-align:center; margin: 20px 0;">
             <span id="mvuDisplay" style="font-size: 4rem; font-weight: bold; color: var(--accent);">0</span>
             <p>MVUs (mmHg)</p>
@@ -64,32 +67,34 @@
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
 </div>
+
 <script>
     if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
     let state = { history: [] };
+
     function goTo(id) {
         const curr = document.querySelector('.container > div:not(.hidden)')?.id;
         if(curr && curr !== id) state.history.push(curr);
         document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
     }
+
     function goBack() {
-    if (state.history.length > 0) {
-        // 1. Hide all pages first to prevent "stacking"
-        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-        
-        // 2. Show the last page from history
-        const lastPageId = state.history.pop();
-        document.getElementById(lastPageId).classList.remove('hidden');
-        
-        window.scrollTo(0, 0);
+        if (state.history.length > 0) {
+            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+            const lastPageId = state.history.pop();
+            document.getElementById(lastPageId).classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
     }
-}
+
     function validateRT() { 
         const v = document.getElementById('restingTone').value;
         const b = document.getElementById('rtBtn');
-        b.disabled = !(v !== "" && v >= 0); b.style.opacity = b.disabled ? "0.5" : "1";
+        b.disabled = !(v !== "" && v >= 0); 
+        b.style.opacity = b.disabled ? "0.5" : "1";
     }
+
     function handlePeakInput(element) {
         const container = document.getElementById('peakInputsContainer');
         const allInputs = container.querySelectorAll('.peak-box');
@@ -100,27 +105,44 @@
             newInput.type = 'number';
             newInput.className = 'peak-box';
             newInput.placeholder = `Peak ${allInputs.length + 1}`;
-            newInput.style.textAlign = 'center'; // NEW: Keeps text centered in new boxes
+            newInput.style.textAlign = 'center';
             newInput.oninput = function() { handlePeakInput(this); };
             container.appendChild(newInput);
         }
         validatePeaks();
     }
 
-function validatePeaks() {
-    const peaks = Array.from(document.querySelectorAll('.peak-box'));
-    // Check if at least one box has a valid number
-    const hasValue = peaks.some(input => input.value !== "" && parseFloat(input.value) > 0);
-    const b = document.getElementById('calcBtn');
-    b.disabled = !hasValue;
-    b.style.opacity = b.disabled ? "0.5" : "1";
-}
+    function validatePeaks() {
+        const peaks = Array.from(document.querySelectorAll('.peak-box'));
+        const hasValue = peaks.some(input => input.value !== "" && parseFloat(input.value) > 0);
+        const b = document.getElementById('calcBtn');
+        b.disabled = !hasValue;
+        b.style.opacity = b.disabled ? "0.5" : "1";
+    }
+
     function calculateMVU() {
         const tone = parseFloat(document.getElementById('restingTone').value);
-        const peaks = Array.from(document.querySelectorAll('.peak-box')).map(i => parseFloat(i.value)).filter(v => !isNaN(v));
+        const peakElements = Array.from(document.querySelectorAll('.peak-box'));
+        const peaks = peakElements.map(i => parseFloat(i.value)).filter(v => !isNaN(v));
+        
         let total = peaks.reduce((acc, p) => acc + (p - tone), 0);
+        
+        // Generate Alerts
+        let alertsHtml = "";
+        const alertStyle = "background: rgba(231, 76, 60, 0.05); border: 1px solid #e74c3c; border-left: 6px solid #e74c3c; padding: 15px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem;";
+        
+        if (tone > 25) {
+            alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> A uterine resting tone > 25 mmHg is consistent with tachysystole.</div>`;
+        }
+        
+        if (peaks.some(p => p >= 75)) {
+            alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> A contraction peak &ge; 75 mmHg is consistent with tachysystole (this threshold does not apply during the second stage of labour).</div>`;
+        }
+
+        document.getElementById('mvuAlerts').innerHTML = alertsHtml;
         document.getElementById('mvuDisplay').innerText = Math.round(total);
-        document.getElementById('mvuSummary').innerHTML = `<strong>Contractions:</strong> ${peaks.length}<br><strong>Resting Tone:</strong> ${tone}mmHg`;
+        document.getElementById('mvuSummary').innerHTML = `<strong>Contractions:</strong> ${peaks.length}<br><strong>Resting Tone:</strong> ${tone} mmHg`;
+        
         goTo('page4');
     }
 </script>
