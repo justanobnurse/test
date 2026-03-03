@@ -35,7 +35,7 @@
    <div id="page2" class="hidden" style="text-align: center;">
         <h3>Uterine Resting Tone</h3>
         <p>Resting tone baseline (mmHg):</p>
-        <input type="number" id="restingTone" placeholder="0-25" oninput="validateRT()" style="text-align: center;">
+        <input type="number" id="restingTone" placeholder="mmHg" oninput="validateRT()" style="text-align: center;">
         <br><br>
         <button id="rtBtn" class="btn btn-primary" onclick="goTo('page3')" disabled style="opacity:0.5">Continue</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
@@ -46,7 +46,7 @@
         <p>Input the peak of each contraction within a 10-minute window.</p>
         
         <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 300px; margin: 0 auto; justify-items: center;">
-            <input type="number" class="peak-box" placeholder="Peak 1" oninput="handlePeakInput(this)" style="text-align: center;">
+            <input type="number" class="peak-box" placeholder="Peak 1 (mmHg)" oninput="handlePeakInput(this)" style="text-align: center;">
         </div>
 
         <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate MVUs</button>
