@@ -164,11 +164,13 @@
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-    <div id="page9a" class="hidden">
-        <h3>Variability Duration?</h3> <button class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
-        <button class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
-        <button class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
-    </div>
+   <div id="page9a" class="hidden">
+    <h3>Variability Duration?</h3>
+    <button class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
+    <button class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
+    <button class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
+    <button class="btn btn-back" onclick="goBack()">← Back</button>
+</div>
 
     <div id="page9b" class="hidden">
         <h3>Marked Variability Duration?</h3>
@@ -253,6 +255,7 @@
 
     let state = {
         history: [],
+        tempVarType: null, // <--- Add this line here
         audit: {
             fhrMon: null, uaMon: null, ua: '', maternal: 'None', base: '',
             baseDetail: { cat: 'NORMAL', detail: 'Baseline 110-160' },
@@ -263,7 +266,6 @@
         },
         decelQueue: []
     };
-
     function goTo(id) {
         const curr = document.querySelector('.container > div:not(.hidden)')?.id;
         if(curr && curr !== id) state.history.push(curr);
