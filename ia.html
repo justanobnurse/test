@@ -152,17 +152,17 @@
 
         let resHtml = "";
         
-        // 1. EFM Ultrasound Safety Warning (Conditional)
+        // 1. Maternal vitals alert (Now first and Red)
+        if (state.findings['Maternal Vitals']?.detail === 'Not all normal') {
+            resHtml += `<div class="result-box" style="border-left-color:#e74c3c; background:rgba(231,76,60,0.05); color: var(--text);">
+                            <strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.
+                        </div>`;
+        }
+
+        // 2. EFM Ultrasound Safety Warning (Now second and Orange)
         if (state.audit.device === 'EFM Ultrasound') {
             resHtml += `<div class="result-box" style="border-left-color:#e67e22; background:rgba(230,126,34,0.05); color: var(--text);">
                             <strong>⚠️ IA Technique Note:</strong> When using an EFM Ultrasound transducer for IA, you must rely on the <strong>audible signal only</strong>. Do not use the digital display or printed trace to classify FHR characteristics.
-                        </div>`;
-        }
-        
-        // 2. Maternal vitals alert logic (Preserving your specific language)
-        if (state.findings['Maternal Vitals']?.detail === 'Not all normal') {
-            resHtml += `<div class="result-box" style="border-left-color:#f39c12; background:rgba(243,156,18,0.05); color: var(--text);">
-                            <strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.
                         </div>`;
         }
 
