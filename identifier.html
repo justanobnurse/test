@@ -59,7 +59,6 @@
         <h3>Does the deceleration last ≥ 2 minutes?</h3>
          <button class="btn" onclick="goTo('page6')">No, the deceleration has a duration under 2 minutes</button>
         <button class="btn" onclick="goTo('page5b')">Yes, the deceleration has a duration ≥2 minutes</button>
-       
     </div>
 
     <div id="page5b" class="hidden">
@@ -109,19 +108,20 @@
             <label class="check-item" style="border-left-color: #27ae60;">
                 <input type="checkbox" id="v-none" onchange="toggleVariableCheck(this)"> <strong>None</strong>
             </label>
-            
+
             <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
 
             <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Failure to recover to baseline" onchange="toggleVariableCheck(this)"> Fails to recover to baseline by end of contraction</label>
-            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60s" onchange="toggleVariableCheck(this)"> Deceleration lasts ≥ 60s</label>
+            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60s" onchange="toggleVariableCheck(this)"> Deceleration duration ≥ 60s</label>
             <label class="check-item"><input type="checkbox" class="v-comp" id="c-60bpm" onchange="toggleVariableCheck(this)"> Nadir reaches 60bpm or below</label>
             <label class="check-item"><input type="checkbox" class="v-comp" id="c-60drop" onchange="toggleVariableCheck(this)"> Nadir is ≥ 60bpm below baseline</label>
-            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Baseline Tachycardia" onchange="toggleVariableCheck(this)"> FHR baseline is > 160 bpm</label>
+            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Baseline Tachycardia (>160 bpm)" onchange="toggleVariableCheck(this)"> FHR baseline is > 160 bpm</label>
+            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Baseline Bradycardia (<110 bpm)" onchange="toggleVariableCheck(this)"> FHR baseline is < 110 bpm</label>
             <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Minimal/Absent Variability" onchange="toggleVariableCheck(this)"> FHR variability at baseline is minimal or absent</label>
         </div>
-        
-        <button id="classifyVarBtn" class="btn btn-primary" disabled style="opacity: 0.5;" onclick="checkVariable()">Classify Variable</button>
-        <button class="btn btn-back" onclick="goTo('page8')">← Back</button>
+
+        <button id="classifyVarBtn" class="btn btn-primary" disabled style="opacity: 0.5; margin-top: 20px;" onclick="checkVariable()">Classify Variable</button>
+        <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="resPage" class="hidden">
@@ -149,14 +149,28 @@
 </div>
 
 <script>
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-mode');
-    }
+    let state = { history: [] };
 
     function goTo(id) {
+        const curr = document.querySelector('.container > div:not(.hidden)')?.id;
+        if(curr && curr !== id) state.history.push(curr);
+        
         document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
         window.scrollTo(0,0);
+    }
+
+    function goBack() {
+        if (state.history.length > 0) {
+            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+            const lastPageId = state.history.pop();
+            document.getElementById(lastPageId).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+    }
+
+    if (localStorage.getItem('theme') === 'dark') {
+        document.body.classList.add('dark-mode');
     }
 
     function showResult(title, rationale) {
@@ -169,21 +183,17 @@
         goTo('resPage');
     }
 
-    // Smart Toggle Logic for Variable Complications
     function toggleVariableCheck(element) {
         const noneBox = document.getElementById('v-none');
         const compBoxes = document.querySelectorAll('.v-comp');
         const classifyBtn = document.getElementById('classifyVarBtn');
 
         if (element.id === 'v-none' && element.checked) {
-            // If None is checked, uncheck everything else
             compBoxes.forEach(cb => cb.checked = false);
         } else if (element.classList.contains('v-comp') && element.checked) {
-            // If a complication is checked, uncheck None
             noneBox.checked = false;
         }
 
-        // Enable button if anything is selected
         const anyChecked = noneBox.checked || Array.from(compBoxes).some(cb => cb.checked);
         classifyBtn.disabled = !anyChecked;
         classifyBtn.style.opacity = anyChecked ? "1" : "0.5";
