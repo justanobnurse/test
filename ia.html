@@ -50,7 +50,7 @@
 
     <div id="page4" class="hidden">
         <h3>Are the maternal vitals normal?</h3>
-        <button class="btn" onclick="log('NORMAL', 'Maternal Vitals', 'Normal'); goTo('page5')">Yes, maternal vitals are normal</button>
+        <button class="btn" onclick="log('NORMAL', 'Maternal Vitals', 'Normal'); goTo('page5')">Yes, maternal vitals are all normal</button>
         <button class="btn" onclick="log('ABNORMAL', 'Maternal Vitals', 'Not all normal'); goTo('page5')">No, maternal vitals are not all normal</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
@@ -79,8 +79,8 @@
 
     <div id="page8" class="hidden">
         <h3>Accelerations?</h3>
-        <button class="btn" onclick="log('NORMAL', 'Accelerations', 'Audible'); goTo('page9')">Audible</button>
-        <button class="btn" onclick="log('NORMAL', 'Accelerations', 'Not heard'); goTo('page9')">Not heard</button>
+        <button class="btn" onclick="log('NORMAL', 'Accelerations', 'Not heard'); goTo('page9')">None heard</button>
+        <button class="btn" onclick="log('NORMAL', 'Accelerations', 'Audible'); goTo('page9')">Acceleration heard</button>
         <button class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
@@ -152,12 +152,21 @@
 
         let resHtml = "";
         
+        // 1. EFM Ultrasound Safety Warning (Conditional)
+        if (state.audit.device === 'EFM Ultrasound') {
+            resHtml += `<div class="result-box" style="border-left-color:#e67e22; background:rgba(230,126,34,0.05); color: var(--text);">
+                            <strong>⚠️ IA Technique Note:</strong> When using an EFM Ultrasound transducer for IA, you must rely on the <strong>audible signal only</strong>. Do not use the digital display or printed trace to classify FHR characteristics.
+                        </div>`;
+        }
+        
+        // 2. Maternal vitals alert logic (Preserving your specific language)
         if (state.findings['Maternal Vitals']?.detail === 'Not all normal') {
             resHtml += `<div class="result-box" style="border-left-color:#f39c12; background:rgba(243,156,18,0.05); color: var(--text);">
-                            <strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals.
+                            <strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.
                         </div>`;
         }
 
+        // 3. Classification Result
         if (finalRank === 'ABNORMAL') {
             resHtml += `<div style="margin-bottom:20px;"><strong>Why it's Abnormal:</strong><ul>`;
             abnormalFHR.forEach(f => resHtml += `<li>${f.detail}</li>`);
@@ -168,6 +177,7 @@
 
         document.getElementById('resBox').innerHTML = resHtml;
 
+        // 4. Populate Audit
         document.getElementById('audit').innerHTML = Object.keys(state.findings)
             .map(k => `<div style="margin-bottom:5px;"><strong>${k}:</strong> ${state.findings[k].detail}</div>`)
             .join('');
