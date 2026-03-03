@@ -51,9 +51,13 @@
     </div>
 
     <div id="page3b" class="hidden">
-        <h3>Adjust monitor and assess via palpation.</h3>
-        <button class="btn" onclick="goTo('page4')">Continue based on palpation</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <div class="result-box" style="border-left-color: #e74c3c;">
+            <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include adjusting the TOCO, replacing the monitor, or using internal monitoring. 
+        </div>
+        <p>If the TOCO remains unreliable, uterine activity must be assessed via manual palpation.</p>
+        <button class="btn" onclick="goTo('page4')">Continue based on manual palpation</button>
+        <button class="btn btn-primary" onclick="location.reload()">Start Over</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
     <div id="page3c" class="hidden">
