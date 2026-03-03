@@ -112,31 +112,31 @@ body.dark-mode .btn:hover:not(:disabled) {
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: #2980b9 !important; /* A darker, professional blue */
+    background: #2980b9 !important; /* Professional darker blue */
     color: white !important;
-    opacity: 1;
 }
 
-/* Exit/Red Button Styling */
-.btn-exit { 
-    background: #fdf2f2; 
-    color: #c0392b; 
-    border: 1px solid #fadbd8; 
+.btn-exit, .btn-back { 
+    background: #e74c3c; /* Professional solid red */
+    color: white !important; 
+    border: none; 
     text-align: center; 
+    font-weight: bold;
     margin-top: 20px; 
 }
 
-body.dark-mode .btn-exit { 
-    background: #4c1d1d; 
-    color: #f8d7da; 
-    border-color: #721c24;
+.btn-exit:hover:not(:disabled), .btn-back:hover:not(:disabled) {
+    background: #c0392b !important; /* Darker red on hover */
+    color: white !important;
+}
+/* Dark Mode Adjustments for Red Buttons */
+body.dark-mode .btn-exit, body.dark-mode .btn-back { 
+    background: #c0392b; 
+    color: #f8d7da !important; 
 }
 
-/* Back Button Styling */
-.btn-back {
-    background: transparent;
-    text-align: center;
-    border: 1px solid var(--border-color);
+body.dark-mode .btn-exit:hover, body.dark-mode .btn-back:hover {
+    background: #a93226 !important;
 }
 /* NEW: Pill Buttons (Dark Mode & Feedback) with Bump Effect */
 .footer-btn {
