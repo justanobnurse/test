@@ -420,32 +420,38 @@
 function setTachy(cat, detail, bypass = false) { 
         state.audit.baseDetail = {cat, detail}; 
         if(bypass) {
+            // 1. Handle the Baseline Label for the Summary
             if (detail.includes('Erratic')) {
                 state.audit.base = 'Erratic';
+            } else if (detail.includes('Sinusoidal')) {
+                state.audit.base = 'Indeterminate (Sinusoidal)';
+            } else if (detail.includes('Marked')) {
+                state.audit.base = 'Indeterminate (Marked)';
             }
             
+            // 2. Set default "Unable to Determine" for all other summary fields
             state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
             state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
             state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
             
-
-            state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
-
+            // 3. Handle Variability Specifically
             if (detail.includes('Sinusoidal')) {
-                state.audit.base = 'Indeterminate (Sinusoidal)';
+                // This object is for the Summary Table
                 state.audit.variability = {cat: 'ABNORMAL', detail: 'Sinusoidal Pattern'};
-                state.audit.variability.detail = 'N/A'; 
+                // This temporary flag prevents finalize() from listing it twice in "Why it's Abnormal"
+                state.audit.variability.isBypass = true; 
             } else if (detail.includes('Marked')) {
-                state.audit.base = 'Indeterminate (Marked)';
                 state.audit.variability = {cat: 'ABNORMAL', detail: 'Marked Variability'};
-                state.audit.variability.detail = 'N/A';
+                state.audit.variability.isBypass = true;
+            } else {
+                state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
             }
 
             finalize();
         } else {
             goTo('page8'); 
         }
-    }}
+    }
 
     function setTrend(cat, detail) { state.audit.trend = {cat, detail}; goTo('page9'); }
     
