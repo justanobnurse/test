@@ -1,3 +1,6 @@
+html {
+    scrollbar-gutter: stable;
+}
 :root {
     --primary: #2c3e50;
     --accent: #3498db;
@@ -219,34 +222,37 @@ input[type="number"] {
 }
 
 .privacy-disclaimer {
-    text-align: center;
-    max-width: 750px;
-    margin: 20px auto 10px auto; /* Adjusts external spacing */
-    padding: 24px;              /* Equal padding on all sides */
-    
-    /* THE FIX: Use Flexbox to align everything perfectly */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;         /* Ensures the lines of text inside center-align */
+    
+    max-width: 750px;
+    margin: 20px auto 10px auto; 
+    padding: 24px;              
 
     /* Visuals */
     background-color: rgba(128, 128, 128, 0.05);
     border: 1px solid rgba(128, 128, 128, 0.3);
     border-radius: 12px;
+    
+    /* Text Color Fix */
+    color: var(--text);         /* Forces it to use your light/dark mode variables */
+    font-size: 0.9rem;
 }
 
 /* RESET INTERNAL MARGINS */
 .privacy-disclaimer strong, 
 .privacy-disclaimer p {
-    margin: 0;                /* Removes the "invisible" extra top/bottom space */
+    margin: 0;                
     padding: 0;
 }
 
 .privacy-disclaimer strong {
-    margin-bottom: 8px;       /* Only adds space exactly where you want it */
+    margin-bottom: 8px;       
+    color: var(--accent);       /* Optional: uses your blue/accent color for the title */
 }
-
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
