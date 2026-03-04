@@ -276,6 +276,17 @@ input[type="number"] {
     font-size: 0.95rem;
     line-height: 1.5;
 }
+/* Add this to style.css */
+.alert-box ul {
+    margin-top: 10px;
+    padding-left: 20px;
+    font-size: 0.9rem; /* Now the CSS handles it! */
+    line-height: 1.4;
+}
+
+.alert-box li {
+    margin-bottom: 8px; /* Adds a tiny bit of space between tips */
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
