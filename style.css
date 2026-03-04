@@ -221,28 +221,33 @@ input[type="number"] {
 .privacy-disclaimer {
     text-align: center;
     max-width: 750px;
+    margin: 20px auto 10px auto; /* Adjusts external spacing */
+    padding: 24px;              /* Equal padding on all sides */
     
-    /* FIX THE BUFFER: 40px on top, 10px on bottom */
-    margin: 40px auto 10px auto; 
-    
-    padding: 24px;
+    /* THE FIX: Use Flexbox to align everything perfectly */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    /* NEUTRAL COLORS: Works for both light/dark modes */
-    background-color: rgba(128, 128, 128, 0.05); /* Very faint grey tint */
-    border: 1px solid rgba(128, 128, 128, 0.3);  /* Semi-transparent border */
+    /* Visuals */
+    background-color: rgba(128, 128, 128, 0.05);
+    border: 1px solid rgba(128, 128, 128, 0.3);
     border-radius: 12px;
-    
-    /* TEXT STYLING */
-    color: inherit;      /* Keeps your site's default text color */
-    font-size: 0.9rem;
-    line-height: 1.6;
+}
+
+/* RESET INTERNAL MARGINS */
+.privacy-disclaimer strong, 
+.privacy-disclaimer p {
+    margin: 0;                /* Removes the "invisible" extra top/bottom space */
+    padding: 0;
 }
 
 .privacy-disclaimer strong {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 1.05rem;
+    margin-bottom: 8px;       /* Only adds space exactly where you want it */
 }
+
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
