@@ -219,30 +219,30 @@ input[type="number"] {
 }
 
 .privacy-disclaimer {
-    /* Centering the content */
     text-align: center;
     max-width: 750px;
-    margin: 40px auto; /* Adds space above and below the box */
+    
+    /* FIX THE BUFFER: 40px on top, 10px on bottom */
+    margin: 40px auto 10px auto; 
+    
     padding: 24px;
 
-    /* Making it "different" but consistent */
-    background-color: #1a1a1a; /* A very deep grey, slightly off-black */
-    border: 1px solid #333;    /* A subtle border so it doesn't "float" */
-    border-radius: 12px;       /* Softer, modern rounded corners */
+    /* NEUTRAL COLORS: Works for both light/dark modes */
+    background-color: rgba(128, 128, 128, 0.05); /* Very faint grey tint */
+    border: 1px solid rgba(128, 128, 128, 0.3);  /* Semi-transparent border */
+    border-radius: 12px;
     
-    /* Typography */
-    color: #cccccc;            /* Soft white/grey text to reduce eye strain */
-    font-size: 0.95rem;        /* Slightly smaller than main text for a "meta" feel */
-    line-height: 1.6;          /* Increases readability */
+    /* TEXT STYLING */
+    color: inherit;      /* Keeps your site's default text color */
+    font-size: 0.9rem;
+    line-height: 1.6;
 }
 
 .privacy-disclaimer strong {
-    display: block;            /* Puts "About this Project" on its own line */
-    margin-bottom: 10px;
-    color: #ffffff;            /* Makes the header pop a bit more */
-    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.05rem;
 }
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
