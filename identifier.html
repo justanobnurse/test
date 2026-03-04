@@ -6,7 +6,7 @@
     <title>FHS Deceleration Identifier</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-mode">
 <div class="container">
 
    <div id="page1">
@@ -158,6 +158,7 @@
 
 </div>
 
+<script src="common.js"></script>
 <script>
     let state = { history: [] };
 
@@ -176,10 +177,6 @@
             document.getElementById(lastPageId).classList.remove('hidden');
             window.scrollTo(0,0);
         }
-    }
-
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-mode');
     }
 
     function showResult(title, rationale) {
