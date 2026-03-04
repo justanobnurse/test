@@ -291,26 +291,40 @@ input[type="number"] {
 
 /* Specific text color for caution lists if needed */
 .caution-box ul {
-    color: #856404;
+    color: var(--text);
 }
 
 /* style.css */
 .caution-box {
-    background: #fff3cd; 
-    color: #856404; 
+    /* Uses a very faded amber/orange background to match the red alert style */
+    background: rgba(243, 156, 18, 0.08); 
+    
+    /* Bright amber outline all around */
+    border: 1px solid #f39c12; 
+    
+    /* Extra thick "status" border on the left */
+    border-left: 6px solid #f39c12; 
+    
     padding: 15px; 
     border-radius: 8px; 
-    border: 1px solid #ffeeba; 
-    border-left: 6px solid #f39c12; /* Orange-yellow border */
-    font-size: 0.9rem; 
-    margin: 10px 0 20px 0; 
+    margin-bottom: 20px; 
+    
+    /* This ensures the text turns white in dark mode automatically */
+    color: var(--text); 
     text-align: left;
 }
 
 .caution-box strong {
     display: inline;
     margin-right: 6px;
-    color: #856404;
+    /* Uses a bright amber for the heading to make it pop */
+    color: #f39c12; 
+}
+.caution-box p {
+    display: inline;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
 input::-webkit-outer-spin-button,
