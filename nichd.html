@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NICHD FHR Classifier</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src="theme-loader.js"></script>
+<div class="container">
+
+    <div id="page1">
+        <h2 style="text-align: center; font-size: 2.2rem; color: #27ae60; margin-bottom: 25px;">CEFM Classifier</h2>
+        <div class="disclaimer-banner">
+            <strong>Terms of Use & Disclaimer:</strong>
+            <p>This tool is designed for educational purposes and is adapted from the NICHD Fetal Heart Rate Monitoring guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
+            <ul>
+                <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
+                <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
+                <li><strong>Logic Limitations:</strong> Algorithmic logic may not capture all clinical nuances.</li>
+                <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
+                <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
+            </ul>
+            <p style="display:block; margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "I Understand," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
+        </div>
+        <button class="btn btn-primary" onclick="nextStep('page2')">I Understand & Accept - Begin</button>
+        <div style="margin-top: 10px;">
+            <a href="index.html" class="btn btn-exit">Exit to Home</a>
+        </div>
+    </div>
+
+    <div id="page4a" class="hidden">
+        <div class="alert-box">
+            <strong>⚠️ UNABLE TO CLASSIFY: UNINTERPRETABLE STRIP</strong>
+            <p>Consider the following troubleshooting tips to improve quality:</p>
+            <ul>
+                <li>Reposition the monitor; add ultrasound gel; minimize motion when clinically necessary</li>
+                <li>If using wireless monitors confirm battery and connection; Consider switching to wired monitors; Try different monitoring equipment if necessary</li>
+                <li>Consider internal monitoring if clinically indicated and patient consents</li>
+            </ul>
+        </div>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another CEFM Strip</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
+    </div>
+
+    <div id="page7a" class="hidden">
+        <div class="alert-box">
+            <strong>⚠️ UNABLE TO CLASSIFY STRIP: IMMEDIATE ACTION REQUIRED</strong>
+            <p>Promptly take all necessary steps to resolve maternal-fetal heart rate coincidence and reassess the strip once resolved.</p>
+            <ul>
+                <li>Place oximeter on maternal finger/Manually assess maternal pulse rate</li>
+                <li>Reposition external fetal monitor</li>
+                <li>Consider FSE</li>
+                <li>If coincidence continues with FSE in place, consider a real-time bedside ultrasound to verify fetal heart rate and distinguish from maternal heart rate</li>
+            </ul>
+        </div>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another CEFM Strip</button>
+    </div>
+
+    <div id="page7" class="hidden">
+        <h3>What is the fetal heart rate baseline (rounded to the nearest 5bpm)?</h3>
+        <input type="number" id="baseIn" placeholder="BPM" style="padding:10px; width:100px;" oninput="validateBase()"><br><br>
+        <button id="baseNext" class="btn btn-primary" disabled onclick="saveBase()">Continue</button>
+        <button class="btn" onclick="setIndet('Erratic')">Erratic</button>
+        <button class="btn" onclick="nextStep('page7c')">Indeterminate</button>
+    </div>
+
+    <div id="page8" class="hidden">
+        <h3>What is the FHR baseline variability?</h3>
+        <button class="btn" onclick="setVar('Moderate')">Moderate (6-25bpm)</button>
+        <button class="btn" onclick="setVar('Minimal')">Minimal (≤5bpm)</button>
+        <button class="btn" onclick="setVar('Absent')">Absent (Undetectable Amplitude)</button>
+        <button class="btn" onclick="setVar('Marked')">Marked (>25bpm)</button>
+        <button class="btn" onclick="setVar('Sinusoidal')">Sinusoidal</button>
+    </div>
+
+    <div id="page11" class="hidden">
+        <h3>Are there any decelerations? (Select all that apply)</h3>
+        <div class="checklist">
+            <label class="check-item"><input type="checkbox" id="d-none"> None</label>
+            <label class="check-item"><input type="checkbox" id="d-var" class="decel-check"> Variable</label>
+            <label class="check-item"><input type="checkbox" id="d-early" class="decel-check"> Early Deceleration</label>
+            <label class="check-item"><input type="checkbox" id="d-late" class="decel-check"> Late Deceleration</label>
+            <label class="check-item"><input type="checkbox" id="d-pro" class="decel-check"> Prolonged Deceleration</label>
+        </div>
+        <button id="decel-next" class="btn btn-primary" onclick="startDecelFlow()">Continue</button>
+    </div>
+
+    <div id="pageRecur" class="hidden">
+        <h3 id="recurLabel">Are the decelerations:</h3>
+        <button class="btn" onclick="logRecur(false)">Intermittent (<50% of contractions)</button>
+        <button class="btn" onclick="logRecur(true)">Recurrent (≥50% of contractions)</button>
+    </div>
+
+    <div id="page12" class="hidden">
+        <h1 id="finalRank" style="text-align: center; font-size: 2.5rem; font-weight: bold;"></h1>
+        <div id="nichdReason" class="alert-box"></div>
+        <hr>
+        <h3>Systematic Assessment Summary</h3>
+        <div id="auditSummary" class="result-box"></div>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another CEFM Strip</button>
+    </div>
+
+</div>
+
+<script>
+let state = {
+    audit: {
+        fMon: '', uMon: '', ua: '', mat: '',
+        base: 0, variability: '', acc: '', 
+        decels: [], recurrent: false
+    }
+};
+
+const $ = id => document.getElementById(id);
+
+function nextStep(id) {
+    document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+    $(id).classList.remove('hidden');
+}
+
+function saveBase() { state.audit.base = Number($('baseIn').value); nextStep('page8'); }
+
+function setVar(v) { 
+    state.audit.variability = v; 
+    if(v === 'Sinusoidal') finalize(); else nextStep('page10'); 
+}
+
+function startDecelFlow() {
+    state.audit.decels = Array.from(document.querySelectorAll('.decel-check:checked')).map(i => i.id);
+    if (state.audit.decels.includes('d-var') || state.audit.decels.includes('d-late')) {
+        nextStep('pageRecur');
+    } else {
+        finalize();
+    }
+}
+
+function logRecur(isRecurrent) {
+    state.audit.recurrent = isRecurrent;
+    finalize();
+}
+
+function finalize() {
+    let cat = "CATEGORY II (INDETERMINATE)";
+    let color = "#f39c12";
+    let reasons = [];
+    const a = state.audit;
+
+    // --- CATEGORY III (ABNORMAL) LOGIC ---
+    if (a.variability === 'Sinusoidal' || a.base === 'Sinusoidal') {
+        cat = "CATEGORY III (ABNORMAL)";
+        reasons.push("Sinusoidal pattern detected.");
+    } else if (a.variability === 'Absent' && (a.recurrent || a.base < 110)) {
+        cat = "CATEGORY III (ABNORMAL)";
+        reasons.push("Absent variability with recurrent decelerations or bradycardia.");
+    }
+    
+    // --- CATEGORY I (NORMAL) LOGIC ---
+    else if (a.base >= 110 && a.base <= 160 && a.variability === 'Moderate') {
+        const forbidden = a.decels.filter(d => d !== 'd-early' && d !== 'd-none');
+        if (forbidden.length === 0 && a.acc !== 'No-Stim') {
+            cat = "CATEGORY I (NORMAL)";
+            color = "#27ae60";
+        }
+    }
+
+    if (cat.includes('III')) color = "#e74c3c";
+
+    $('finalRank').innerText = cat;
+    $('finalRank').style.color = color;
+    $('nichdReason').innerHTML = reasons.length ? reasons.join('<br>') : "The tracing does not meet criteria for Category I or Category III.";
+    
+    // Summary table and display logic here...
+    nextStep('page12');
+}
+
+function validateBase() { $('baseNext').disabled = !($('baseIn').value); }
+</script>
+</body>
+</html>
