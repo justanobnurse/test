@@ -254,6 +254,29 @@ input[type="number"] {
     font-size: 1rem;
 }
 
+.alert-box {
+    background: rgba(231, 76, 60, 0.05); 
+    border: 1px solid #e74c3c; 
+    border-left: 6px solid #e74c3c; 
+    padding: 15px; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+    color: var(--text);
+    text-align: left; /* Ensures text stays left-aligned even in centered containers */
+}
+
+.alert-box strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #c0392b; /* A slightly darker red for the heading */
+}
+
+.alert-box p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
