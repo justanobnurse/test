@@ -250,373 +250,463 @@
 <script src="common.js"></script>
 <script>
 
-    let state = {
-        history: [],
-        tempVarType: null, // <--- Add this line here
-        audit: {
-            fhrMon: null, uaMon: null, ua: '', maternal: 'None', base: '',
-            baseDetail: { cat: 'NORMAL', detail: 'Baseline 110-160' },
-            trend: { cat: 'NORMAL', detail: 'Stable Trend' },
-            variability: { cat: 'NORMAL', detail: 'Moderate Variability' },
-            accels: { cat: 'NORMAL', detail: 'Accelerations Present' },
-            decels: {}
-        },
-        decelQueue: []
+/* ================================
+   STATE
+================================ */
+
+let state = {
+    history: [],
+    tempVarType: null,
+    audit: {
+        fhrMon: null,
+        uaMon: null,
+        ua: '',
+        maternal: 'None',
+        base: '',
+        baseDetail: { cat: 'NORMAL', detail: 'Baseline 110-160' },
+        trend: { cat: 'NORMAL', detail: 'Stable Trend' },
+        variability: { cat: 'NORMAL', detail: 'Moderate Variability' },
+        accels: { cat: 'NORMAL', detail: 'Accelerations Present' },
+        decels: {}
+    },
+    decelQueue: []
+};
+
+
+/* ================================
+   DOM HELPERS
+================================ */
+
+const $ = id => document.getElementById(id);
+const $$ = selector => document.querySelectorAll(selector);
+
+function showPage(id) {
+    $$('.container > div').forEach(d => d.classList.add('hidden'));
+    const el = $(id);
+    if (el) el.classList.remove('hidden');
+}
+
+function setButtonState(btn, enabled) {
+    btn.disabled = !enabled;
+    btn.style.opacity = enabled ? "1" : "0.5";
+}
+
+function getCardColors() {
+    const isDark = document.body.classList.contains('dark-mode');
+    return {
+        active: isDark ? '#34495e' : '#e3f2fd',
+        inactive: 'var(--card-bg)'
     };
-    function goTo(id) {
-        const curr = document.querySelector('.container > div:not(.hidden)')?.id;
-        if(curr && curr !== id) state.history.push(curr);
-        
-        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-        
-        const targetPage = document.getElementById(id);
-        if (targetPage) {
-            targetPage.classList.remove('hidden');
-        }
-        
-        if (id === 'page2') chkM();
-        if (id === 'page5') validateMat();
-        if (id === 'page11') validateDecel();
-        
-        if (id === 'page7') {
-            document.getElementById('baseIn').value = ''; 
-            validateBaseInput(); 
-        }
+}
 
-        if (id === 'page11') {
-    const uvCaution = document.getElementById('uv-caution');
-    
-    // 1. Check Baseline BPM (stored in state.audit.base as a string like "180 bpm")
-    const bpm = parseInt(state.audit.base); 
-    const isBaselineAbnormal = (bpm > 160 || bpm < 110);
 
-    // 2. Check Variability
-    const varDetail = state.audit.variability.detail;
-    const isVarAbnormal = varDetail.includes('Minimal') || varDetail.includes('Absent');
+/* ================================
+   NAVIGATION
+================================ */
 
-    // Show caution if EITHER is true
-    if (isBaselineAbnormal || isVarAbnormal) {
-        uvCaution.classList.remove('hidden');
-    } else {
-        uvCaution.classList.add('hidden');
+function handlePageLogic(id) {
+    if (id === 'page2') chkM();
+    if (id === 'page5') validateMat();
+    if (id === 'page11') {
+        validateDecel();
+        handleUVCaution();
+    }
+
+    if (id === 'page7') {
+        $('baseIn').value = '';
+        validateBaseInput();
     }
 }
 
-        window.scrollTo(0, 0);
+function goTo(id) {
+    const curr = document.querySelector('.container > div:not(.hidden)')?.id;
+    if (curr && curr !== id) state.history.push(curr);
+
+    showPage(id);
+    handlePageLogic(id);
+    window.scrollTo(0, 0);
+}
+
+function goBack() {
+    if (state.history.length === 0) return;
+
+    const last = state.history.pop();
+    showPage(last);
+    handlePageLogic(last);
+}
+
+
+/* ================================
+   VALIDATION HELPERS
+================================ */
+
+function validateCheckboxGroup(noneId, groupClass, btnId) {
+    const noneChecked = $(noneId).checked;
+    const groupChecked = document.querySelectorAll(`.${groupClass}:checked`).length > 0;
+    const btn = $(btnId);
+
+    btn.classList.remove('hidden');
+    setButtonState(btn, noneChecked || groupChecked);
+}
+
+function chkM() {
+    const btn = $('page2-next');
+    setButtonState(btn, state.audit.fhrMon && state.audit.uaMon);
+}
+
+function validateMat() {
+    validateCheckboxGroup('mat-none', 'mat-factor', 'mat-next');
+}
+
+function validateDecel() {
+    validateCheckboxGroup('d-none', 'decel-factor', 'decel-next');
+}
+
+function validateBaseInput() {
+    const val = $('baseIn').value;
+    setButtonState($('baseContinueBtn'), val && Number(val) > 0);
+}
+
+
+/* ================================
+   SELECTION FUNCTIONS
+================================ */
+
+function selF(l, c) {
+    state.audit.fhrMon = l;
+    const { active, inactive } = getCardColors();
+
+    $('f-us').style.background = (c === 'us') ? active : inactive;
+    $('f-fse').style.background = (c === 'fse') ? active : inactive;
+
+    chkM();
+}
+
+function selU(l, c) {
+    state.audit.uaMon = l;
+    const { active, inactive } = getCardColors();
+
+    $('u-toco').style.background = (c === 'toco') ? active : inactive;
+    $('u-iupc').style.background = (c === 'iupc') ? active : inactive;
+
+    chkM();
+}
+
+
+/* ================================
+   FLOW LOGIC
+================================ */
+
+function handleInt() {
+    state.audit.uaMon.includes('Internal') ? goTo('page4b') : goTo('page4');
+}
+
+function setUA(v) {
+    const mvuVal = $('mvu')?.value || "";
+    state.audit.ua = mvuVal ? `${v} (${mvuVal} MVUs)` : v;
+    goTo('page5');
+}
+
+function setMat() {
+    const noneBox = $('mat-none');
+    const checked = Array.from($$('.mat-factor:checked')).map(i => i.value);
+
+    state.audit.maternal =
+        (noneBox?.checked || checked.length === 0)
+            ? 'None'
+            : checked.join(', ');
+
+    goTo('page6');
+}
+
+
+/* ================================
+   BASELINE EVALUATION
+================================ */
+
+function evalBase() {
+    const b = Number($('baseIn').value);
+    state.audit.base = b + ' bpm';
+
+    if (b < 100) {
+        state.audit.baseDetail = { cat: 'ABNORMAL', detail: 'Baseline Bradycardia < 100' };
+        goTo('page8');
     }
-
-    function goBack() {
-        if(state.history.length > 0) {
-            const last = state.history.pop();
-            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById(last).classList.remove('hidden');
-            
-            if (last === 'page2') chkM();
-            if (last === 'page5') validateMat();
-            if (last === 'page11') validateDecel();
-        }
+    else if (b < 110) {
+        state.audit.baseDetail = { cat: 'ATYPICAL', detail: 'Baseline 100-110' };
+        goTo('page8');
     }
-
-    function selF(l, c) {
-        state.audit.fhrMon = l;
-        const isDark = document.body.classList.contains('dark-mode');
-        const activeColor = isDark ? '#34495e' : '#e3f2fd';
-        const inactiveColor = 'var(--card-bg)';
-
-        document.getElementById('f-us').style.background = (c === 'us') ? activeColor : inactiveColor;
-        document.getElementById('f-fse').style.background = (c === 'fse') ? activeColor : inactiveColor;
-        chkM();
+    else if (b > 160) {
+        goTo('page7b');
     }
-
-    function selU(l, c) {
-        state.audit.uaMon = l;
-        const isDark = document.body.classList.contains('dark-mode');
-        const activeColor = isDark ? '#34495e' : '#e3f2fd';
-        const inactiveColor = 'var(--card-bg)';
-
-        document.getElementById('u-toco').style.background = (c === 'toco') ? activeColor : inactiveColor;
-        document.getElementById('u-iupc').style.background = (c === 'iupc') ? activeColor : inactiveColor;
-        chkM();
-    }
-
-    function chkM() { 
-        const btn = document.getElementById('page2-next');
-        if(state.audit.fhrMon && state.audit.uaMon) {
-            btn.disabled = false;
-            btn.style.opacity = "1";
-        } else {
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-        }
-    }
-
-    function validateMat() {
-        const noneChecked = document.getElementById('mat-none').checked;
-        const factorsChecked = document.querySelectorAll('.mat-factor:checked').length > 0;
-        const btn = document.getElementById('mat-next');
-        
-        if (noneChecked || factorsChecked) {
-            btn.classList.remove('hidden');
-            btn.disabled = false;
-            btn.style.opacity = "1";
-        } else {
-            btn.classList.remove('hidden');
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-        }
-    }
-
-    function validateDecel() {
-        const noneChecked = document.getElementById('d-none').checked;
-        const factorsChecked = document.querySelectorAll('.decel-factor:checked').length > 0;
-        const btn = document.getElementById('decel-next');
-        
-        if (noneChecked || factorsChecked) {
-            btn.classList.remove('hidden');
-            btn.disabled = false;
-            btn.style.opacity = "1";
-        } else {
-            btn.classList.remove('hidden');
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-        }
-    }
-
-    function validateBaseInput() {
-        const val = document.getElementById('baseIn').value;
-        const btn = document.getElementById('baseContinueBtn');
-        if (val && val > 0) {
-            btn.disabled = false;
-            btn.style.opacity = "1";
-        } else {
-            btn.disabled = true;
-            btn.style.opacity = "0.5";
-        }
-    }
-
-    function handleInt() {
-        if(state.audit.uaMon.includes('Internal')) goTo('page4b');
-        else goTo('page4');
-    }
-
-    function setUA(v) { 
-        const mvuVal = document.getElementById('mvu') ? document.getElementById('mvu').value : "";
-        // If a value was entered, append it to the display string
-        state.audit.ua = mvuVal ? `${v} (${mvuVal} MVUs)` : v; 
-        goTo('page5'); 
-    }
-
-    function setMat() {
-        const noneBox = document.getElementById('mat-none');
-        const checkedFactors = Array.from(document.querySelectorAll('.mat-factor:checked')).map(i => i.value);
-        state.audit.maternal = (noneBox && noneBox.checked) || checkedFactors.length === 0 ? 'None' : checkedFactors.join(', ');
-        goTo('page6');
-    }
-
-    function evalBase() {
-        let b = document.getElementById('baseIn').value;
-        state.audit.base = b + ' bpm';
-        if(b < 100) { state.audit.baseDetail = {cat:'ABNORMAL', detail:'Baseline Bradycardia < 100'}; goTo('page8'); }
-        else if(b >= 100 && b < 110) { state.audit.baseDetail = {cat:'ATYPICAL', detail:'Baseline 100-110'}; goTo('page8'); }
-        else if(b > 160) goTo('page7b');
-        else { state.audit.baseDetail = {cat:'NORMAL', detail:'Baseline 110-160'}; goTo('page8'); }
-    }
-
-function setTachy(cat, detail, bypass = false) { 
-    state.audit.baseDetail = {cat, detail}; 
-    if(bypass) {
-        // Handle the Baseline Label for the Summary
-        if (detail.includes('Erratic')) {
-            state.audit.base = 'Erratic';
-        } else if (detail.includes('Sinusoidal')) {
-            state.audit.base = 'Indeterminate (Sinusoidal)';
-        } else if (detail.includes('Marked')) {
-            state.audit.base = 'Indeterminate (Marked)';
-        }
-        
-        // Set default "Unable to Determine" for other summary fields
-        state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
-        state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
-        state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
-        
-        // Handle Variability Specifically for the Summary Table
-        if (detail.includes('Sinusoidal')) {
-            state.audit.variability = {cat: 'ABNORMAL', detail: 'Sinusoidal Pattern'};
-            state.audit.variability.isBypass = true; // Flag to prevent double-listing
-        } else if (detail.includes('Marked')) {
-            state.audit.variability = {cat: 'ABNORMAL', detail: 'Marked Variability'};
-            state.audit.variability.isBypass = true; // Flag to prevent double-listing
-        } else {
-            state.audit.variability = {cat: 'NORMAL', detail: 'Unable to Determine'};
-        }
-
-        finalize();
-    } else {
-        goTo('page8'); 
+    else {
+        state.audit.baseDetail = { cat: 'NORMAL', detail: 'Baseline 110-160' };
+        goTo('page8');
     }
 }
 
-    function setTrend(cat, detail) { state.audit.trend = {cat, detail}; goTo('page9'); }
-    
-   function goToVarDuration(type) {
-        state.tempVarType = type; // Store whether it's Minimal or Absent
-        goTo('page9a');
+function setTachy(cat, detail, bypass = false) {
+    state.audit.baseDetail = { cat, detail };
+
+    if (!bypass) {
+        goTo('page8');
+        return;
     }
 
-    function setVar(cat, detail, next) {
-        // If coming from the duration page (page9a), use the specific type stored
-        let finalDetail = detail;
-        if (state.tempVarType && detail.includes('Minimal/Absent')) {
-            finalDetail = detail.replace('Minimal/Absent', state.tempVarType);
-        }
+    if (detail.includes('Erratic')) state.audit.base = 'Erratic';
+    else if (detail.includes('Sinusoidal')) state.audit.base = 'Indeterminate (Sinusoidal)';
+    else if (detail.includes('Marked')) state.audit.base = 'Indeterminate (Marked)';
 
-        state.audit.variability = {cat, detail: finalDetail};
-        
-        if(next === 'FINAL') {
-             if (finalDetail === 'Sinusoidal Pattern') {
-                 state.audit.base = 'Indeterminate (Sinusoidal)';
-                 state.audit.variability.isBypass = true;
-             } else if (finalDetail.includes('Marked')) {
-                 state.audit.base = 'Indeterminate (Marked)';
-                 state.audit.variability.isBypass = true;
-             }
-             
-             state.audit.accels = {cat: 'NORMAL', detail: 'Unable to Determine'};
-             state.audit.decels = { 'bypass': {cat: 'NORMAL', detail: 'Unable to Determine'} };
-             state.audit.trend = {cat: 'NORMAL', detail: 'Unable to Determine'};
-             finalize();
-        } else {
-             goTo(next);
-        }
+    state.audit.trend = { cat: 'NORMAL', detail: 'Unable to Determine' };
+    state.audit.accels = { cat: 'NORMAL', detail: 'Unable to Determine' };
+    state.audit.decels = { bypass: { cat: 'NORMAL', detail: 'Unable to Determine' } };
+
+    if (detail.includes('Sinusoidal')) {
+        state.audit.variability = { cat: 'ABNORMAL', detail: 'Sinusoidal Pattern', isBypass: true };
+    } else if (detail.includes('Marked')) {
+        state.audit.variability = { cat: 'ABNORMAL', detail: 'Marked Variability', isBypass: true };
+    } else {
+        state.audit.variability = { cat: 'NORMAL', detail: 'Unable to Determine' };
     }
 
-    function setAcc(cat, detail) { state.audit.accels = {cat, detail}; goTo('page11'); }
+    finalize();
+}
 
-    function startDecelFlow() {
-        state.audit.decels = {}; 
-        state.decelQueue = [];
-        let d = document.querySelectorAll('#page11 input:checked');
-        
-        if (document.getElementById('d-none').checked) {
-            state.audit.decels['none'] = {cat:'NORMAL', detail:'No Decelerations'};
-        } else {
-            d.forEach(i => {
-                if(i.id === 'd-uv') state.decelQueue.push('page11a');
-                if(i.id === 'd-cv') state.decelQueue.push('page11b');
-                if(i.id === 'd-late') state.decelQueue.push('page11c');
-                if(i.id === 'd-pro') state.decelQueue.push('page11d');
-                if(i.id === 'd-early') state.audit.decels['early'] = {cat:'NORMAL', detail:'Early Decelerations'};
-            });
-        }
-        nextDecel();
+
+/* ================================
+   VARIABILITY / TREND / ACCELS
+================================ */
+
+function setTrend(cat, detail) {
+    state.audit.trend = { cat, detail };
+    goTo('page9');
+}
+
+function goToVarDuration(type) {
+    state.tempVarType = type;
+    goTo('page9a');
+}
+
+function setVar(cat, detail, next) {
+    let finalDetail = detail;
+
+    if (state.tempVarType && detail.includes('Minimal/Absent')) {
+        finalDetail = detail.replace('Minimal/Absent', state.tempVarType);
     }
 
-    function nextDecel() {
-        if(state.decelQueue.length > 0) goTo(state.decelQueue.shift());
-        else finalize();
+    state.audit.variability = { cat, detail: finalDetail };
+
+    if (next !== 'FINAL') {
+        goTo(next);
+        return;
     }
 
-    function logDecel(key, cat, detail) {
-        state.audit.decels[key] = {cat, detail};
-        nextDecel();
+    if (finalDetail === 'Sinusoidal Pattern') {
+        state.audit.base = 'Indeterminate (Sinusoidal)';
+        state.audit.variability.isBypass = true;
+    }
+    else if (finalDetail.includes('Marked')) {
+        state.audit.base = 'Indeterminate (Marked)';
+        state.audit.variability.isBypass = true;
     }
 
-  function finalize() {
-        let allFindings = [
-            state.audit.baseDetail, state.audit.trend, state.audit.variability,
-            state.audit.accels, ...Object.values(state.audit.decels)
-        ];
-        let abnormalFeatures = allFindings.filter(f => f.cat === 'ABNORMAL');
-        let atypicalFeatures = allFindings.filter(f => f.cat === 'ATYPICAL');
-        
-        let finalRank = 'NORMAL';
-        let rankColor = '#27ae60';
-        if (abnormalFeatures.length > 0) { finalRank = 'ABNORMAL'; rankColor = '#e74c3c'; }
-        else if (atypicalFeatures.length > 0) { finalRank = 'ATYPICAL'; rankColor = '#f39c12'; }
-        
-        const rEl = document.getElementById('finalRank');
-        rEl.innerText = finalRank;
-        rEl.style.color = rankColor;
+    state.audit.accels = { cat: 'NORMAL', detail: 'Unable to Determine' };
+    state.audit.decels = { bypass: { cat: 'NORMAL', detail: 'Unable to Determine' } };
+    state.audit.trend = { cat: 'NORMAL', detail: 'Unable to Determine' };
 
-        let resHtml = "";
+    finalize();
+}
 
-        // NEW: Tachysystole Alert (Shows regardless of classification)
-        if (state.audit.ua.includes('Tachysystole')) {
-            resHtml += `
-                <div style="background: #fff3cd; color: #856404; padding: 15px; border-radius: 6px; border-left: 5px solid #f39c12; margin-bottom: 20px; font-size: 0.95rem;">
-                    <strong>⚠️ Clinical Note:</strong> Tachysystole is present. While tachysytole alone does not change the classification of the CEFM strip, steps should be taken to resolve tachysystole to optimize fetal oxygenation, regardless of the fetal heart rate classification.
-                </div>
-            `;
-        }
+function setAcc(cat, detail) {
+    state.audit.accels = { cat, detail };
+    goTo('page11');
+}
 
-      if (finalRank === 'ABNORMAL') {
-    resHtml += `<div style="margin-bottom:20px;"><strong style="color:#e74c3c; font-size:1.2rem;">Why it's Abnormal:</strong><ul style="margin-top:5px;">`;
-    // Only list features that aren't marked as N/A or flagged as a bypass
-    abnormalFeatures.forEach(f => { 
-        if(f.detail !== 'N/A' && !f.isBypass) resHtml += `<li>${f.detail}</li>` 
+
+/* ================================
+   DECEL FLOW
+================================ */
+
+function startDecelFlow() {
+    state.audit.decels = {};
+    state.decelQueue = [];
+
+    if ($('d-none').checked) {
+        state.audit.decels.none = { cat: 'NORMAL', detail: 'No Decelerations' };
+    } else {
+        $$('#page11 input:checked').forEach(i => {
+            if (i.id === 'd-uv') state.decelQueue.push('page11a');
+            if (i.id === 'd-cv') state.decelQueue.push('page11b');
+            if (i.id === 'd-late') state.decelQueue.push('page11c');
+            if (i.id === 'd-pro') state.decelQueue.push('page11d');
+            if (i.id === 'd-early')
+                state.audit.decels.early = { cat: 'NORMAL', detail: 'Early Decelerations' };
+        });
+    }
+
+    nextDecel();
+}
+
+function nextDecel() {
+    state.decelQueue.length > 0
+        ? goTo(state.decelQueue.shift())
+        : finalize();
+}
+
+function logDecel(key, cat, detail) {
+    state.audit.decels[key] = { cat, detail };
+    nextDecel();
+}
+
+
+/* ================================
+   UV CAUTION
+================================ */
+
+function handleUVCaution() {
+    const uvCaution = $('uv-caution');
+    const bpm = parseInt(state.audit.base);
+
+    const baselineAbnormal = bpm > 160 || bpm < 110;
+    const varAbnormal =
+        state.audit.variability.detail.includes('Minimal') ||
+        state.audit.variability.detail.includes('Absent');
+
+    uvCaution.classList.toggle('hidden', !(baselineAbnormal || varAbnormal));
+}
+
+
+/* ================================
+   FINALIZE
+================================ */
+
+function buildFeatureList(features, color, title) {
+    if (!features.length) return "";
+
+    let html = `<div style="margin-bottom:20px;">
+        <strong style="color:${color}; font-size:1.2rem;">${title}</strong>
+        <ul style="margin-top:5px;">`;
+
+    features.forEach(f => {
+        if (f.detail !== 'N/A' && !f.isBypass)
+            html += `<li>${f.detail}</li>`;
     });
-    resHtml += `</ul></div>`;
-            if (atypicalFeatures.length > 0) {
-                resHtml += `<div style="margin-bottom:20px;"><strong style="color:#f39c12;">Atypical Features:</strong><ul style="margin-top:5px;">`;
-                atypicalFeatures.forEach(f => { if(f.detail !== 'N/A') resHtml += `<li>${f.detail}</li>` });
-                resHtml += `</ul></div>`;
-            }
-        } else if (finalRank === 'ATYPICAL') {
-            resHtml += `<div style="margin-bottom:20px;"><strong style="color:#f39c12; font-size:1.2rem;">Why it's Atypical:</strong><ul style="margin-top:5px;">`;
-            atypicalFeatures.forEach(f => { if(f.detail !== 'N/A') resHtml += `<li>${f.detail}</li>` });
-            resHtml += `</ul></div>`;
-        } else {
-            resHtml += `<p style="color:#27ae60; font-weight:bold; font-size:1.1rem;">All assessed parameters meet Normal criteria.</p>`;
-        }
-        document.getElementById('resBox').innerHTML = resHtml;
 
-        let decelSummary = Object.values(state.audit.decels).map(f => f.detail).join(', ');
-        if (!decelSummary || decelSummary === "") decelSummary = "No Decelerations";
+    html += "</ul></div>";
+    return html;
+}
 
-        document.getElementById('audit').innerHTML = `
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px;">
-                <div><strong>Monitors in Use:</strong></div><div>${state.audit.fhrMon} / ${state.audit.uaMon}</div>
-                <div><strong>Maternal Factors:</strong></div><div>${state.audit.maternal}</div>
-                <div><strong>Uterine Activity:</strong></div><div>${state.audit.ua}</div>
-                <div><strong>Fetal Heart Rate Baseline:</strong></div><div>${state.audit.base}</div>
-                <div><strong>Baseline Trend:</strong></div><div>${state.audit.trend.detail}</div>
-                <div><strong>Variability:</strong></div><div>${state.audit.variability.detail}</div>
-                <div><strong>Accelerations:</strong></div><div>${state.audit.accels.detail}</div>
-                <div><strong>Decelerations:</strong></div><div>${decelSummary}</div>
-            </div>
-        `;
-        goTo('page12');
+function finalize() {
+    const allFindings = [
+        state.audit.baseDetail,
+        state.audit.trend,
+        state.audit.variability,
+        state.audit.accels,
+        ...Object.values(state.audit.decels)
+    ];
+
+    const abnormal = allFindings.filter(f => f.cat === 'ABNORMAL');
+    const atypical = allFindings.filter(f => f.cat === 'ATYPICAL');
+
+    let finalRank = 'NORMAL';
+    let rankColor = '#27ae60';
+
+    if (abnormal.length > 0) {
+        finalRank = 'ABNORMAL';
+        rankColor = '#e74c3c';
+    } else if (atypical.length > 0) {
+        finalRank = 'ATYPICAL';
+        rankColor = '#f39c12';
     }
 
-    function setupSmartToggles() {
-        const matNone = document.getElementById('mat-none');
-        const matFactors = document.querySelectorAll('.mat-factor');
-        matNone.addEventListener('change', function() {
-            if (this.checked) matFactors.forEach(f => f.checked = false);
+    const rEl = $('finalRank');
+    rEl.innerText = finalRank;
+    rEl.style.color = rankColor;
+
+    let resHtml = "";
+
+    if (state.audit.ua.includes('Tachysystole')) {
+        resHtml += `
+            <div style="background:#fff3cd;color:#856404;padding:15px;border-radius:6px;border-left:5px solid #f39c12;margin-bottom:20px;font-size:0.95rem;">
+                <strong>⚠️ Clinical Note:</strong>
+                Tachysystole is present. While tachysystole alone does not change
+                classification, steps should be taken to resolve it to optimize fetal oxygenation.
+            </div>`;
+    }
+
+    if (finalRank === 'ABNORMAL') {
+        resHtml += buildFeatureList(abnormal, '#e74c3c', "Why it's Abnormal:");
+        resHtml += buildFeatureList(atypical, '#f39c12', "Atypical Features:");
+    }
+    else if (finalRank === 'ATYPICAL') {
+        resHtml += buildFeatureList(atypical, '#f39c12', "Why it's Atypical:");
+    }
+    else {
+        resHtml += `<p style="color:#27ae60;font-weight:bold;font-size:1.1rem;">
+            All assessed parameters meet Normal criteria.
+        </p>`;
+    }
+
+    $('resBox').innerHTML = resHtml;
+
+    let decelSummary = Object.values(state.audit.decels)
+        .map(f => f.detail)
+        .join(', ') || "No Decelerations";
+
+    $('audit').innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;">
+            <div><strong>Monitors in Use:</strong></div><div>${state.audit.fhrMon} / ${state.audit.uaMon}</div>
+            <div><strong>Maternal Factors:</strong></div><div>${state.audit.maternal}</div>
+            <div><strong>Uterine Activity:</strong></div><div>${state.audit.ua}</div>
+            <div><strong>FHR Baseline:</strong></div><div>${state.audit.base}</div>
+            <div><strong>Trend:</strong></div><div>${state.audit.trend.detail}</div>
+            <div><strong>Variability:</strong></div><div>${state.audit.variability.detail}</div>
+            <div><strong>Accelerations:</strong></div><div>${state.audit.accels.detail}</div>
+            <div><strong>Decelerations:</strong></div><div>${decelSummary}</div>
+        </div>`;
+
+    goTo('page12');
+}
+
+
+/* ================================
+   SMART TOGGLES
+================================ */
+
+function setupSmartToggles() {
+    const matNone = $('mat-none');
+    const matFactors = $$('.mat-factor');
+
+    matNone.addEventListener('change', function () {
+        if (this.checked) matFactors.forEach(f => f.checked = false);
+        validateMat();
+    });
+
+    matFactors.forEach(f => {
+        f.addEventListener('change', function () {
+            if (this.checked) matNone.checked = false;
             validateMat();
         });
-        matFactors.forEach(f => {
-            f.addEventListener('change', function() {
-                if (this.checked) matNone.checked = false;
-                validateMat();
-            });
-        });
+    });
 
-        const decelNone = document.getElementById('d-none');
-        const decelFactors = document.querySelectorAll('.decel-factor');
-        decelNone.addEventListener('change', function() {
-            if (this.checked) decelFactors.forEach(d => d.checked = false);
+    const decelNone = $('d-none');
+    const decelFactors = $$('.decel-factor');
+
+    decelNone.addEventListener('change', function () {
+        if (this.checked) decelFactors.forEach(d => d.checked = false);
+        validateDecel();
+    });
+
+    decelFactors.forEach(d => {
+        d.addEventListener('change', function () {
+            if (this.checked) decelNone.checked = false;
             validateDecel();
         });
-        decelFactors.forEach(d => {
-            d.addEventListener('change', function() {
-                if (this.checked) decelNone.checked = false;
-                validateDecel();
-            });
-        });
-    }
+    });
+}
 
-    window.onload = setupSmartToggles;
+window.onload = setupSmartToggles;
+
 </script>
 </body>
 </html>
