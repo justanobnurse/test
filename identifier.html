@@ -43,12 +43,14 @@
         <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
-    <div id="page3" class="hidden">
-        <h3 style="color: #e74c3c; font-weight: bold;">⚠️ ASSESSMENT STOPPED</h3>
-        <p class="result-box">Cannot reliably define a deceleration with an indeterminate baseline, marked variability, or sinusoidal pattern.</p>
-        <button class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
-        <a href="index.html" class="btn btn-exit">Home</a>
+   <div id="page3" class="hidden">
+    <div class="alert-box">
+        <strong>⚠️ ASSESSMENT STOPPED</strong>
+        <p>Cannot reliably define a deceleration with an indeterminate baseline, marked variability, or sinusoidal pattern.</p>
     </div>
+    <button class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+    <a href="index.html" class="btn btn-exit">Home</a>
+</div>
 
     <div id="page4" class="hidden">
         <h3>What is the FHR Variability while at baseline?</h3>
