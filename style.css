@@ -251,7 +251,8 @@ input[type="number"] {
 
 .privacy-disclaimer strong {
     margin-bottom: 8px;       
-    color: var(--accent);       /* Optional: uses your blue/accent color for the title */
+    color: #008080;    /* Optional: uses your blue/accent color for the title */
+    text-transform: uppercase;
 }
 
 input::-webkit-outer-spin-button,
