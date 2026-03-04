@@ -63,11 +63,18 @@ function initTheme() {
         toggleBtn.innerText = isDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
 
         toggleBtn.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            const currentlyDark = body.classList.contains('dark-mode');
-            localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
-            toggleBtn.innerText = currentlyDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
-        });
+    document.body.classList.add('theme-transition');
+    document.body.classList.toggle('dark-mode');
+    
+    const currentlyDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
+    toggleBtn.innerText = currentlyDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
+
+    // Remove transition class after it finishes to prevent lag on other animations
+    setTimeout(() => {
+        document.body.classList.remove('theme-transition');
+    }, 300);
+});
     }
 }
 
