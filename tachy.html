@@ -42,14 +42,15 @@
     </div>
 
     <div id="page3" class="hidden">
-        <div class="result-box" style="border-left-color: #3498db; background: rgba(52, 152, 219, 0.05);">
-            <strong>Reminder:</strong> TOCO does not measure contraction intensity or resting tone. Palpation is required to verify uterine tone and contraction strength.
-        </div>
-        <h3>Is the contraction tracing adequate and aligns with palpation?</h3>
-        <button class="btn" onclick="nextStep('page4')">Yes</button>
-        <button class="btn" onclick="nextStep('page3b')">No</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+    <div class="caution-box">
+        <strong>Reminder:</strong> TOCO does not measure contraction intensity or resting tone. Palpation is required to verify uterine tone and contraction strength.
     </div>
+    
+    <h3>Is the contraction tracing adequate and aligns with palpation?</h3>
+    <button class="btn" onclick="nextStep('page4')">Yes</button>
+    <button class="btn" onclick="nextStep('page3b')">No</button>
+    <button class="btn btn-back" onclick="prevStep()">← Back</button>
+</div>
 
     <div id="page3b" class="hidden">
         <div class="result-box" style="border-left-color: #e74c3c;">
