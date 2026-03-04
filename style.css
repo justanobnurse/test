@@ -30,7 +30,6 @@ body {
     display: flex; 
     justify-content: center; 
     min-height: 100vh;
-    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .container { 
@@ -40,7 +39,7 @@ body {
     padding: 40px; 
     border-radius: 12px; 
     box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-    margin: 40px 10px; 
+    margin: 40px auto; 
     box-sizing: border-box;
     min-height: 600px;
 }
@@ -54,7 +53,11 @@ body {
 }
 
 @media (max-width: 600px) {
-    .container { padding: 25px 15px; margin: 15px auto; }
+    .container { 
+        padding: 25px 15px; 
+        margin: 15px auto; 
+        min-height: auto; /* Adds flexibility for smaller phone screens */
+    }
 }
 
 /* Tool Cards */
@@ -232,4 +235,10 @@ input[type=number] {
 
 .container > div:not(.hidden) {
     animation: fadeIn 0.4s ease-out;
+}
+body.theme-transition, 
+body.theme-transition *, 
+body.theme-transition *::before, 
+body.theme-transition *::after {
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
 }
