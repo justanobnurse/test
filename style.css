@@ -222,25 +222,43 @@ input[type="number"] {
 
 .hidden { display: none; }
 
-/* Disclaimer Banner */
+No problem at all—we will keep the Privacy Disclaimer exactly as it is and focus only on the Disclaimer Banner used at the beginning of your tools (like the CEFM Classifier).To align the Disclaimer Banner with your new Alert and Caution boxes while keeping that professional teal color, we will update the CSS to use the same $6$px left-border and translucent background logic.Updated CSS for the Disclaimer BannerReplace your current .disclaimer-banner section with this. I've used a Teal/Petrol theme (#008080) so it remains distinct from clinical alerts but feels like part of the same "family."CSS/* Updated Disclaimer Banner (Tool Start Pages) */
 .disclaimer-banner {
-    background: var(--item-bg);
-    border: 1px solid var(--border-color);
-    border-top: 3px solid #008080; 
-    color: var(--text);
+    background: rgba(0, 128, 128, 0.05); /* Faded Teal background */
+    border: 1px solid #008080;           /* Solid Teal outline */
+    border-left: 6px solid #008080;      /* Thick Teal left border */
     padding: 20px;
     border-radius: 12px;
+    color: var(--text);
     font-size: 0.9rem;
-    margin: 20px auto 0 auto;
-    max-width: 85%;
     line-height: 1.6;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin: 20px auto;
+    max-width: 90%;                      /* Good for tool start pages */
     text-align: left;
+    box-sizing: border-box;
 }
 
 .disclaimer-banner strong {
-    color: #008080;
+    display: inline;
+    margin-right: 6px;
+    color: #008080;                      /* Matches the teal theme */
     font-size: 1rem;
+}
+
+.disclaimer-banner p {
+    display: inline;
+}
+
+/* Ensures lists inside the banner match the formatting */
+.disclaimer-banner ul {
+    margin-top: 10px;
+    padding-left: 20px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.disclaimer-banner li {
+    margin-bottom: 5px;
 }
 
 .privacy-disclaimer {
