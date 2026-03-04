@@ -128,7 +128,7 @@
         const peakElements = Array.from(document.querySelectorAll('.peak-box'));
         const peaks = peakElements.map(i => parseFloat(i.value)).filter(v => !isNaN(v));
         
-        let total = peaks.reduce((acc, p) => acc + (p - tone), 0);
+        let total = peaks.reduce((acc, p) => acc + Math.max(0, p - tone), 0);
         
         // Generate Alerts
         let alertsHtml = "";
