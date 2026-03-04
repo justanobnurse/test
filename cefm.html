@@ -6,7 +6,7 @@
     <title>FHS CEFM Classifier</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-mode">
 <div class="container">
 
   <div id="page1">
@@ -248,10 +248,7 @@
 
 </div>
 
-<script>
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-mode');
-    }
+<script src="common.js"></script> <script>
 
     let state = {
         history: [],
@@ -403,11 +400,13 @@
     }
 
     function setUA(v) { 
-        const mvuVal = document.getElementById('mvu') ? document.getElementById('mvu').value : "";
-        // If a value was entered, append it to the display string
-        state.audit.ua = mvuVal ? `${v} (${mvuVal} MVUs)` : v; 
-        goTo('page5'); 
-    }
+    let mvuVal = document.getElementById('mvu') ? document.getElementById('mvu').value : "";
+    // Basic sanitization: remove non-numeric chars
+    mvuVal = mvuVal.replace(/[^0-9.]/g, ''); 
+
+    state.audit.ua = mvuVal ? `${v} (${mvuVal} MVUs)` : v; 
+    goTo('page5'); 
+}
 
     function setMat() {
         const noneBox = document.getElementById('mat-none');
