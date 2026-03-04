@@ -6,7 +6,7 @@
     <title>IA Classification Tool</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="dark-mode">
 <div class="container">
 
     <div id="page1">
@@ -109,8 +109,8 @@
 
 </div>
 
+<script src="common.js"></script>
 <script>
-    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
     
     let state = { history: [], findings: {}, audit: { device: '' } };
 
