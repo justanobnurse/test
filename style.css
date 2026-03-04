@@ -221,8 +221,6 @@ input[type="number"] {
 }
 
 .hidden { display: none; }
-
-No problem at all—we will keep the Privacy Disclaimer exactly as it is and focus only on the Disclaimer Banner used at the beginning of your tools (like the CEFM Classifier).To align the Disclaimer Banner with your new Alert and Caution boxes while keeping that professional teal color, we will update the CSS to use the same $6$px left-border and translucent background logic.Updated CSS for the Disclaimer BannerReplace your current .disclaimer-banner section with this. I've used a Teal/Petrol theme (#008080) so it remains distinct from clinical alerts but feels like part of the same "family."CSS/* Updated Disclaimer Banner (Tool Start Pages) */
 .disclaimer-banner {
     background: rgba(0, 128, 128, 0.05); /* Faded Teal background */
     border: 1px solid #008080;           /* Solid Teal outline */
