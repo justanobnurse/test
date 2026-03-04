@@ -53,8 +53,11 @@
 </div>
         
         <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 300px; margin: 0 auto; justify-items: center;">
-            <input type="number" class="peak-box" placeholder="Peak 1" oninput="handlePeakInput(this)" style="text-align: center;">
-        </div>
+    <input type="number" class="peak-box" placeholder="Peak 1" 
+           oninput="spawnNextBox(this)" 
+           onchange="validatePeaks()" 
+           style="text-align: center;">
+</div>
 
         <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate MVUs</button>
         <button class="btn btn-back" onclick="prevStep()">← Back</button>
@@ -76,14 +79,14 @@
 </div>
 
 <script>
-       let state = { history: [] };
+    let state = { history: [] };
 
     function nextStep(id) {
         const curr = document.querySelector('.container > div:not(.hidden)')?.id;
         if(curr && curr !== id) state.history.push(curr);
         document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
-	window.scrollTo(0, 0);
+        window.scrollTo(0, 0);
     }
 
     function prevStep() {
@@ -98,11 +101,13 @@
     function validateRT() { 
         const v = document.getElementById('restingTone').value;
         const b = document.getElementById('rtBtn');
-        b.disabled = !(v !== "" && v >= 0); 
-        b.style.opacity = b.disabled ? "0.5" : "1";
+        const isValid = v !== "" && parseFloat(v) >= 0;
+        b.disabled = !isValid; 
+        b.style.opacity = isValid ? "1" : "0.5";
     }
 
-    function handlePeakInput(element) {
+    // This makes the next box appear immediately as you type
+    function spawnNextBox(element) {
         const container = document.getElementById('peakInputsContainer');
         const allInputs = container.querySelectorAll('.peak-box');
         const lastInput = allInputs[allInputs.length - 1];
@@ -113,41 +118,44 @@
             newInput.className = 'peak-box';
             newInput.placeholder = `Peak ${allInputs.length + 1}`;
             newInput.style.textAlign = 'center';
-            newInput.oninput = function() { handlePeakInput(this); };
+            
+            // Link new boxes to the dual logic
+            newInput.oninput = function() { spawnNextBox(this); };
+            newInput.onchange = function() { validatePeaks(); };
+            
             container.appendChild(newInput);
         }
-        validatePeaks();
     }
 
+    // This only shows the error box when the user clicks off the input
     function validatePeaks() {
-    const tone = parseFloat(document.getElementById('restingTone').value) || 0;
-    const peakElements = Array.from(document.querySelectorAll('.peak-box'));
-    const errorBox = document.getElementById('peakError');
-    const calcBtn = document.getElementById('calcBtn');
+        const tone = parseFloat(document.getElementById('restingTone').value) || 0;
+        const peakElements = Array.from(document.querySelectorAll('.peak-box'));
+        const errorBox = document.getElementById('peakError');
+        const calcBtn = document.getElementById('calcBtn');
 
-    // Only validate boxes that aren't empty
-    const filledInputs = peakElements.filter(input => input.value !== "");
-    
-    const hasInvalidPeak = filledInputs.some(input => {
-        const val = parseFloat(input.value);
-        return !isNaN(val) && val < tone;
-    });
+        const filledInputs = peakElements.filter(input => input.value !== "");
+        
+        const hasInvalidPeak = filledInputs.some(input => {
+            const val = parseFloat(input.value);
+            return !isNaN(val) && val < tone;
+        });
 
-    const hasValidData = filledInputs.some(input => {
-        const val = parseFloat(input.value);
-        return !isNaN(val) && val >= tone && val > 0;
-    });
+        const hasValidData = filledInputs.some(input => {
+            const val = parseFloat(input.value);
+            return !isNaN(val) && val >= tone && val > 0;
+        });
 
-    if (hasInvalidPeak) {
-        errorBox.classList.remove('hidden');
-        calcBtn.disabled = true;
-        calcBtn.style.opacity = "0.5";
-    } else {
-        errorBox.classList.add('hidden');
-        calcBtn.disabled = !hasValidData;
-        calcBtn.style.opacity = hasValidData ? "1" : "0.5";
+        if (hasInvalidPeak) {
+            errorBox.classList.remove('hidden');
+            calcBtn.disabled = true;
+            calcBtn.style.opacity = "0.5";
+        } else {
+            errorBox.classList.add('hidden');
+            calcBtn.disabled = !hasValidData;
+            calcBtn.style.opacity = hasValidData ? "1" : "0.5";
+        }
     }
-}
 
     function calculateMVU() {
         const tone = parseFloat(document.getElementById('restingTone').value);
@@ -155,26 +163,32 @@
         const peaks = peakElements.map(i => parseFloat(i.value)).filter(v => !isNaN(v));
         
         let total = peaks.reduce((acc, p) => acc + Math.max(0, p - tone), 0);
-        
-        // Generate Alerts
         let alertsHtml = "";
-        const alertStyle = "background: rgba(231, 76, 60, 0.05); border: 1px solid #e74c3c; border-left: 6px solid #e74c3c; padding: 15px; border-radius: 8px; margin-bottom: 10px; font-size: 0.9rem;";
-        
+    
         if (tone > 25) {
-            alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> A uterine resting tone > 25 mmHg is consistent with tachysystole.</div>`;
+            alertsHtml += `
+                <div class="alert-box">
+                    <strong>⚠️ Note:</strong> A uterine resting tone > 25 mmHg is consistent with tachysystole.
+                </div>`;
+        }
+    
+        if (peaks.some(p => p >= 75)) {
+            alertsHtml += `
+                <div class="alert-box">
+                    <strong>⚠️ Note:</strong> A contraction peak ≥ 75 mmHg is consistent with tachysystole.
+                </div>`;
         }
         
-        if (peaks.some(p => p >= 75)) {
-            alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> A contraction peak &ge; 75 mmHg is consistent with tachysystole (this threshold does not apply during the second stage of labour).</div>`;
+        if (peaks.length > 5) {
+            alertsHtml += `
+                <div class="alert-box">
+                    <strong>⚠️ Note:</strong> ${peaks.length} contractions in 10 min is consistent with tachysystole.
+                </div>`;
         }
-	if (peaks.length > 5) {
-    	    alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> ${peaks.length} contractions in 10 minutes is consistent with tachysystole if the average number of contractions in 10 minutes is >5 over 30 minutes.</div>`;
-}
 
         document.getElementById('mvuAlerts').innerHTML = alertsHtml;
         document.getElementById('mvuDisplay').innerText = Math.round(total);
         document.getElementById('mvuSummary').innerHTML = `<strong>Contractions:</strong> ${peaks.length}<br><strong>Resting Tone:</strong> ${tone} mmHg`;
-        
         nextStep('page4');
     }
 </script>
