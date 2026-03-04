@@ -57,7 +57,8 @@ function goBack() {
 function initTheme() {
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
-    const isDark = localStorage.getItem('theme') === 'dark';
+    const saved = localStorage.getItem('theme');
+    const isDark = saved === 'dark' || saved === null; // Defaults to True (Dark) if new user
 
     if (isDark) {
         body.classList.add('dark-mode');
