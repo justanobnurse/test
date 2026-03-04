@@ -203,19 +203,21 @@
 
         let resHtml = "";
         
-        if (state.findings['Maternal Vitals']?.detail === 'Abnormal') {
-            resHtml += `
-		<div class="result-box" style="border-left-color:#e74c3c; background:rgba(231,76,60,0.05); color: var(--text);">
-			<strong>⚠️ Recommendation:</strong> CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.
-                </div>`;
-        }
+       if (state.findings['Maternal Vitals']?.detail === 'Abnormal') {
+    resHtml += `
+        <div class="alert-box">
+            <strong>⚠️ Recommendation:</strong>
+            <p>CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.</p>
+        </div>`;
+}
 
-        if (state.audit.device === 'EFM Ultrasound') {
-            resHtml += `
-		<div class="result-box" style="border-left-color:#e67e22; background:rgba(230,126,34,0.05); color: var(--text);">
-			<strong>⚠️ IA Technique Note:</strong> When using an EFM Ultrasound transducer for IA, you must rely on the <strong>audible signal only</strong>. Do not use the digital display or printed trace to classify FHR characteristics.
-                </div>`;
-        }
+if (state.audit.device === 'EFM Ultrasound') {
+    resHtml += `
+        <div class="caution-box">
+            <strong>⚠️ IA Technique Note:</strong>
+            <p>When using an EFM Ultrasound transducer for IA, you must rely on the <strong>audible signal only</strong>. Do not use the digital display or printed trace to classify FHR characteristics.</p>
+        </div>`;
+}
 
         if (finalRank === 'ABNORMAL') {
             resHtml += `<div style="margin-bottom:20px;"><strong>Why it's Abnormal:</strong><ul>`;
