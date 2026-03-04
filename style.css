@@ -277,15 +277,40 @@ input[type="number"] {
     line-height: 1.5;
 }
 /* Add this to style.css */
-.alert-box ul {
+/* Shared list styling for both Alert and Caution boxes */
+.alert-box ul, .caution-box ul {
     margin-top: 10px;
     padding-left: 20px;
-    font-size: 0.9rem; /* Now the CSS handles it! */
+    font-size: 0.9rem;
     line-height: 1.4;
 }
 
-.alert-box li {
-    margin-bottom: 8px; /* Adds a tiny bit of space between tips */
+.alert-box li, .caution-box li {
+    margin-bottom: 8px; /* Adds space between clinical tips */
+}
+
+/* Specific text color for caution lists if needed */
+.caution-box ul {
+    color: #856404;
+}
+
+/* style.css */
+.caution-box {
+    background: #fff3cd; 
+    color: #856404; 
+    padding: 15px; 
+    border-radius: 8px; 
+    border: 1px solid #ffeeba; 
+    border-left: 6px solid #f39c12; /* Orange-yellow border */
+    font-size: 0.9rem; 
+    margin: 10px 0 20px 0; 
+    text-align: left;
+}
+
+.caution-box strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #856404;
 }
 
 input::-webkit-outer-spin-button,
