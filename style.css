@@ -210,15 +210,15 @@ input[type="number"] {
     font-size: 0.9rem;
     margin: 20px auto 0 auto;
     max-width: 85%;
-    line-height: 1.5;
+    line-height: 1.6;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     text-align: left;
 }
 
 .disclaimer-banner strong {
     color: #008080;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-size: 1rem;
 }
 
 .privacy-disclaimer {
@@ -251,8 +251,8 @@ input[type="number"] {
 
 .privacy-disclaimer strong {
     margin-bottom: 8px;       
-    color: #008080;    /* Optional: uses your blue/accent color for the title */
-    text-transform: uppercase;
+    color: #008080;    
+    font-size: 1rem;
 }
 
 input::-webkit-outer-spin-button,
