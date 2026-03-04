@@ -66,13 +66,36 @@ body {
 /* Tool Cards */
 .tool-card { 
     border: 1px solid var(--border-color); 
-    padding: 20px; 
-    border-radius: 10px; 
+    padding: 25px; 
+    border-radius: 12px; 
     background: var(--card-bg); 
     border-left: 5px solid var(--accent); 
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    /* THE FIX: Flexbox Layout */
+    display: flex;
+    flex-direction: column;
     height: 100%;
     box-sizing: border-box;
+}
+
+.tool-card h2 {
+    margin: 0 0 10px 0; /* Title at the top */
+    font-size: 1.4rem;
+    color: var(--accent);
+}
+
+.tool-card p {
+    margin: 0 0 20px 0; 
+    flex-grow: 1;       /* THIS pushes the button to the bottom */
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Ensure the button stays anchored at the bottom */
+.tool-card .btn {
+    margin-top: auto;
+    width: 100%;
 }
 
 .tool-card:hover { 
