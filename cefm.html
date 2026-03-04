@@ -198,9 +198,10 @@
             <input type="checkbox" id="d-uv" class="decel-factor"> Uncomplicated Variable Deceleration
         </label>
 
-        <div id="uv-caution" class="hidden" style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; border: 1px solid #ffeeba; font-size: 0.85rem; margin: 5px 0 15px 25px; text-align: left; border-left: 4px solid #f39c12;">
-            <strong>⚠️ Caution:</strong> A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.
-        </div>
+        <div id="uv-caution" class="hidden caution-box">
+    <strong>⚠️ Caution:</strong> 
+    <p>A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.</p>
+</div>
 
         <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor"> Complicated Variable Deceleration</label>
         <label class="check-item"><input type="checkbox" id="d-early" class="decel-factor"> Early Deceleration</label>
@@ -629,13 +630,13 @@ function finalize() {
 
     let resHtml = "";
 
-    if (state.audit.ua.includes('Tachysystole')) {
-        resHtml += `
-            <div style="background:#fff3cd;color:#856404;padding:15px;border-radius:6px;border-left:5px solid #f39c12;margin-bottom:20px;font-size:0.95rem;">
-                <strong>⚠️ Note:</strong>
-                Tachysystole is present. While tachysytole alone does not change the classification of the CEFM strip, steps should be taken to resolve tachysystole to optimize fetal oxygenation, regardless of the fetal heart rate classification.
-            </div>`;
-    }
+   if (state.audit.ua.includes('Tachysystole')) {
+    resHtml += `
+        <div class="caution-box">
+            <strong>⚠️ Note:</strong>
+            <p>Tachysystole is present. While tachysystole alone does not change the classification of the CEFM strip, steps should be taken to resolve tachysystole to optimize fetal oxygenation, regardless of the fetal heart rate classification.</p>
+        </div>`;
+}
 
     if (finalRank === 'ABNORMAL') {
         resHtml += buildFeatureList(abnormal, '#e74c3c', "Why it's Abnormal:");
