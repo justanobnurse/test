@@ -248,7 +248,6 @@
     </div>
 
 </div>
-<script src="common.js"></script>
 <script>
 
 /* ================================
@@ -334,6 +333,7 @@ function prevStep() {
     const last = state.history.pop();
     showPage(last);
     handlePageLogic(last);
+    window.scrollTo(0, 0);
 }
 
 
@@ -708,5 +708,6 @@ function setupSmartToggles() {
 window.onload = setupSmartToggles;
 
 </script>
+<script src="common.js"></script>
 </body>
 </html>
