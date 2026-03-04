@@ -28,7 +28,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+            <button class="btn btn-primary" onclick="nextStep('page2')">I Understand & Accept - Begin</button>
             <div style="margin-top: 10px;">
                 <a href="index.html" class="btn btn-exit">Exit to Home</a>
             </div>
@@ -40,8 +40,8 @@
         <p>Resting tone baseline (mmHg):</p>
         <input type="number" id="restingTone" placeholder="Resting Tone" oninput="validateRT()" style="text-align: center;">
         <br><br>
-        <button id="rtBtn" class="btn btn-primary" onclick="goTo('page3')" disabled style="opacity:0.5">Continue</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button id="rtBtn" class="btn btn-primary" onclick="nextStep('page3')" disabled style="opacity:0.5">Continue</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
   <div id="page3" class="hidden" style="text-align: center;">
@@ -53,7 +53,7 @@
         </div>
 
         <button id="calcBtn" class="btn btn-primary" onclick="calculateMVU()" disabled style="opacity:0.5; margin-top:20px;">Calculate MVUs</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page4" class="hidden">
@@ -72,17 +72,17 @@
 </div>
 
 <script>
-    if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-    let state = { history: [] };
+       let state = { history: [] };
 
-    function goTo(id) {
+    function nextStep(id) {
         const curr = document.querySelector('.container > div:not(.hidden)')?.id;
         if(curr && curr !== id) state.history.push(curr);
         document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
+	window.scrollTo(0, 0);
     }
 
-    function goBack() {
+    function prevStep() {
         if (state.history.length > 0) {
             document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
             const lastPageId = state.history.pop();
@@ -141,13 +141,17 @@
         if (peaks.some(p => p >= 75)) {
             alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> A contraction peak &ge; 75 mmHg is consistent with tachysystole (this threshold does not apply during the second stage of labour).</div>`;
         }
+	if (peaks.length > 5) {
+    	    alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Tachysystole:</strong> ${peaks.length} contractions in 10 minutes is consistent with tachysystole if the average number of contractions in 10 minutes is >5 over 30 minutes.</div>`;
+}
 
         document.getElementById('mvuAlerts').innerHTML = alertsHtml;
         document.getElementById('mvuDisplay').innerText = Math.round(total);
         document.getElementById('mvuSummary').innerHTML = `<strong>Contractions:</strong> ${peaks.length}<br><strong>Resting Tone:</strong> ${tone} mmHg`;
         
-        goTo('page4');
+        nextStep('page4');
     }
 </script>
+<script src="common.js"></script>
 </body>
 </html>
