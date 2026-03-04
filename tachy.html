@@ -28,7 +28,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+            <button class="btn btn-primary" onclick="nextStep('page2')">I Understand & Accept - Begin</button>
             <div style="margin-top: 10px;">
                 <a href="index.html" class="btn btn-exit">Exit to Home</a>
             </div>
@@ -36,9 +36,9 @@
     </div>
     <div id="page2" class="hidden">
         <h3>What type of uterine activity monitor is in use?</h3>
-        <button class="btn" onclick="goTo('page3')">External Tocodynamometer (TOCO)</button>
-        <button class="btn" onclick="goTo('page3c')">Internal Uterine Pressure Catheter (IUPC)</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn" onclick="nextStep('page3')">External Tocodynamometer (TOCO)</button>
+        <button class="btn" onclick="nextStep('page3c')">Internal Uterine Pressure Catheter (IUPC)</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page3" class="hidden">
@@ -46,9 +46,9 @@
             <strong>Reminder:</strong> TOCO does not measure contraction intensity or resting tone. Palpation is required to verify uterine tone and contraction strength.
         </div>
         <h3>Is the contraction tracing adequate and aligns with palpation?</h3>
-        <button class="btn" onclick="goTo('page4')">Yes</button>
-        <button class="btn" onclick="goTo('page3b')">No</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn" onclick="nextStep('page4')">Yes</button>
+        <button class="btn" onclick="nextStep('page3b')">No</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page3b" class="hidden">
@@ -56,16 +56,16 @@
             <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include adjusting the TOCO, replacing the monitor, or using internal monitoring. 
         </div>
         <p>If the TOCO remains unreliable, uterine activity must be assessed via manual palpation.</p>
-        <button class="btn" onclick="goTo('page4')">Continue based on manual palpation</button>
+        <button class="btn" onclick="nextStep('page4')">Continue based on manual palpation</button>
         <button class="btn btn-primary" onclick="location.reload()">Start Over</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
     <div id="page3c" class="hidden">
         <h3>Does the IUPC tracing match the clinical picture and palpation?</h3>
-        <button class="btn" onclick="goTo('page4b')">Yes</button>
-        <button class="btn" onclick="goTo('page3d')">No</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn" onclick="nextStep('page4b')">Yes</button>
+        <button class="btn" onclick="nextStep('page3d')">No</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page3d" class="hidden">
@@ -73,7 +73,7 @@
             <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include flushing the system and/or zeroing the IUPC. 
         </div>
         <p>If the IUPC remains unreliable, uterine activity must be assessed via manual palpation.</p>
-        <button class="btn" onclick="goTo('page4')">Continue based on manual palpation</button>
+        <button class="btn" onclick="nextStep('page4')">Continue based on manual palpation</button>
         <button class="btn btn-primary" onclick="location.reload()">Start Over</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
@@ -81,50 +81,50 @@
     <div id="page4" class="hidden">
         <h3>Uterine Contraction Frequency</h3>
         <p>Are there greater than 5 contractions in 10 minutes, averaged over 30 minutes?</p>
-        <button class="btn" onclick="goTo('page5')">No</button>
+        <button class="btn" onclick="nextStep('page5')">No</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Frequency exceeds > 5 contractions in 10 minutes averaged over the last 30 minutes.')">Yes</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page4b" class="hidden">
         <h3>Contraction Peak Intensity (IUPC)</h3>
         <p>Are there any contractions with a peak &ge; 75 mmHg (not applicable in the second stage)?</p>
-        <button class="btn" onclick="goTo('page4c')">No</button>
+        <button class="btn" onclick="nextStep('page4c')">No</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Internal monitoring identifies at least one peak &ge; 75 mmHg.')">Yes</button>
-        <button class="btn" onclick="goTo('page4c')">Not Applicable - Second Stage</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn" onclick="nextStep('page4c')">Not Applicable - Second Stage</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page4c" class="hidden">
         <h3>Resting Tone (IUPC)</h3>
         <p>Is the resting tone &ge; 25 mmHg?</p>
-        <button class="btn" onclick="goTo('page4')">No</button>
+        <button class="btn" onclick="nextStep('page4')">No</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone is &ge; 25 mmHg.')">Yes</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page5" class="hidden">
         <h3>Contraction Duration</h3>
         <p>Are there any contractions lasting > 90 seconds in duration?</p>
-        <button class="btn" onclick="goTo('page6')">No</button>
+        <button class="btn" onclick="nextStep('page6')">No</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one contraction lasts > 90 seconds.')">Yes</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page6" class="hidden">
         <h3>Coupling or Tripling Contractions</h3>
         <p>Are there any contractions that are coupling or tripling (without returning to a soft uterine tone in between) that have a total duration > 90 seconds?</p>
-        <button class="btn" onclick="goTo('page7')">No</button>
+        <button class="btn" onclick="nextStep('page7')">No</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one set of coupling/tripling contractions has a total duration > 90 seconds.')">Yes</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page7" class="hidden">
         <h3>Resting Tone Duration</h3>
         <p>Is there &ge; 30 seconds of resting tone between all contractions?</p>
-        <button class="btn" onclick="goTo('page8')">Yes</button>
+        <button class="btn" onclick="nextStep('page8')">Yes</button>
         <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone between contractions is < 30 seconds.')">No</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page8" class="hidden">
@@ -132,7 +132,7 @@
         <p>Is the patient in constant pain with no periods of relief?</p>
         <button class="btn" onclick="showResult('NORMAL UTERINE ACTIVITY', 'Uterine activity meets all assessed normal criteria.')">No</button>
         <button class="btn" onclick="showResult('POSSIBLE TACHYSYSTOLE', 'Patient reports constant pain with no relief; requires further clinical assessment.')">Yes</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
   <div id="resPage" class="hidden">
@@ -153,24 +153,23 @@
 </div>
 
 <script>
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-mode');
-    }
 
-    let history = [];
+    let state = { history: [] };
 
-    function goTo(id) {
+    function nextStep(id) {
         const curr = document.querySelector('.container > div:not(.hidden)')?.id;
-        if(curr && curr !== id) history.push(curr);
+        if(curr && curr !== id) state.history.push(curr);
         document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
         window.scrollTo(0, 0);
     }
 
-    function goBack() {
-        if(history.length > 0) {
+    function prevStep() {
+        if(state.history.length > 0) {
             document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById(history.pop()).classList.remove('hidden');
+            const last = state.history.pop(); // Use state.history
+        document.getElementById(last).classList.remove('hidden');
+        window.scrollTo(0, 0);
         }
     }
 
@@ -187,8 +186,9 @@
             alertBox.classList.add('hidden');
         }
         
-        goTo('resPage');
+        nextStep('resPage');
     }
 </script>
+<script src="common.js"></script>
 </body>
 </html>
