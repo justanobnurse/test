@@ -142,7 +142,7 @@
             alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> A contraction peak &ge; 75 mmHg is consistent with tachysystole (this threshold does not apply during the second stage of labour).</div>`;
         }
 	if (peaks.length > 5) {
-    	    alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Tachysystole:</strong> ${peaks.length} contractions in 10 minutes is consistent with tachysystole if the average number of contractions in 10 minutes is >5 over 30 minutes.</div>`;
+    	    alertsHtml += `<div style="${alertStyle}"><strong>⚠️ Note:</strong> ${peaks.length} contractions in 10 minutes is consistent with tachysystole if the average number of contractions in 10 minutes is >5 over 30 minutes.</div>`;
 }
 
         document.getElementById('mvuAlerts').innerHTML = alertsHtml;
