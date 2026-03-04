@@ -57,15 +57,11 @@ function goBack() {
 function initTheme() {
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
-    const saved = localStorage.getItem('theme');
-    const isDark = saved === 'dark' || saved === null; // Defaults to True (Dark) if new user
-
-    if (isDark) {
-        body.classList.add('dark-mode');
-        if (toggleBtn) toggleBtn.innerText = "☀️ Switch to Light Mode";
-    }
+   const isDark = body.classList.contains('dark-mode');
 
     if (toggleBtn) {
+        toggleBtn.innerText = isDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
+
         toggleBtn.addEventListener('click', () => {
             body.classList.toggle('dark-mode');
             const currentlyDark = body.classList.contains('dark-mode');
