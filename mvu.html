@@ -47,6 +47,10 @@
   <div id="page3" class="hidden" style="text-align: center;">
         <h3>Contraction Peaks (mmHg)</h3>
         <p>Input the peak of each contraction within a 10-minute window.</p>
+	  <div id="peakError" class="hidden alert-box">
+    <strong>⚠️ Input Note:</strong>
+    <p>One or more contraction peaks are lower than the resting tone baseline. Please verify your entries.</p>
+</div>
         
         <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 300px; margin: 0 auto; justify-items: center;">
             <input type="number" class="peak-box" placeholder="Peak 1" oninput="handlePeakInput(this)" style="text-align: center;">
@@ -116,12 +120,34 @@
     }
 
     function validatePeaks() {
-        const peaks = Array.from(document.querySelectorAll('.peak-box'));
-        const hasValue = peaks.some(input => input.value !== "" && parseFloat(input.value) > 0);
-        const b = document.getElementById('calcBtn');
-        b.disabled = !hasValue;
-        b.style.opacity = b.disabled ? "0.5" : "1";
+    const tone = parseFloat(document.getElementById('restingTone').value) || 0;
+    const peakElements = Array.from(document.querySelectorAll('.peak-box'));
+    const errorBox = document.getElementById('peakError');
+    const calcBtn = document.getElementById('calcBtn');
+
+    // Only validate boxes that aren't empty
+    const filledInputs = peakElements.filter(input => input.value !== "");
+    
+    const hasInvalidPeak = filledInputs.some(input => {
+        const val = parseFloat(input.value);
+        return !isNaN(val) && val < tone;
+    });
+
+    const hasValidData = filledInputs.some(input => {
+        const val = parseFloat(input.value);
+        return !isNaN(val) && val >= tone && val > 0;
+    });
+
+    if (hasInvalidPeak) {
+        errorBox.classList.remove('hidden');
+        calcBtn.disabled = true;
+        calcBtn.style.opacity = "0.5";
+    } else {
+        errorBox.classList.add('hidden');
+        calcBtn.disabled = !hasValidData;
+        calcBtn.style.opacity = hasValidData ? "1" : "0.5";
     }
+}
 
     function calculateMVU() {
         const tone = parseFloat(document.getElementById('restingTone').value);
