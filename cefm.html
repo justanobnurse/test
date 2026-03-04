@@ -27,7 +27,7 @@
             <p style="margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "I Understand," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
 
-        <button class="btn btn-primary" style="margin-top: 20px;" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+        <button class="btn btn-primary" style="margin-top: 20px;" onclick="nextStep('page2')">I Understand & Accept - Begin</button>
         <div style="margin-top: 10px;">
             <a href="index.html" class="btn btn-exit">Exit to Home</a>
         </div>
@@ -41,15 +41,15 @@
         <p><strong>Uterine Activity Monitor:</strong></p>
         <button id="u-toco" class="btn" onclick="selU('External Tocodynamometer (TOCO)', 'toco')">External Tocodynamometer (TOCO)</button>
         <button id="u-iupc" class="btn" onclick="selU('Internal Uterine Pressure Catheter (IUPC)', 'iupc')">Internal Uterine Pressure Catheter (IUPC)</button>
-        <button id="page2-next" class="btn btn-primary" disabled onclick="goTo('page3')">Continue</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button id="page2-next" class="btn btn-primary" disabled onclick="nextStep('page3')">Continue</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page3" class="hidden">
         <h3>Is the FHS CEFM Strip Interpretable?</h3>
         <button class="btn" onclick="handleInt()">Interpretable</button>
-        <button class="btn" onclick="goTo('page4a')">Uninterpretable</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn" onclick="nextStep('page4a')">Uninterpretable</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
    <div id="page4a" class="hidden">
@@ -70,7 +70,7 @@
         <h3>Uterine Activity (External)</h3>
         <button class="btn" onclick="setUA('Normal')">Normal</button>
         <button class="btn" onclick="setUA('Tachysystole')">Tachysystole</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page4b" class="hidden">
@@ -78,31 +78,31 @@
         <p>Montevideo Units (Optional): <input type="number" id="mvu" style="width:60px"></p>
         <button class="btn" onclick="setUA('Normal (IUPC)')">Normal</button>
         <button class="btn" onclick="setUA('Tachysystole (IUPC)')">Tachysystole</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
    <div id="page5" class="hidden">
     <h3>Maternal Factors</h3>
     <div class="checklist">
         <label class="check-item" style="border-left-color: #27ae60;">
-            <input type="checkbox" id="mat-none" value="None" onchange="validateMat()"> <strong>None</strong>
+            <input type="checkbox" id="mat-none" value="None"> <strong>None</strong>
         </label>
         <hr>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Tachycardia" onchange="validateMat()"> Maternal Tachycardia (>110bpm)</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Fever" onchange="validateMat()"> Maternal Fever (>38.0°C)</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Cardiac Arrhythmia" onchange="validateMat()"> Maternal Cardiac Arrhythmia</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypotension" onchange="validateMat()"> Maternal Hypotension</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypoxia" onchange="validateMat()"> Maternal Hypoxia (Oxygen Saturation < 95%)</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Tachycardia"> Maternal Tachycardia (>110bpm)</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Fever"> Maternal Fever (>38.0°C)</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Cardiac Arrhythmia"> Maternal Cardiac Arrhythmia</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypotension"> Maternal Hypotension</label>
+        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypoxia"> Maternal Hypoxia (Oxygen Saturation < 95%)</label>
     </div>
     <button id="mat-next" class="btn btn-primary" disabled onclick="setMat()">Continue</button>
-    <button class="btn btn-back" onclick="goBack()">← Back</button>
+    <button class="btn btn-back" onclick="prevStep()">← Back</button>
 </div>
 
     <div id="page6" class="hidden">
         <h3>Maternal-Fetal Heart Rate Coincidence?</h3>
-        <button class="btn" onclick="goTo('page7')">No Coincidence</button>
-        <button class="btn" onclick="goTo('page7a')">Yes, repetitive or persistent coincidence</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn" onclick="nextStep('page7')">No Coincidence</button>
+        <button class="btn" onclick="nextStep('page7a')">Yes, repetitive or persistent coincidence</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page7a" class="hidden">
@@ -126,10 +126,10 @@
         
         <button id="baseContinueBtn" class="btn btn-primary" onclick="evalBase()" disabled>Continue</button>
         
-        <button class="btn" onclick="goTo('page7c')">Indeterminate</button>
+        <button class="btn" onclick="nextStep('page7c')">Indeterminate</button>
         <button class="btn" onclick="setTachy('ABNORMAL','Erratic Baseline (>10 minutes)', true)">Erratic Baseline</button>
         
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page7b" class="hidden">
@@ -141,7 +141,7 @@
 
     <div id="page7c" class="hidden">
         <h3>Why is the baseline Indeterminate?</h3>
-        <button class="btn" onclick="goTo('page4a')">Poor Tracing Quality</button>
+        <button class="btn" onclick="nextStep('page4a')">Poor Tracing Quality</button>
         <button class="btn" onclick="setTachy('ABNORMAL','Marked Variability &ge; 10 minutes', true)">Marked Variability (&ge; 10 minutes)</button>
         <button class="btn" onclick="setTachy('ABNORMAL','Sinusoidal Pattern', true)">Sinusoidal</button>
     </div>
@@ -150,7 +150,7 @@
         <h3>FHR Baseline Trend</h3>
         <button class="btn" onclick="setTrend('NORMAL','Stable Trend')">Stable</button>
         <button class="btn" onclick="setTrend('ATYPICAL','Persistently Rising Trend')">Persistently Rising</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
    <div id="page9" class="hidden">
@@ -159,9 +159,9 @@
         <button class="btn" onclick="goToVarDuration('Minimal')">Minimal (≤5bpm)</button>
         <button class="btn" onclick="goToVarDuration('Absent')">Absent (amplitude undetectable)</button>
         
-        <button class="btn" onclick="goTo('page9b')">Marked (>25bpm)</button>
+        <button class="btn" onclick="nextStep('page9b')">Marked (>25bpm)</button>
         <button class="btn" onclick="setVar('ABNORMAL','Sinusoidal Pattern','FINAL')">Sinusoidal</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
    <div id="page9a" class="hidden">
@@ -169,7 +169,7 @@
     <button class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
     <button class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
     <button class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
-    <button class="btn btn-back" onclick="goBack()">← Back</button>
+    <button class="btn btn-back" onclick="prevStep()">← Back</button>
 </div>
 
     <div id="page9b" class="hidden">
@@ -184,30 +184,30 @@
         <button class="btn" onclick="setAcc('NORMAL','Accelerations Present with Scalp Stimulation')">Present with Scalp Stimulation</button>
         <button class="btn" onclick="setAcc('ATYPICAL','No Accelerations with Scalp Stimulation')">No Accelerations with Scalp Stimulation</button>
         <button class="btn" onclick="setAcc('NORMAL','No Spontaneous Accelerations (Scalp Stimulation Not Assessed)')">No Spontaneous Accelerations, Scalp Stimulation Not Assessed</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
 <div id="page11" class="hidden">
     <h3>Are there any decelerations?</h3>
     <p class="tip">Select all that apply.</p>
     <div class="checklist">
-        <label class="check-item"><input type="checkbox" id="d-none" onchange="validateDecel()"> None</label>
+        <label class="check-item"><input type="checkbox" id="d-none"> None</label>
         
         <label class="check-item">
-            <input type="checkbox" id="d-uv" class="decel-factor" onchange="validateDecel()"> Uncomplicated Variable Deceleration
+            <input type="checkbox" id="d-uv" class="decel-factor"> Uncomplicated Variable Deceleration
         </label>
 
         <div id="uv-caution" class="hidden" style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; border: 1px solid #ffeeba; font-size: 0.85rem; margin: 5px 0 15px 25px; text-align: left; border-left: 4px solid #f39c12;">
             <strong>⚠️ Caution:</strong> A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.
         </div>
 
-        <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor" onchange="validateDecel()"> Complicated Variable Deceleration</label>
-        <label class="check-item"><input type="checkbox" id="d-early" class="decel-factor" onchange="validateDecel()"> Early Deceleration</label>
-        <label class="check-item"><input type="checkbox" id="d-late" class="decel-factor" onchange="validateDecel()"> Late Deceleration</label>
-        <label class="check-item"><input type="checkbox" id="d-pro" class="decel-factor" onchange="validateDecel()"> Prolonged Deceleration</label>
+        <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor"> Complicated Variable Deceleration</label>
+        <label class="check-item"><input type="checkbox" id="d-early" class="decel-factor"> Early Deceleration</label>
+        <label class="check-item"><input type="checkbox" id="d-late" class="decel-factor"> Late Deceleration</label>
+        <label class="check-item"><input type="checkbox" id="d-pro" class="decel-factor"> Prolonged Deceleration</label>
     </div>
     <button id="decel-next" class="btn btn-primary" disabled onclick="startDecelFlow()">Classify</button>
-    <button class="btn btn-back" onclick="goBack()">← Back</button>
+    <button class="btn btn-back" onclick="prevStep()">← Back</button>
 </div>
 
     <div id="page11a" class="hidden">
@@ -227,7 +227,7 @@
     </div>
     <div id="page11d" class="hidden">
         <h3>Prolonged Decelerations Count?</h3>
-        <button class="btn" onclick="goTo('page11e')">Exactly 1</button>
+        <button class="btn" onclick="nextStep('page11e')">Exactly 1</button>
         <button class="btn" onclick="logDecel('pro','ABNORMAL','More than 1 Prolonged Deceleration')">More than 1</button>
     </div>
     <div id="page11e" class="hidden">
@@ -318,7 +318,7 @@ function handlePageLogic(id) {
     }
 }
 
-function goTo(id) {
+function nextStep(id) {
     const curr = document.querySelector('.container > div:not(.hidden)')?.id;
     if (curr && curr !== id) state.history.push(curr);
 
@@ -327,7 +327,7 @@ function goTo(id) {
     window.scrollTo(0, 0);
 }
 
-function goBack() {
+function prevStep() {
     if (state.history.length === 0) return;
 
     const last = state.history.pop();
@@ -398,13 +398,13 @@ function selU(l, c) {
 ================================ */
 
 function handleInt() {
-    state.audit.uaMon.includes('Internal') ? goTo('page4b') : goTo('page4');
+    state.audit.uaMon.includes('Internal') ? nextStep('page4b') : nextStep('page4');
 }
 
 function setUA(v) {
     const mvuVal = $('mvu')?.value || "";
     state.audit.ua = mvuVal ? `${v} (${mvuVal} MVUs)` : v;
-    goTo('page5');
+    nextStep('page5');
 }
 
 function setMat() {
@@ -416,7 +416,7 @@ function setMat() {
             ? 'None'
             : checked.join(', ');
 
-    goTo('page6');
+    nextStep('page6');
 }
 
 
@@ -430,18 +430,18 @@ function evalBase() {
 
     if (b < 100) {
         state.audit.baseDetail = { cat: 'ABNORMAL', detail: 'Baseline Bradycardia < 100' };
-        goTo('page8');
+        nextStep('page8');
     }
     else if (b < 110) {
         state.audit.baseDetail = { cat: 'ATYPICAL', detail: 'Baseline 100-110' };
-        goTo('page8');
+        nextStep('page8');
     }
     else if (b > 160) {
-        goTo('page7b');
+        nextStep('page7b');
     }
     else {
         state.audit.baseDetail = { cat: 'NORMAL', detail: 'Baseline 110-160' };
-        goTo('page8');
+        nextStep('page8');
     }
 }
 
@@ -449,7 +449,7 @@ function setTachy(cat, detail, bypass = false) {
     state.audit.baseDetail = { cat, detail };
 
     if (!bypass) {
-        goTo('page8');
+        nextStep('page8');
         return;
     }
 
@@ -479,12 +479,12 @@ function setTachy(cat, detail, bypass = false) {
 
 function setTrend(cat, detail) {
     state.audit.trend = { cat, detail };
-    goTo('page9');
+    nextStep('page9');
 }
 
 function goToVarDuration(type) {
     state.tempVarType = type;
-    goTo('page9a');
+    nextStep('page9a');
 }
 
 function setVar(cat, detail, next) {
@@ -497,7 +497,7 @@ function setVar(cat, detail, next) {
     state.audit.variability = { cat, detail: finalDetail };
 
     if (next !== 'FINAL') {
-        goTo(next);
+        nextStep(next);
         return;
     }
 
@@ -519,7 +519,7 @@ function setVar(cat, detail, next) {
 
 function setAcc(cat, detail) {
     state.audit.accels = { cat, detail };
-    goTo('page11');
+    nextStep('page11');
 }
 
 
@@ -549,7 +549,7 @@ function startDecelFlow() {
 
 function nextDecel() {
     state.decelQueue.length > 0
-        ? goTo(state.decelQueue.shift())
+        ? nextStep(state.decelQueue.shift())
         : finalize();
 }
 
@@ -665,7 +665,7 @@ function finalize() {
             <div><strong>Decelerations:</strong></div><div>${decelSummary}</div>
         </div>`;
 
-    goTo('page12');
+    nextStep('page12');
 }
 
 
