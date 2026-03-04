@@ -313,8 +313,11 @@ function handlePageLogic(id) {
     }
 
     if (id === 'page7') {
-        $('baseIn').value = '';
-        validateBaseInput();
+        const savedBase = state.audit.base;
+    if (savedBase && !isNaN(parseInt(savedBase))) {
+        $('baseIn').value = parseInt(savedBase);
+    }
+    validateBaseInput();
     }
 }
 
