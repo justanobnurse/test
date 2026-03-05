@@ -30,6 +30,23 @@
         </div>
     </div>
 
+    <div id="page2" class="hidden">
+        <h3>What type of monitors are being used?</h3>
+        <p><strong>Fetal Heart Monitor:</strong></p>
+        <button id="f-us" class="btn" onclick="selF('External Ultrasound', 'us')">External Ultrasound</button>
+        <button id="f-fse" class="btn" onclick="selF('Internal FSE', 'fse')">Internal FSE</button>
+        <p><strong>Uterine Activity Monitor:</strong></p>
+        <button id="u-toco" class="btn" onclick="selU('External TOCO', 'toco')">External TOCO</button>
+        <button id="u-iupc" class="btn" onclick="selU('Internal IUPC', 'iupc')">Internal IUPC</button>
+        <button id="page2-next" class="btn btn-primary" disabled onclick="nextStep('page3')" style="margin-top:20px;">Continue</button>
+    </div>
+
+    <div id="page3" class="hidden">
+        <h3>Is the FHS CEFM Strip Interpretable?</h3>
+        <button class="btn" onclick="handleInt()">Interpretable</button>
+        <button class="btn" onclick="nextStep('page4a')">Uninterpretable</button>
+    </div>
+
     <div id="page4a" class="hidden">
         <div class="alert-box">
             <strong>⚠️ UNABLE TO CLASSIFY: UNINTERPRETABLE STRIP</strong>
@@ -42,6 +59,37 @@
         </div>
         <button class="btn btn-primary" onclick="location.reload()">Classify Another CEFM Strip</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
+    </div>
+
+    <div id="page4" class="hidden">
+        <h3>Uterine Activity (External)</h3>
+        <button class="btn" onclick="setUA('Normal')">Normal</button>
+        <button class="btn" onclick="setUA('Tachysystole')">Tachysystole</button>
+    </div>
+
+    <div id="page4b" class="hidden">
+        <h3>Uterine Activity (IUPC)</h3>
+        <p>Montevideo Units (Optional): <input type="number" id="mvu" style="width:60px"></p>
+        <button class="btn" onclick="setUA('Normal (IUPC)')">Normal</button>
+        <button class="btn" onclick="setUA('Tachysystole (IUPC)')">Tachysystole</button>
+    </div>
+
+    <div id="page5" class="hidden">
+        <h3>Maternal Factors</h3>
+        <div class="checklist">
+            <label class="check-item"><input type="checkbox" id="mat-none"> None</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Tachycardia"> Maternal Tachycardia (>110bpm)</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Fever"> Maternal Fever (>38.0°c)</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Hypotension"> Maternal Hypotension</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Hypoxia"> Maternal Hypoxia (SPO2 <95%)</label>
+        </div>
+        <button id="mat-next" class="btn btn-primary" onclick="setMat()" style="margin-top:20px;">Continue</button>
+    </div>
+
+    <div id="page6" class="hidden">
+        <h3>Maternal-Fetal Heart Rate Coincidence?</h3>
+        <button class="btn" onclick="nextStep('page7')">No Coincidence</button>
+        <button class="btn" onclick="nextStep('page7a')">Yes, repetitive or persistent coincidence</button>
     </div>
 
     <div id="page7a" class="hidden">
@@ -66,6 +114,13 @@
         <button class="btn" onclick="nextStep('page7c')">Indeterminate</button>
     </div>
 
+    <div id="page7c" class="hidden">
+        <h3>Why is the FHR baseline INDETERMINATE?</h3>
+        <button class="btn" onclick="nextStep('page4a')">Poor Tracing Quality</button>
+        <button class="btn" onclick="setIndet('Marked Variability')">Marked Variability</button>
+        <button class="btn" onclick="setIndet('Sinusoidal')">Sinusoidal</button>
+    </div>
+
     <div id="page8" class="hidden">
         <h3>What is the FHR baseline variability?</h3>
         <button class="btn" onclick="setVar('Moderate')">Moderate (6-25bpm)</button>
@@ -73,6 +128,13 @@
         <button class="btn" onclick="setVar('Absent')">Absent (Undetectable Amplitude)</button>
         <button class="btn" onclick="setVar('Marked')">Marked (>25bpm)</button>
         <button class="btn" onclick="setVar('Sinusoidal')">Sinusoidal</button>
+    </div>
+
+    <div id="page10" class="hidden">
+        <h3>Accelerations</h3>
+        <button class="btn" onclick="setAcc('Spontaneous')">Spontaneous Accelerations</button>
+        <button class="btn" onclick="setAcc('Stimulated')">Present with Scalp Stimulation</button>
+        <button class="btn" onclick="setAcc('None')">No Accels (Stimulation attempted)</button>
     </div>
 
     <div id="page11" class="hidden">
@@ -84,13 +146,13 @@
             <label class="check-item"><input type="checkbox" id="d-late" class="decel-check"> Late Deceleration</label>
             <label class="check-item"><input type="checkbox" id="d-pro" class="decel-check"> Prolonged Deceleration</label>
         </div>
-        <button id="decel-next" class="btn btn-primary" onclick="startDecelFlow()">Continue</button>
+        <button id="decel-next" class="btn btn-primary" onclick="startDecelFlow()" style="margin-top:20px;">Continue</button>
     </div>
 
     <div id="pageRecur" class="hidden">
-        <h3 id="recurLabel">Are the decelerations:</h3>
-        <button class="btn" onclick="logRecur(false)">Intermittent (<50% of contractions)</button>
-        <button class="btn" onclick="logRecur(true)">Recurrent (≥50% of contractions)</button>
+        <h3>Are the Variable/Late decelerations:</h3>
+        <button class="btn" onclick="logRecur(false)">Intermittent (&lt;50% of contractions)</button>
+        <button class="btn" onclick="logRecur(true)">Recurrent (&ge;50% of contractions)</button>
     </div>
 
     <div id="page12" class="hidden">
@@ -101,7 +163,6 @@
         <div id="auditSummary" class="result-box"></div>
         <button class="btn btn-primary" onclick="location.reload()">Classify Another CEFM Strip</button>
     </div>
-
 </div>
 
 <script>
@@ -118,17 +179,47 @@ const $ = id => document.getElementById(id);
 function nextStep(id) {
     document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
     $(id).classList.remove('hidden');
+    window.scrollTo(0,0);
 }
 
+function selF(l, c) { state.audit.fMon = l; checkP2(); }
+function selU(l, c) { state.audit.uMon = l; checkP2(); }
+function checkP2() { if(state.audit.fMon && state.audit.uMon) $('page2-next').disabled = false; }
+
+function handleInt() {
+    state.audit.uMon.includes('IUPC') ? nextStep('page4b') : nextStep('page4');
+}
+
+function setUA(v) { state.audit.ua = v; nextStep('page5'); }
+
+function setMat() {
+    const checked = Array.from(document.querySelectorAll('.mat-factor:checked')).map(i => i.value);
+    state.audit.mat = checked.length ? checked.join(', ') : 'None';
+    nextStep('page6');
+}
+
+function validateBase() { $('baseNext').disabled = !($('baseIn').value); }
 function saveBase() { state.audit.base = Number($('baseIn').value); nextStep('page8'); }
+
+function setIndet(type) {
+    state.audit.base = type;
+    state.audit.variability = type;
+    finalize();
+}
 
 function setVar(v) { 
     state.audit.variability = v; 
     if(v === 'Sinusoidal') finalize(); else nextStep('page10'); 
 }
 
+function setAcc(a) { state.audit.acc = a; nextStep('page11'); }
+
 function startDecelFlow() {
     state.audit.decels = Array.from(document.querySelectorAll('.decel-check:checked')).map(i => i.id);
+    if ($('d-none').checked || state.audit.decels.length === 0) {
+        finalize();
+        return;
+    }
     if (state.audit.decels.includes('d-var') || state.audit.decels.includes('d-late')) {
         nextStep('pageRecur');
     } else {
@@ -142,40 +233,42 @@ function logRecur(isRecurrent) {
 }
 
 function finalize() {
-    let cat = "CATEGORY II (INDETERMINATE)";
+    let cat = "CATEGORY II";
     let color = "#f39c12";
     let reasons = [];
     const a = state.audit;
 
-    // --- CATEGORY III (ABNORMAL) LOGIC ---
-    if (a.variability === 'Sinusoidal' || a.base === 'Sinusoidal') {
-        cat = "CATEGORY III (ABNORMAL)";
-        reasons.push("Sinusoidal pattern detected.");
+    if (a.variability === 'Sinusoidal') {
+        cat = "CATEGORY III"; reasons.push("Sinusoidal pattern detected.");
     } else if (a.variability === 'Absent' && (a.recurrent || a.base < 110)) {
-        cat = "CATEGORY III (ABNORMAL)";
-        reasons.push("Absent variability with recurrent decelerations or bradycardia.");
-    }
-    
-    // --- CATEGORY I (NORMAL) LOGIC ---
-    else if (a.base >= 110 && a.base <= 160 && a.variability === 'Moderate') {
-        const forbidden = a.decels.filter(d => d !== 'd-early' && d !== 'd-none');
-        if (forbidden.length === 0 && a.acc !== 'No-Stim') {
-            cat = "CATEGORY I (NORMAL)";
-            color = "#27ae60";
+        cat = "CATEGORY III"; reasons.push("Absent variability with recurrent decelerations or bradycardia.");
+    } else if (a.base >= 110 && a.base <= 160 && a.variability === 'Moderate') {
+        const concerns = a.decels.filter(d => d === 'd-var' || d === 'd-late' || d === 'd-pro');
+        if (concerns.length === 0) {
+            cat = "CATEGORY I"; color = "#27ae60";
         }
     }
 
-    if (cat.includes('III')) color = "#e74c3c";
+    if (cat === "CATEGORY III") color = "#e74c3c";
 
     $('finalRank').innerText = cat;
     $('finalRank').style.color = color;
-    $('nichdReason').innerHTML = reasons.length ? reasons.join('<br>') : "The tracing does not meet criteria for Category I or Category III.";
+    $('nichdReason').innerHTML = reasons.length ? reasons.join('<br>') : "Tracing is Indeterminate (does not meet Cat I or III criteria).";
     
-    // Summary table and display logic here...
+    $('auditSummary').innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 5px; text-align: left; font-size: 0.9rem;">
+            <div><strong>Monitors:</strong></div><div>${a.fMon} / ${a.uMon}</div>
+            <div><strong>Uterine Activity:</strong></div><div>${a.ua}</div>
+            <div><strong>Maternal Factors:</strong></div><div>${a.mat}</div>
+            <div><strong>Baseline:</strong></div><div>${a.base} BPM</div>
+            <div><strong>Variability:</strong></div><div>${a.variability}</div>
+            <div><strong>Accelerations:</strong></div><div>${a.acc}</div>
+            <div><strong>Decelerations:</strong></div><div>${a.decels.length ? a.decels.join(', ').replace(/d-/g, '') : 'None'}</div>
+        </div>
+    `;
     nextStep('page12');
 }
-
-function validateBase() { $('baseNext').disabled = !($('baseIn').value); }
 </script>
+<script src="common.js"></script>
 </body>
 </html>
