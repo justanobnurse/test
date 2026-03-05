@@ -30,15 +30,21 @@
         </div>
     </div>
 
-    <div id="page2" class="hidden">
+   <div id="page2" class="hidden">
         <h3>What type of monitors are being used?</h3>
+        
         <p><strong>Fetal Heart Monitor:</strong></p>
         <button id="f-us" class="btn" onclick="selF('External Ultrasound', 'us')">External Ultrasound</button>
         <button id="f-fse" class="btn" onclick="selF('Internal FSE', 'fse')">Internal FSE</button>
+        
         <p><strong>Uterine Activity Monitor:</strong></p>
         <button id="u-toco" class="btn" onclick="selU('External TOCO', 'toco')">External TOCO</button>
         <button id="u-iupc" class="btn" onclick="selU('Internal IUPC', 'iupc')">Internal IUPC</button>
-        <button id="page2-next" class="btn btn-primary" disabled onclick="nextStep('page3')" style="margin-top:20px;">Continue</button>
+        
+        <div style="margin-top: 25px;">
+            <button id="page2-next" class="btn btn-primary" disabled onclick="nextStep('page3')">Continue</button>
+            <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        </div>
     </div>
 
     <div id="page3" class="hidden">
@@ -167,6 +173,7 @@
 
 <script>
 let state = {
+    history: ['page1'], // Initialize with the starting page
     audit: {
         fMon: '', uMon: '', ua: '', mat: '',
         base: 0, variability: '', acc: '', 
@@ -176,16 +183,54 @@ let state = {
 
 const $ = id => document.getElementById(id);
 
+/* NAVIGATION LOGIC */
 function nextStep(id) {
+    if (!state.history.includes(id)) {
+        state.history.push(id);
+    }
     document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
     $(id).classList.remove('hidden');
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 }
 
-function selF(l, c) { state.audit.fMon = l; checkP2(); }
-function selU(l, c) { state.audit.uMon = l; checkP2(); }
-function checkP2() { if(state.audit.fMon && state.audit.uMon) $('page2-next').disabled = false; }
+function prevStep() {
+    if (state.history.length > 1) {
+        state.history.pop(); // Remove current page
+        const lastPage = state.history[state.history.length - 1];
+        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+        $(lastPage).classList.remove('hidden');
+    }
+}
 
+/* MONITOR SELECTION */
+function selF(label, id) {
+    state.audit.fMon = label;
+    // Toggle visual state
+    $('f-us').style.background = (id === 'us') ? '#27ae60' : '';
+    $('f-us').style.color = (id === 'us') ? 'white' : '';
+    $('f-fse').style.background = (id === 'fse') ? '#27ae60' : '';
+    $('f-fse').style.color = (id === 'fse') ? 'white' : '';
+    checkPage2Validation();
+}
+
+function selU(label, id) {
+    state.audit.uMon = label;
+    // Toggle visual state
+    $('u-toco').style.background = (id === 'toco') ? '#27ae60' : '';
+    $('u-toco').style.color = (id === 'toco') ? 'white' : '';
+    $('u-iupc').style.background = (id === 'iupc') ? '#27ae60' : '';
+    $('u-iupc').style.color = (id === 'iupc') ? 'white' : '';
+    checkPage2Validation();
+}
+
+function checkPage2Validation() {
+    if (state.audit.fMon && state.audit.uMon) {
+        $('page2-next').disabled = false;
+        $('page2-next').style.opacity = "1";
+    }
+}
+
+/* INTERPRETATION FLOW */
 function handleInt() {
     state.audit.uMon.includes('IUPC') ? nextStep('page4b') : nextStep('page4');
 }
