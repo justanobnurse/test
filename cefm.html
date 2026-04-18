@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FHS CEFM Classifier</title>
-    <link rel="stylesheet" href="style.css">
+  <script src="theme-loader.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <script src="theme-loader.js"></script>
 <div class="container">
 
   <div id="page1">
@@ -280,22 +280,8 @@ let state = {
 const $ = id => document.getElementById(id);
 const $$ = selector => document.querySelectorAll(selector);
 
-function showPage(id) {
-    $$('.container > div').forEach(d => d.classList.add('hidden'));
-    const el = $(id);
-    if (el) el.classList.remove('hidden');
-}
-
 function setButtonState(btn, enabled) {
     btn.disabled = !enabled;
-}
-
-function getCardColors() {
-    const isDark = document.body.classList.contains('dark-mode');
-    return {
-        active: isDark ? '#34495e' : '#e3f2fd',
-        inactive: 'var(--card-bg)'
-    };
 }
 
 
@@ -306,6 +292,7 @@ function getCardColors() {
 function handlePageLogic(id) {
     if (id === 'page2') chkM();
     if (id === 'page5') validateMat();
+
     if (id === 'page11') {
         validateDecel();
         handleUVCaution();
@@ -313,22 +300,28 @@ function handlePageLogic(id) {
 
     if (id === 'page7') {
         const savedBase = state.audit.base;
-    if (savedBase && !isNaN(parseInt(savedBase))) {
-        $('baseIn').value = parseInt(savedBase);
-    }
-    validateBaseInput();
+        const baseInput = $('baseIn');
+
+        if (baseInput && savedBase && !Number.isNaN(parseInt(savedBase, 10))) {
+            baseInput.value = parseInt(savedBase, 10);
+        }
+
+        validateBaseInput();
     }
 }
-
 
 /* ================================
    VALIDATION HELPERS
 ================================ */
 
 function validateCheckboxGroup(noneId, groupClass, btnId) {
-    const noneChecked = $(noneId).checked;
-    const groupChecked = document.querySelectorAll(`.${groupClass}:checked`).length > 0;
+    const noneEl = $(noneId);
     const btn = $(btnId);
+
+    if (!noneEl || !btn) return;
+
+    const noneChecked = noneEl.checked;
+    const groupChecked = document.querySelectorAll(`.${groupClass}:checked`).length > 0;
 
     btn.classList.remove('hidden');
     setButtonState(btn, noneChecked || groupChecked);
@@ -348,8 +341,15 @@ function validateDecel() {
 }
 
 function validateBaseInput() {
-    const val = $('baseIn').value;
-    setButtonState($('baseContinueBtn'), val && Number(val) > 0);
+    const input = $('baseIn');
+    const btn = $('baseContinueBtn');
+
+    if (!input || !btn) return;
+
+    const value = input.value.trim();
+    const bpm = Number(value);
+
+    setButtonState(btn, value !== '' && Number.isFinite(bpm) && bpm > 0);
 }
 
 
@@ -377,12 +377,20 @@ function selU(l, c) {
 ================================ */
 
 function handleInt() {
-    state.audit.uaMon.includes('Internal') ? goTo('page4b') : goTo('page4');
+    const uaMon = state.audit.uaMon || '';
+    uaMon.includes('Internal') ? goTo('page4b') : goTo('page4');
 }
 
 function setUA(v) {
-    const mvuVal = $('mvu')?.value || "";
-    state.audit.ua = mvuVal ? `${v} (${mvuVal} MVUs)` : v;
+    const mvuInput = $('mvu');
+    const rawValue = mvuInput ? mvuInput.value.trim() : '';
+    const mvu = Number(rawValue);
+
+    state.audit.ua =
+        rawValue !== '' && Number.isFinite(mvu) && mvu >= 0
+            ? `${v} (${mvu} MVUs)`
+            : v;
+
     goTo('page5');
 }
 
@@ -544,12 +552,15 @@ function logDecel(key, cat, detail) {
 
 function handleUVCaution() {
     const uvCaution = $('uv-caution');
-    const bpm = parseInt(state.audit.base);
+    if (!uvCaution) return;
 
-    const baselineAbnormal = bpm > 160 || bpm < 110;
+    const bpm = parseInt(state.audit.base, 10);
+    const variabilityDetail = state.audit.variability?.detail || '';
+
+    const baselineAbnormal = Number.isFinite(bpm) && (bpm > 160 || bpm < 110);
     const varAbnormal =
-        state.audit.variability.detail.includes('Minimal') ||
-        state.audit.variability.detail.includes('Absent');
+        variabilityDetail.includes('Minimal') ||
+        variabilityDetail.includes('Absent');
 
     uvCaution.classList.toggle('hidden', !(baselineAbnormal || varAbnormal));
 }
@@ -700,14 +711,16 @@ function setupSmartToggles() {
     const matNone = $('mat-none');
     const matFactors = $$('.mat-factor');
 
-    matNone.addEventListener('change', function () {
-        if (this.checked) matFactors.forEach(f => f.checked = false);
-        validateMat();
-    });
+    if (matNone) {
+        matNone.addEventListener('change', function () {
+            if (this.checked) matFactors.forEach(f => { f.checked = false; });
+            validateMat();
+        });
+    }
 
     matFactors.forEach(f => {
         f.addEventListener('change', function () {
-            if (this.checked) matNone.checked = false;
+            if (this.checked && matNone) matNone.checked = false;
             validateMat();
         });
     });
@@ -715,20 +728,21 @@ function setupSmartToggles() {
     const decelNone = $('d-none');
     const decelFactors = $$('.decel-factor');
 
-    decelNone.addEventListener('change', function () {
-        if (this.checked) decelFactors.forEach(d => d.checked = false);
-        validateDecel();
-    });
+    if (decelNone) {
+        decelNone.addEventListener('change', function () {
+            if (this.checked) decelFactors.forEach(d => { d.checked = false; });
+            validateDecel();
+        });
+    }
 
     decelFactors.forEach(d => {
         d.addEventListener('change', function () {
-            if (this.checked) decelNone.checked = false;
+            if (this.checked && decelNone) decelNone.checked = false;
             validateDecel();
         });
     });
 }
-
-window.onload = setupSmartToggles;
+document.addEventListener('DOMContentLoaded', setupSmartToggles);
 
 </script>
 <script src="common.js"></script>
