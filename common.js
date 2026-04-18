@@ -189,38 +189,38 @@
         toggleBtn.setAttribute('aria-pressed', String(isDark));
     }
 
-    function applyTheme(theme) {
-        const body = document.body;
-        const toggleBtn = document.getElementById('darkModeToggle');
-        const isDark = theme === 'dark';
+  function applyTheme(theme) {
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById('darkModeToggle');
+    const isDark = theme === 'dark';
 
-        body.classList.toggle('dark-mode', isDark);
-        updateThemeToggleLabel(toggleBtn, isDark);
-    }
+    root.classList.toggle('dark-mode', isDark);
+    updateThemeToggleLabel(toggleBtn, isDark);
+}
 
-    /**
-     * Theme Management
-     */
-    function initTheme() {
-        const body = document.body;
-        const toggleBtn = document.getElementById('darkModeToggle');
+/**
+ * Theme Management
+ */
+function initTheme() {
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById('darkModeToggle');
 
-        applyTheme(getPreferredTheme());
+    applyTheme(getPreferredTheme());
 
-        if (!toggleBtn) return;
+    if (!toggleBtn) return;
 
-        toggleBtn.addEventListener('click', () => {
-            body.classList.add('theme-transition');
+    toggleBtn.addEventListener('click', () => {
+        root.classList.add('theme-transition');
 
-            const nextTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
-            applyTheme(nextTheme);
-            safeSetStorage(STORAGE_KEY_THEME, nextTheme);
+        const nextTheme = root.classList.contains('dark-mode') ? 'light' : 'dark';
+        applyTheme(nextTheme);
+        safeSetStorage(STORAGE_KEY_THEME, nextTheme);
 
-            window.setTimeout(() => {
-                body.classList.remove('theme-transition');
-            }, 300);
-        });
-    }
+        window.setTimeout(() => {
+            root.classList.remove('theme-transition');
+        }, 300);
+    });
+}
 
     /**
      * Expose shared functions globally for inline onclick handlers if needed
