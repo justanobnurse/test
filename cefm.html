@@ -195,16 +195,19 @@
     <h3>Are there any decelerations?</h3>
     <p class="tip">Select all that apply.</p>
     <div class="checklist">
-        <label class="check-item"><input type="checkbox" id="d-none"> None</label>
-        
+        <label class="check-item" style="border-left-color: #27ae60;">
+            <input type="checkbox" id="d-none"> <strong>None</strong>
+        </label>
+        <hr>
+
         <label class="check-item">
             <input type="checkbox" id="d-uv" class="decel-factor"> Uncomplicated Variable Deceleration
         </label>
 
         <div id="uv-caution" class="hidden caution-box">
-    <strong>⚠️ Caution:</strong> 
-    <p>A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.</p>
-</div>
+            <strong>⚠️ Caution:</strong>
+            <p>A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure "Uncomplicated" is the correct selection based on the full clinical picture.</p>
+        </div>
 
         <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor"> Complicated Variable Deceleration</label>
         <label class="check-item"><input type="checkbox" id="d-early" class="decel-factor"> Early Deceleration</label>
