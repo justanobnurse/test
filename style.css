@@ -157,7 +157,7 @@ input[type="number"]:focus:not(:focus-visible) {
     .tool-card:hover,
     .btn:hover:not(:disabled):not(.is-selected),
     .footer-btn:hover:not(.is-selected) {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
         box-shadow: var(--shadow-hover);
     }
 
@@ -167,32 +167,33 @@ input[type="number"]:focus:not(:focus-visible) {
     }
 
     .btn-primary:hover:not(:disabled) {
-        background: #1667b5;
+        background: #2a6fa8;
     }
 
     .btn-exit:hover:not(:disabled),
     .btn-back:hover:not(:disabled) {
-        background: #c0392b;
+        background: #cf4b3d;
     }
 
     .theme-green .btn-primary:hover:not(:disabled) {
-        background: #219653;
+        background: #2d9b63;
+    }
+
+    .theme-blue .btn-primary:hover:not(:disabled) {
+        background: #2f86cf;
     }
 
     .theme-pink .btn-primary:hover:not(:disabled) {
-        background: #c2185b;
+        background: #cf3f78;
     }
 
     .theme-orange .btn-primary:hover:not(:disabled) {
-        background: #d68910;
+        background: #dc9a2f;
     }
 
     .theme-purple .btn-primary:hover:not(:disabled) {
-        background: #8e44ad;
+        background: #8d63ba;
     }
-   .theme-blue .btn-primary:hover:not(:disabled) {
-    background: #2d84d8;
-}
 }
 
 /* Selected state */
