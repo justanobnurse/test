@@ -1,6 +1,10 @@
 /* ==========================================================================
-   1. GLOBAL VARIABLES & RESET
+   1. GLOBAL RESET & VARIABLES
    ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box; /* Ensures padding doesn't break widths */
+}
+
 html {
     scrollbar-gutter: stable;
 }
@@ -18,7 +22,6 @@ html {
 
 body.dark-mode {
     --primary: #ecf0f1;
-    --accent: #3498db;
     --bg: #1a1a1a;
     --text: #e0e0e0;
     --container-bg: #2d2d2d;
@@ -33,7 +36,6 @@ body {
     color: var(--text); 
     line-height: 1.6; 
     margin: 0; 
-    padding: 0; 
     display: flex; 
     justify-content: center; 
     min-height: 100vh;
@@ -50,239 +52,137 @@ body {
     border-radius: 12px; 
     box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
     margin: 40px auto; 
-    box-sizing: border-box;
     min-height: 600px;
 }
 
-/* Header & Hero Section */
 .home-hero { text-align: center; padding: 20px 0; margin-bottom: 30px; }
 
-/* Home Page Tool Grid */
 .home-grid { display: flex; flex-direction: column; gap: 20px; }
 
 @media (min-width: 768px) {
     .home-grid { display: grid; grid-template-columns: 1fr 1fr; }
 }
 
-/* Responsive Adjustments */
 @media (max-width: 600px) {
-    .container { 
-        padding: 25px 15px; 
-        margin: 15px auto; 
-        min-height: auto; 
-    }
+    .container { padding: 25px 15px; margin: 15px auto; min-height: auto; }
 }
 
 /* ==========================================================================
    3. COMPONENTS (CARDS & BUTTONS)
    ========================================================================== */
 
-/* Index Page Tool Cards */
+/* Shared Interactive Styles (Cards & Buttons) */
+.tool-card, .btn, .footer-btn {
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.tool-card:hover, .btn:hover:not(:disabled), .footer-btn:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Tool Cards */
 .tool-card { 
     border: 1px solid var(--border-color); 
     padding: 25px; 
-    border-radius: 12px; 
     background: var(--card-bg); 
     border-left: 5px solid var(--accent); 
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
     height: 100%;
-    box-sizing: border-box;
 }
 
-.tool-card h2 {
-    margin: 0 0 10px 0;
-    font-size: 1.4rem;
-    color: var(--accent);
-}
-
-.tool-card p {
-    margin: 0 0 20px 0; 
-    flex-grow: 1; /* Pushes button to bottom */
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
-.tool-card .btn { margin-top: auto; width: 100%; }
-
-.tool-card:hover { 
-    transform: translateY(-3px); 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
+.tool-card h2 { margin: 0 0 10px 0; font-size: 1.4rem; color: var(--accent); }
+.tool-card p { margin: 0 0 20px 0; flex-grow: 1; font-size: 0.95rem; line-height: 1.5; }
+.tool-card .btn { margin-top: auto; }
 
 /* Standard Buttons */
 .btn { 
-    display: block; 
+    display: flex; 
+    align-items: center;
+    justify-content: center;
     width: 100%; 
     padding: 16px; 
     margin: 12px 0; 
     border: 1px solid var(--border-color); 
-    border-radius: 10px;
     background: var(--card-bg); 
     cursor: pointer; 
     font-size: 16px; 
-    line-height: 1.2;
     text-decoration: none; 
-    text-align: left; 
     color: var(--text); 
-    box-sizing: border-box;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    min-height: 52px;
+    font-weight: bold;
 }
 
 .btn:hover:not(:disabled) { 
-    transform: translateY(-3px); 
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     background: #f0f7ff; 
     border-color: var(--accent);
 }
 
 body.dark-mode .btn:hover:not(:disabled) { background: #444; }
 
-/* Button Variants (Primary/Action & Exit/Back) */
-.btn-primary { 
-    background: var(--accent); 
-    color: white !important; 
-    border: none; 
-    text-align: center; 
-    font-weight: bold; 
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    min-height: 52px;
-}
-
+/* Button Variants */
+.btn-primary { background: var(--accent); color: white !important; border: none; }
 .btn-primary:hover:not(:disabled) { background: #2980b9 !important; }
 
-.btn-exit, .btn-back { 
-    background: #e74c3c; 
-    color: white !important; 
-    border: none; 
-    text-align: center; 
-    font-weight: bold;
-    margin-top: 20px; 
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    min-height: 52px;
-}
-
+.btn-exit, .btn-back { background: #e74c3c; color: white !important; border: none; margin-top: 20px; }
 .btn-exit:hover:not(:disabled), .btn-back:hover:not(:disabled) { background: #c0392b !important; }
 
-body.dark-mode .btn-exit, body.dark-mode .btn-back { 
-    background: #c0392b; 
-    color: #f8d7da !important; 
-}
+body.dark-mode .btn-exit, body.dark-mode .btn-back { background: #c0392b; color: #f8d7da !important; }
 
 /* Footer Pill Buttons */
 .footer-btn {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
     padding: 12px 25px;
-    border-radius: 50px;
+    border-radius: 50px; /* Overrides the 12px shared style */
     background: var(--item-bg);
     color: var(--text);
     border: 1px solid var(--border-color);
-    font-weight: bold;
     font-size: 0.85rem;
     text-decoration: none;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    width: auto;
-    margin: 0;
-}
-
-.footer-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-color: var(--accent);
+    font-weight: bold;
 }
 
 /* ==========================================================================
-   4. SHARED NOTIFICATION & BOX LOGIC (Alert, Caution, Disclaimer)
+   4. SHARED NOTIFICATION BOXES
    ========================================================================== */
-
-/* Base Structure for all informational boxes */
-.alert-box, .caution-box, .disclaimer-banner, .result-box {
+.alert-box, .caution-box, .disclaimer-banner, .result-box, .privacy-disclaimer {
     padding: 20px;
     border-radius: 12px;
-    margin-bottom: 20px;
+    margin: 20px auto;
     border: 1px solid var(--border-color);
     border-left-width: 6px;
-    text-align: left;
     color: var(--text);
-    box-sizing: border-box;
 }
 
-/* Color & Theme Overrides */
 .alert-box { background: rgba(231, 76, 60, 0.05); border-color: #e74c3c; }
 .caution-box { background: rgba(243, 156, 18, 0.08); border-color: #f39c12; }
-.disclaimer-banner { 
-    background: rgba(0, 128, 128, 0.05); 
-    border-color: #008080; 
-    max-width: 90%; 
-    margin: 20px auto; 
-}
+.disclaimer-banner { background: rgba(0, 128, 128, 0.05); border-color: #008080; max-width: 90%; }
 .result-box { border-left-color: var(--accent); }
+.privacy-disclaimer { background-color: rgba(128, 128, 128, 0.05); text-align: center; max-width: 750px; border-left-width: 1px; }
 
-/* Box Typography & Internal Alignment */
-.alert-box strong, .caution-box strong, .disclaimer-banner strong {
-    display: inline;
-    margin-right: 6px;
+/* Typography inside boxes */
+.alert-box strong, .caution-box strong, .disclaimer-banner strong, .privacy-disclaimer strong {
+    display: inline-block;
+    margin-bottom: 4px;
     font-size: 1rem;
 }
-
 .alert-box strong { color: #c0392b; }
 .caution-box strong { color: #f39c12; }
-.disclaimer-banner strong { color: #008080; }
+.disclaimer-banner strong, .privacy-disclaimer strong { color: #008080; }
 
-.alert-box p, .caution-box p, .disclaimer-banner p {
-    display: inline;
-    font-size: 0.95rem;
-    margin: 0;
-}
-
-/* List Formatting inside boxes */
-.alert-box ul, .caution-box ul, .disclaimer-banner ul {
-    margin-top: 10px;
-    padding-left: 20px;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.alert-box li, .caution-box li, .disclaimer-banner li { margin-bottom: 8px; }
-
-/* Checklist Items (Selection Screens) */
 .check-item { 
     display: flex; align-items: center; gap: 12px; padding: 14px; 
     background: var(--item-bg); border-radius: 8px; 
     border-left: 4px solid var(--border-color); cursor: pointer; margin-bottom: 12px;
 }
 
-/* Privacy Disclaimer (Index Page Specific) */
-.privacy-disclaimer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    max-width: 750px;
-    margin: 20px auto 10px auto; 
-    padding: 24px;              
-    background-color: rgba(128, 128, 128, 0.05);
-    border: 1px solid rgba(128, 128, 128, 0.3);
-    border-radius: 12px;
-    color: var(--text);
-    font-size: 0.9rem;
-}
-
-.privacy-disclaimer strong { margin-bottom: 8px; color: #008080; font-size: 1rem; }
-.privacy-disclaimer p { margin: 0; padding: 0; }
-
 /* ==========================================================================
-   5. FORM ELEMENTS & INPUTS
+   5. FORM ELEMENTS
    ========================================================================== */
 input[type="number"] {
     background: var(--card-bg); 
@@ -295,34 +195,21 @@ input[type="number"] {
     max-width: 120px;
 }
 
-/* Hide Spin Buttons */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }
 
-/* Utility Classes */
 .hidden { display: none; }
 
 /* ==========================================================================
-   6. ANIMATIONS & TRANSITIONS
+   6. ANIMATIONS
    ========================================================================== */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.container > div:not(.hidden) {
-    animation: fadeIn 0.4s ease-out;
-}
+.container > div:not(.hidden) { animation: fadeIn 0.4s ease-out; }
 
-/* Smooth Theme Switching */
-body.theme-transition, 
-body.theme-transition .container,
-body.theme-transition .btn,
-body.theme-transition .tool-card {
+body.theme-transition, body.theme-transition * {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
