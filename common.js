@@ -1,6 +1,5 @@
 /**
  * common.js - Shared logic for Canadian FHS Educational Tools
- * Handles Navigation, Theme Management, and UI Consistency
  */
 
 // Shared state for navigation history
@@ -9,7 +8,29 @@ window.fhsState = {
 };
 
 /**
- * Navigation: Transition between "pages" (divs) within a tool
+ * Global Fix: Prevents "Sticky Focus" on Safari/iPhone
+ */
+document.addEventListener('click', (e) => {
+    const target = e.target.closest('button, .btn, a');
+    if (target && typeof target.blur === 'function') {
+        setTimeout(() => target.blur(), 50);
+    }
+});
+
+/**
+ * UI Helper: Handles Selection States using CSS Classes
+ */
+function setSelected(ids, activeId) {
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.toggle('is-selected', id === activeId);
+        }
+    });
+}
+
+/**
+ * Navigation: Transition between "pages" (divs)
  */
 function goTo(id) {
     const container = document.querySelector('.container');
@@ -20,7 +41,6 @@ function goTo(id) {
     }
 
     document.querySelectorAll('.container > div').forEach(div => {
-        // Don't hide the main home elements if they exist
         if (!div.classList.contains('home-hero') && !div.classList.contains('home-grid')) {
             div.classList.add('hidden');
         }
@@ -33,50 +53,42 @@ function goTo(id) {
     }
 }
 
-/**
- * Navigation: Go back to the previous "page"
- */
 function goBack() {
     if (window.fhsState.history.length > 0) {
         const lastPageId = window.fhsState.history.pop();
-        
         document.querySelectorAll('.container > div').forEach(div => {
             if (!div.classList.contains('home-hero') && !div.classList.contains('home-grid')) {
                 div.classList.add('hidden');
             }
         });
-
         document.getElementById(lastPageId).classList.remove('hidden');
         window.scrollTo(0, 0);
     }
 }
 
 /**
- * Theme Management: Apply and Toggle Dark Mode
+ * Theme Management
  */
 function initTheme() {
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
-   const isDark = body.classList.contains('dark-mode');
+    if (!toggleBtn) return;
 
-    if (toggleBtn) {
-        toggleBtn.innerText = isDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
+    const isDark = body.classList.contains('dark-mode');
+    toggleBtn.innerText = isDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
 
-        toggleBtn.addEventListener('click', () => {
-    document.body.classList.add('theme-transition');
-    document.body.classList.toggle('dark-mode');
-    
-    const currentlyDark = document.body.classList.contains('dark-mode');
-    localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
-    toggleBtn.innerText = currentlyDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
+    toggleBtn.addEventListener('click', () => {
+        body.classList.add('theme-transition');
+        body.classList.toggle('dark-mode');
+        
+        const currentlyDark = body.classList.contains('dark-mode');
+        localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
+        toggleBtn.innerText = currentlyDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
 
-    // Remove transition class after it finishes to prevent lag on other animations
-    setTimeout(() => {
-        document.body.classList.remove('theme-transition');
-    }, 300);
-});
-    }
+        setTimeout(() => {
+            body.classList.remove('theme-transition');
+        }, 300);
+    });
 }
 
-// Initialize theme when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initTheme);
