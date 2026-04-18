@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FHS Deceleration Identifier</title>
-    <link rel="stylesheet" href="style.css">
+   <script src="theme-loader.js"></script>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <script src="theme-loader.js"></script>
 <div class="container">
 
    <div id="page1">
@@ -29,7 +29,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+            <button type="button" class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
             <div style="margin-top: 10px;">
                 <a href="index.html" class="btn btn-exit">Exit to Home</a>
             </div>
@@ -38,9 +38,9 @@
 
     <div id="page2" class="hidden">
         <h3>Is the FHR baseline interpretable?</h3>
-        <button class="btn" onclick="goTo('page4')">Yes</button>
-        <button class="btn" onclick="goTo('page3')">No, the FHR baseline is indeterminate</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="goTo('page4')">Yes</button>
+        <button type="button" class="btn" onclick="goTo('page3')">No, the FHR baseline is indeterminate</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
    <div id="page3" class="hidden">
@@ -48,55 +48,55 @@
         <strong>⚠️ ASSESSMENT STOPPED</strong>
         <p>Cannot reliably define a deceleration with an indeterminate baseline, marked variability, or sinusoidal pattern.</p>
     </div>
-    <button class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+    <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
     <a href="index.html" class="btn btn-exit">Home</a>
 </div>
 
     <div id="page4" class="hidden">
         <h3>What is the FHR Variability while at baseline?</h3>
-        <button class="btn" onclick="goTo('page5')">Moderate</button>
-        <button class="btn" onclick="goTo('page5')">Minimal</button>
-        <button class="btn" onclick="goTo('page5')">Absent</button>
-        <button class="btn" onclick="goTo('page3')">Marked</button>
-        <button class="btn" onclick="goTo('page3')">Sinusoidal</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="goTo('page5')">Moderate</button>
+        <button type="button" class="btn" onclick="goTo('page5')">Minimal</button>
+        <button type="button" class="btn" onclick="goTo('page5')">Absent</button>
+        <button type="button" class="btn" onclick="goTo('page3')">Marked</button>
+        <button type="button" class="btn" onclick="goTo('page3')">Sinusoidal</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page5" class="hidden">
         <h3>Does the deceleration last ≥ 2 minutes?</h3>
-        <button class="btn" onclick="goTo('page6')">No, the deceleration has a duration under 2 minutes</button>
-        <button class="btn" onclick="goTo('page5b')">Yes, the deceleration has a duration ≥2 minutes</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="goTo('page6')">No, the deceleration has a duration under 2 minutes</button>
+        <button type="button" class="btn" onclick="goTo('page5b')">Yes, the deceleration has a duration ≥2 minutes</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page5b" class="hidden">
         <h3>Does the FHR drop at least 15bpm below baseline?</h3>
-        <button class="btn" onclick="goTo('page12')">Yes, the nadir of the deceleration is ≥ 15bpm below the baseline</button>
-        <button class="btn" onclick="goTo('page8c')">No, the nadir of the deceleration is < 15bpm below the baseline</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="goTo('page12')">Yes, the nadir of the deceleration is ≥ 15bpm below the baseline</button>
+        <button type="button" class="btn" onclick="goTo('page8c')">No, the nadir of the deceleration is < 15bpm below the baseline</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page6" class="hidden">
         <h3>What is the slope of the deceleration?</h3>
         <p><small>Tip: The slope refers to the time from the onset of the FHR decrease to the nadir of the deceleration.</small></p>
-        <button class="btn" onclick="goTo('page7')">Less than 30 seconds (Abrupt)</button>
-        <button class="btn" onclick="goTo('page14')">≥ 30 seconds (Gradual)</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="goTo('page7')">Less than 30 seconds (Abrupt)</button>
+        <button type="button" class="btn" onclick="goTo('page14')">≥ 30 seconds (Gradual)</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page7" class="hidden">
         <h3>Does the FHR drop at least 15bpm below baseline?</h3>
-        <button class="btn" onclick="goTo('page8')">Yes</button>
-        <button class="btn" onclick="goTo('page8b')">No</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="goTo('page8')">Yes</button>
+        <button type="button" class="btn" onclick="goTo('page8b')">No</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page8" class="hidden">
         <h3>Does the FHR decrease below baseline last at least 15 seconds?</h3>
         <p><small>Tip: This duration refers to the time that the fetal heart rate deviated from the baseline, not the time spent at the nadir of the deceleration.</small></p>
-        <button class="btn" onclick="goTo('page9')">Yes</button>
-        <button class="btn" onclick="goTo('page8b')">No</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="goTo('page9')">Yes</button>
+        <button type="button" class="btn" onclick="goTo('page8b')">No</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page8b" class="hidden">
@@ -104,7 +104,7 @@
             <h3 style="color: #3498db;">VARIABILITY</h3>
             <p>An abrupt (<30 seconds) FHR decrease that does not meet the 15bpm depth AND 15s duration rule is considered variability and NOT a deceleration.</p>
         </div>
-       <button class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+       <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
 
@@ -113,7 +113,7 @@
             <h3 style="color: #3498db;">MAY NOT BE A DECELERATION: EVALUATE WHOLE CLINICAL PICTURE</h3>
             <p>For a deceleration to be prolonged, it must have a nadir ≥ 15bpm below baseline.</p>
         </div>
-        <button class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+        <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
 
@@ -132,122 +132,136 @@
             <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Baseline Bradycardia (<110 bpm)" onchange="toggleVariableCheck(this)"> FHR baseline is < 110 bpm</label>
             <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Minimal/Absent Variability" onchange="toggleVariableCheck(this)"> FHR variability at baseline is minimal or absent</label>
         </div>
-        <button id="classifyVarBtn" class="btn btn-primary" disabled style="margin-top: 20px;" onclick="checkVariable()">Classify Variable</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button id="classifyVarBtn" type="button" class="btn btn-primary" disabled onclick="checkVariable()">Classify Variable</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="resPage" class="hidden">
-        <div id="resHeader"></div>
-        <div id="resRationale" class="result-box"></div>
-        <button class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+        <div id="resHeader" aria-live="polite"></div>
+<div id="resRationale" class="result-box" aria-live="polite"></div>
+        <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
 
     <div id="page12" class="hidden">
         <h3>Total duration of the FHR deceleration?</h3>
-        <button class="btn" onclick="showResult('PROLONGED DECELERATION', 'Duration ≥ 2 min but < 3 min with nadir ≥ 15bpm below baseline.')">2 to < 3 minutes</button>
-        <button class="btn" onclick="showResult('PROLONGED DECELERATION', 'Duration ≥ 3 min but < 10 min with nadir ≥ 15bpm below baseline.')">3 to < 10 minutes</button>
-        <button class="btn" onclick="showResult('BASELINE CHANGE', 'A deceleration lasting ≥ 10 minutes is defined as a change in baseline.')">≥ 10 minutes</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="showResult('PROLONGED DECELERATION', 'Duration ≥ 2 min but < 3 min with nadir ≥ 15bpm below baseline.')">2 to < 3 minutes</button>
+        <button type="button" class="btn" onclick="showResult('PROLONGED DECELERATION', 'Duration ≥ 3 min but < 10 min with nadir ≥ 15bpm below baseline.')">3 to < 10 minutes</button>
+        <button type="button" class="btn" onclick="showResult('BASELINE CHANGE', 'A deceleration lasting ≥ 10 minutes is defined as a change in baseline.')">≥ 10 minutes</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page14" class="hidden">
         <h3>Relationship to Contraction</h3>
         <p>Does the FHR deceleration onset, nadir, and return to baseline match the onset, peak, and end of the contraction respectively?</p>
-        <button class="btn" onclick="showResult('EARLY DECELERATION', 'Gradual slope (≥30s) that mirrors the contraction, there is no depth criteria.')">Yes, meets all 3 (mirrors the contraction)</button>
-        <button class="btn" onclick="showResult('LATE DECELERATION', 'Gradual slope (≥30s) where the onset, nadir, and return to baseline occurs after the onset, peak, and end of the contraction respectively. There is no depth criteria.')">No, one or more not met (delayed)</button>
-        <button class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn" onclick="showResult('EARLY DECELERATION', 'Gradual slope (≥30s) that mirrors the contraction, there is no depth criteria.')">Yes, meets all 3 (mirrors the contraction)</button>
+        <button type="button" class="btn" onclick="showResult('LATE DECELERATION', 'Gradual slope (≥30s) where the onset, nadir, and return to baseline occurs after the onset, peak, and end of the contraction respectively. There is no depth criteria.')">No, one or more not met (delayed)</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
 </div>
 
+<script src="common.js"></script>
 <script>
-    // SECURE XSS-PROTECTED RESULT RENDERER
     function showResult(title, baseDef, listItems = null) {
-        const header = document.getElementById('resHeader');
-        const resBox = document.getElementById('resRationale');
-        const neutralBlue = "#3498db"; 
+    const header = document.getElementById('resHeader');
+    const resBox = document.getElementById('resRationale');
+    const neutralBlue = '#3498db';
 
-        // Clear previous content
-        header.innerHTML = '';
-        resBox.innerHTML = '';
+    if (!header || !resBox) return;
 
-        // Create Title Safely
-        const h2 = document.createElement('h2');
-        h2.style.color = neutralBlue;
-        h2.style.textAlign = 'center';
-        h2.style.textTransform = 'uppercase';
-        h2.textContent = title;
-        header.appendChild(h2);
+    header.innerHTML = '';
+    resBox.innerHTML = '';
 
-        // Create Rationale Safely
-        resBox.style.borderLeftColor = neutralBlue;
-        const strong = document.createElement('strong');
-        strong.textContent = 'Definition';
-        resBox.appendChild(strong);
-        resBox.appendChild(document.createElement('br'));
+    const h2 = document.createElement('h2');
+    h2.style.color = neutralBlue;
+    h2.style.textAlign = 'center';
+    h2.style.textTransform = 'uppercase';
+    h2.textContent = title;
+    header.appendChild(h2);
 
-        // Main definition paragraph
-        const pDef = document.createElement('p');
-        pDef.textContent = baseDef;
-        resBox.appendChild(pDef);
+    resBox.style.borderLeftColor = neutralBlue;
 
-        // If this is a complicated variable, render the reasons securely
-        if (listItems && listItems.length > 0) {
-            const compStrong = document.createElement('strong');
-            compStrong.textContent = 'Complicated due to:';
-            resBox.appendChild(compStrong);
+    const strong = document.createElement('strong');
+    strong.textContent = 'Definition';
+    resBox.appendChild(strong);
+    resBox.appendChild(document.createElement('br'));
 
-            const ul = document.createElement('ul');
-            listItems.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item; // Safe from XSS
-                ul.appendChild(li);
-            });
-            resBox.appendChild(ul);
-        }
+    const pDef = document.createElement('p');
+    pDef.textContent = baseDef;
+    resBox.appendChild(pDef);
 
-        goTo('resPage');
+    if (Array.isArray(listItems) && listItems.length > 0) {
+        const compStrong = document.createElement('strong');
+        compStrong.textContent = 'Complicated due to:';
+        resBox.appendChild(compStrong);
+
+        const ul = document.createElement('ul');
+        listItems.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            ul.appendChild(li);
+        });
+        resBox.appendChild(ul);
     }
+
+    goTo('resPage');
+}
 
     // CHECKBOX LOGIC
-    function toggleVariableCheck(element) {
-        const noneBox = document.getElementById('v-none');
-        const compBoxes = document.querySelectorAll('.v-comp');
-        const classifyBtn = document.getElementById('classifyVarBtn');
+   function toggleVariableCheck(element) {
+    const noneBox = document.getElementById('v-none');
+    const compBoxes = document.querySelectorAll('.v-comp');
+    const classifyBtn = document.getElementById('classifyVarBtn');
 
-        if (element.id === 'v-none' && element.checked) {
-            compBoxes.forEach(cb => cb.checked = false);
-        } else if (element.classList.contains('v-comp') && element.checked) {
-            noneBox.checked = false;
-        }
+    if (!element || !noneBox || !classifyBtn) return;
 
-        const anyChecked = noneBox.checked || Array.from(compBoxes).some(cb => cb.checked);
-        classifyBtn.disabled = !anyChecked; // Opacity is now handled by CSS
+    if (element.id === 'v-none' && element.checked) {
+        compBoxes.forEach(cb => {
+            cb.checked = false;
+        });
+    } else if (element.classList.contains('v-comp') && element.checked) {
+        noneBox.checked = false;
     }
+
+    const anyChecked = noneBox.checked || Array.from(compBoxes).some(cb => cb.checked);
+    classifyBtn.disabled = !anyChecked;
+}
 
     // VARIABLE CLASSIFIER LOGIC
     function checkVariable() {
-        const autoCompNodes = document.querySelectorAll('.comp-auto:checked');
-        const isLong = document.getElementById('c-60s').checked;
-        const isBpmDeep = document.getElementById('c-60bpm').checked;
-        const isDropDeep = document.getElementById('c-60drop').checked;
-        const ruleOf60 = isLong && (isBpmDeep || isDropDeep);
-        
-        const baseVariableDef = "An abrupt FHR decrease (onset to nadir < 30 seconds) of ≥ 15bpm below baseline, lasting ≥ 15 seconds and < 2 minutes.";
+    const autoCompNodes = document.querySelectorAll('.comp-auto:checked');
+    const c60s = document.getElementById('c-60s');
+    const c60bpm = document.getElementById('c-60bpm');
+    const c60drop = document.getElementById('c-60drop');
 
-        if (autoCompNodes.length > 0 || ruleOf60) {
-            let reasons = [];
-            autoCompNodes.forEach(node => reasons.push(node.getAttribute('data-label')));
-            if (ruleOf60) reasons.push("Rule of 60s (Duration ≥ 60s AND nadir ≤ 60bpm OR drop ≥ 60bpm below baseline)");
-            
-            showResult("COMPLICATED VARIABLE DECELERATION", baseVariableDef, reasons);
-        } else {
-            const uncompText = baseVariableDef + "\n\nThis deceleration is classified as Uncomplicated because it does not meet any individual complication triggers or the combined 'Rule of 60s' thresholds.";
-            showResult("UNCOMPLICATED VARIABLE DECELERATION", uncompText);
+    if (!c60s || !c60bpm || !c60drop) return;
+
+    const isLong = c60s.checked;
+    const isBpmDeep = c60bpm.checked;
+    const isDropDeep = c60drop.checked;
+    const ruleOf60 = isLong && (isBpmDeep || isDropDeep);
+
+    const baseVariableDef = 'An abrupt FHR decrease (onset to nadir < 30 seconds) of ≥ 15bpm below baseline, lasting ≥ 15 seconds and < 2 minutes.';
+
+    if (autoCompNodes.length > 0 || ruleOf60) {
+        const reasons = [];
+
+        autoCompNodes.forEach(node => {
+            const label = node.getAttribute('data-label');
+            if (label) reasons.push(label);
+        });
+
+        if (ruleOf60) {
+            reasons.push('Rule of 60s (Duration ≥ 60s AND nadir ≤ 60bpm OR drop ≥ 60bpm below baseline)');
         }
+
+        showResult('COMPLICATED VARIABLE DECELERATION', baseVariableDef, reasons);
+    } else {
+        const uncompText = `${baseVariableDef}\n\nThis deceleration is classified as Uncomplicated because it does not meet any individual complication triggers or the combined "Rule of 60s" thresholds.`;
+        showResult('UNCOMPLICATED VARIABLE DECELERATION', uncompText);
     }
+}
 </script>
-<script src="common.js"></script>
 </body>
 </html>
