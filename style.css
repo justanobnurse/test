@@ -339,17 +339,22 @@ html.dark-mode .btn-back {
     color: #008080;
 }
 
-/* Checklist items */
 .check-item {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
     padding: 14px;
-    background: var(--item-bg);
+    background: #f7f9fb;
+    border: 1px solid #e1e5ea;
     border-left: 4px solid var(--border-color);
     border-radius: 8px;
     cursor: pointer;
+}
+
+html.dark-mode .check-item {
+    background: var(--item-bg);
+    border-color: var(--border-color);
 }
 
 /* ==========================================================================
