@@ -33,10 +33,10 @@ function setSelected(ids, activeId) {
  * Navigation: Transition between "pages" (divs)
  */
 function goTo(id) {
-    const container = document.querySelector('.container');
-    const currentDiv = container.querySelector('div:not(.hidden):not(.home-hero):not(.home-grid)');
+    // FIX: Grab the main container divs, safely checking for an ID
+    const currentDiv = document.querySelector('.container > div:not(.hidden):not(.home-hero):not(.home-grid)');
     
-    if (currentDiv && currentDiv.id !== id) {
+    if (currentDiv && currentDiv.id && currentDiv.id !== id) {
         window.fhsState.history.push(currentDiv.id);
     }
 
@@ -50,19 +50,34 @@ function goTo(id) {
     if (target) {
         target.classList.remove('hidden');
         window.scrollTo(0, 0);
+
+        // FIX: Hook to run validation logic inside your tools
+        if (typeof handlePageLogic === 'function') {
+            handlePageLogic(id);
+        }
     }
 }
 
 function goBack() {
     if (window.fhsState.history.length > 0) {
         const lastPageId = window.fhsState.history.pop();
+        
         document.querySelectorAll('.container > div').forEach(div => {
             if (!div.classList.contains('home-hero') && !div.classList.contains('home-grid')) {
                 div.classList.add('hidden');
             }
         });
-        document.getElementById(lastPageId).classList.remove('hidden');
-        window.scrollTo(0, 0);
+        
+        const target = document.getElementById(lastPageId);
+        if (target) {
+            target.classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            // FIX: Hook to run validation logic when going backwards
+            if (typeof handlePageLogic === 'function') {
+                handlePageLogic(lastPageId);
+            }
+        }
     }
 }
 
