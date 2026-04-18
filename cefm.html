@@ -379,21 +379,15 @@ function validateBaseInput() {
 
 function selF(l, c) {
     state.audit.fhrMon = l;
-    const { active, inactive } = getCardColors();
-
-    $('f-us').style.background = (c === 'us') ? active : inactive;
-    $('f-fse').style.background = (c === 'fse') ? active : inactive;
-
+    // This tells common.js to handle the highlight using CSS classes
+    setSelected(['f-us', 'f-fse'], `f-${c}`); 
     chkM();
 }
-
+    
 function selU(l, c) {
     state.audit.uaMon = l;
-    const { active, inactive } = getCardColors();
-
-    $('u-toco').style.background = (c === 'toco') ? active : inactive;
-    $('u-iupc').style.background = (c === 'iupc') ? active : inactive;
-
+    // This tells common.js to handle the highlight using CSS classes
+    setSelected(['u-toco', 'u-iupc'], `u-${c}`); 
     chkM();
 }
 
