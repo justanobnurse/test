@@ -161,37 +161,37 @@ input[type="number"]:focus:not(:focus-visible) {
         box-shadow: var(--shadow-hover);
     }
 
-    .btn:hover:not(:disabled):not(.is-selected) {
+    .btn:hover:not(:disabled):not(.is-selected):not(.btn-primary):not(.btn-exit):not(.btn-back) {
         background: var(--btn-hover-bg);
         border-color: var(--accent);
     }
 
-    .btn-primary:hover:not(:disabled) {
+    .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #2a6fa8;
     }
 
-    .btn-exit:hover:not(:disabled),
-    .btn-back:hover:not(:disabled) {
+    .btn.btn-exit:hover:not(:disabled):not(.is-selected),
+    .btn.btn-back:hover:not(:disabled):not(.is-selected) {
         background: #cf4b3d;
     }
 
-    .theme-green .btn-primary:hover:not(:disabled) {
+    .theme-green .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #2d9b63;
     }
 
-    .theme-blue .btn-primary:hover:not(:disabled) {
+    .theme-blue .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #2f86cf;
     }
 
-    .theme-pink .btn-primary:hover:not(:disabled) {
+    .theme-pink .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #cf3f78;
     }
 
-    .theme-orange .btn-primary:hover:not(:disabled) {
+    .theme-orange .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #dc9a2f;
     }
 
-    .theme-purple .btn-primary:hover:not(:disabled) {
+    .theme-purple .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #8d63ba;
     }
 }
