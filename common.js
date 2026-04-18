@@ -1,109 +1,231 @@
 /**
  * common.js - Shared logic for Canadian FHS Educational Tools
  */
+(() => {
+    'use strict';
 
-// Shared state for navigation history
-window.fhsState = {
-    history: []
-};
+    const STORAGE_KEYS = {
+        theme: 'theme'
+    };
 
-/**
- * Global Fix: Prevents "Sticky Focus" on Safari/iPhone
- */
-document.addEventListener('click', (e) => {
-    const target = e.target.closest('button, .btn, a');
-    if (target && typeof target.blur === 'function') {
-        setTimeout(() => target.blur(), 50);
-    }
-});
+    const SELECTORS = {
+        pageDivs: '.container > div',
+        activePage: '.container > div:not(.hidden):not(.home-hero):not(.home-grid)'
+    };
 
-/**
- * UI Helper: Handles Selection States using CSS Classes
- */
-function setSelected(ids, activeId) {
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.toggle('is-selected', id === activeId);
+    const state = {
+        history: []
+    };
+
+    // Expose only the minimum needed globally
+    window.fhsState = state;
+
+    /**
+     * Safe localStorage helpers
+     */
+    function safeStorageGet(key) {
+        try {
+            return window.localStorage.getItem(key);
+        } catch {
+            return null;
         }
-    });
-}
-
-/**
- * Navigation: Transition between "pages" (divs)
- */
-function goTo(id) {
-    // FIX: Grab the main container divs, safely checking for an ID
-    const currentDiv = document.querySelector('.container > div:not(.hidden):not(.home-hero):not(.home-grid)');
-    
-    if (currentDiv && currentDiv.id && currentDiv.id !== id) {
-        window.fhsState.history.push(currentDiv.id);
     }
 
-    document.querySelectorAll('.container > div').forEach(div => {
-        if (!div.classList.contains('home-hero') && !div.classList.contains('home-grid')) {
+    function safeStorageSet(key, value) {
+        try {
+            window.localStorage.setItem(key, value);
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Returns navigable page sections only
+     */
+    function getPageDivs() {
+        return Array.from(document.querySelectorAll(SELECTORS.pageDivs)).filter(
+            div => !div.classList.contains('home-hero') && !div.classList.contains('home-grid')
+        );
+    }
+
+    function getActivePage() {
+        return document.querySelector(SELECTORS.activePage);
+    }
+
+    function hideAllPages() {
+        getPageDivs().forEach(div => {
             div.classList.add('hidden');
-        }
-    });
-
-    const target = document.getElementById(id);
-    if (target) {
-        target.classList.remove('hidden');
-        window.scrollTo(0, 0);
-
-        // FIX: Hook to run validation logic inside your tools
-        if (typeof handlePageLogic === 'function') {
-            handlePageLogic(id);
-        }
+            div.setAttribute('aria-hidden', 'true');
+        });
     }
-}
 
-function goBack() {
-    if (window.fhsState.history.length > 0) {
-        const lastPageId = window.fhsState.history.pop();
-        
-        document.querySelectorAll('.container > div').forEach(div => {
-            if (!div.classList.contains('home-hero') && !div.classList.contains('home-grid')) {
-                div.classList.add('hidden');
+    function showPage(target) {
+        if (!target) return false;
+
+        target.classList.remove('hidden');
+        target.setAttribute('aria-hidden', 'false');
+
+        // Focus the new page for accessibility if possible
+        if (!target.hasAttribute('tabindex')) {
+            target.setAttribute('tabindex', '-1');
+        }
+
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+        try {
+            target.focus({ preventScroll: true });
+        } catch {
+            target.focus();
+        }
+
+        if (typeof window.handlePageLogic === 'function') {
+            window.handlePageLogic(target.id);
+        }
+
+        return true;
+    }
+
+    /**
+     * Safari / iPhone focus fix:
+     * blur only pointer-activated button-like controls,
+     * not normal links, and not keyboard-triggered interaction.
+     */
+    document.addEventListener('pointerup', event => {
+        if (!event.isTrusted) return;
+
+        const target = event.target.closest('button, .btn, [role="button"]');
+        if (!target || typeof target.blur !== 'function') return;
+
+        // Avoid blurring form fields or disabled elements
+        const tag = target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.disabled) {
+            return;
+        }
+
+        window.setTimeout(() => {
+            target.blur();
+        }, 0);
+    }, { passive: true });
+
+    /**
+     * UI Helper: Handles Selection States using CSS Classes
+     */
+    function setSelected(ids, activeId) {
+        if (!Array.isArray(ids)) return;
+
+        ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const isActive = id === activeId;
+                el.classList.toggle('is-selected', isActive);
+                el.setAttribute('aria-pressed', String(isActive));
             }
         });
-        
-        const target = document.getElementById(lastPageId);
-        if (target) {
-            target.classList.remove('hidden');
-            window.scrollTo(0, 0);
+    }
 
-            // FIX: Hook to run validation logic when going backwards
-            if (typeof handlePageLogic === 'function') {
-                handlePageLogic(lastPageId);
+    /**
+     * Navigation: Transition between "pages" (divs)
+     */
+    function goTo(id) {
+        if (typeof id !== 'string' || !id.trim()) return false;
+
+        const target = document.getElementById(id);
+        if (!target) return false;
+
+        const currentPage = getActivePage();
+
+        if (currentPage && currentPage.id && currentPage.id !== id) {
+            const lastHistoryItem = state.history[state.history.length - 1];
+            if (lastHistoryItem !== currentPage.id) {
+                state.history.push(currentPage.id);
             }
         }
+
+        hideAllPages();
+        return showPage(target);
     }
-}
 
-/**
- * Theme Management
- */
-function initTheme() {
-    const body = document.body;
-    const toggleBtn = document.getElementById('darkModeToggle');
-    if (!toggleBtn) return;
+    function goBack() {
+        while (state.history.length > 0) {
+            const lastPageId = state.history.pop();
+            const target = document.getElementById(lastPageId);
 
-    const isDark = body.classList.contains('dark-mode');
-    toggleBtn.innerText = isDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
+            if (target) {
+                hideAllPages();
+                return showPage(target);
+            }
+        }
 
-    toggleBtn.addEventListener('click', () => {
-        body.classList.add('theme-transition');
-        body.classList.toggle('dark-mode');
-        
-        const currentlyDark = body.classList.contains('dark-mode');
-        localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
-        toggleBtn.innerText = currentlyDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
+        return false;
+    }
 
-        setTimeout(() => {
-            body.classList.remove('theme-transition');
-        }, 300);
-    });
-}
+    /**
+     * Theme Management
+     */
+    function getPreferredTheme() {
+        const savedTheme = safeStorageGet(STORAGE_KEYS.theme);
+        if (savedTheme === 'dark' || savedTheme === 'light') {
+            return savedTheme;
+        }
 
-document.addEventListener('DOMContentLoaded', initTheme);
+        const prefersDark =
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        return prefersDark ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme) {
+        const body = document.body;
+        const toggleBtn = document.getElementById('darkModeToggle');
+        const isDark = theme === 'dark';
+
+        body.classList.toggle('dark-mode', isDark);
+
+        if (toggleBtn) {
+            toggleBtn.textContent = isDark
+                ? '☀️ Switch to Light Mode'
+                : '🌙 Switch to Dark Mode';
+
+            toggleBtn.setAttribute(
+                'aria-label',
+                isDark ? 'Switch to light mode' : 'Switch to dark mode'
+            );
+
+            toggleBtn.setAttribute('aria-pressed', String(isDark));
+        }
+    }
+
+    function initTheme() {
+        const body = document.body;
+        const toggleBtn = document.getElementById('darkModeToggle');
+        const initialTheme = getPreferredTheme();
+
+        applyTheme(initialTheme);
+
+        if (!toggleBtn) return;
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.add('theme-transition');
+
+            const nextTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+            applyTheme(nextTheme);
+            safeStorageSet(STORAGE_KEYS.theme, nextTheme);
+
+            window.setTimeout(() => {
+                body.classList.remove('theme-transition');
+            }, 300);
+        });
+    }
+
+    /**
+     * Expose shared functions globally for inline HTML handlers if needed
+     */
+    window.setSelected = setSelected;
+    window.goTo = goTo;
+    window.goBack = goBack;
+    window.initTheme = initTheme;
+
+    document.addEventListener('DOMContentLoaded', initTheme);
+})();
