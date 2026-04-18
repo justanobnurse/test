@@ -1,131 +1,239 @@
 /**
  * common.js - Shared logic for Canadian FHS Educational Tools
  */
+(() => {
+    'use strict';
 
-// Shared state for navigation history
-window.fhsState = {
-    history: []
-};
+    const STORAGE_KEY_THEME = 'theme';
 
-/**
- * Global Fix: Prevents "Sticky Focus" on Safari/iPhone
- * Removes the visual highlight on buttons after tapping.
- */
-document.addEventListener('pointerup', (event) => {
-    // Only react to real user interactions
-    if (!event.isTrusted) return;
+    // Shared state for navigation history
+    const fhsState = {
+        history: []
+    };
 
-    // Find the button that was clicked
-    const target = event.target.closest('button, .btn, a');
-    
-    // If it's a valid, enabled button, remove focus after a tiny delay
-    if (target && typeof target.blur === 'function' && !target.disabled) {
+    // Expose state globally only if other scripts need it
+    window.fhsState = fhsState;
+
+    /**
+     * Safe localStorage helpers
+     */
+    function safeGetStorage(key) {
+        try {
+            return window.localStorage.getItem(key);
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function safeSetStorage(key, value) {
+        try {
+            window.localStorage.setItem(key, value);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    /**
+     * Safari / iPhone focus fix
+     * Removes sticky visual focus from button-like controls after touch/pointer interaction.
+     * Avoids blurring normal links for better accessibility and more stable Safari behavior.
+     */
+    document.addEventListener('pointerup', (event) => {
+        if (!event.isTrusted) return;
+
+        const target = event.target.closest('button, .btn, [role="button"]');
+        if (!target) return;
+        if (typeof target.blur !== 'function') return;
+        if (target.disabled) return;
+
         window.setTimeout(() => {
             target.blur();
-        }, 50);
-    }
-}, { passive: true });
+        }, 0);
+    }, { passive: true });
 
-/**
- * UI Helper: Handles Selection States using CSS Classes
- */
-function setSelected(ids, activeId) {
-    if (!Array.isArray(ids)) return;
-
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.classList.toggle('is-selected', id === activeId);
-        }
-    });
-}
-
-/**
- * Navigation: Transition between "pages" (divs)
- */
-function goTo(id) {
-    // Grab the main container divs, safely checking for an ID
-    const currentDiv = document.querySelector('.container > div:not(.hidden):not(.home-hero):not(.home-grid)');
-    
-    // Ensure we are saving a valid page to history
-    if (currentDiv && currentDiv.id && currentDiv.id !== id) {
-        window.fhsState.history.push(currentDiv.id);
-    }
-
-    // Hide all standard pages
-    document.querySelectorAll('.container > div').forEach(div => {
-        if (!div.classList.contains('home-hero') && !div.classList.contains('home-grid')) {
-            div.classList.add('hidden');
-        }
-    });
-
-    const target = document.getElementById(id);
-    if (target) {
-        target.classList.remove('hidden');
-        window.scrollTo(0, 0);
-
-        // Run local tool logic if it exists (e.g., validation checks)
-        if (typeof window.handlePageLogic === 'function') {
-            window.handlePageLogic(id);
-        }
-    }
-}
-
-function goBack() {
-    if (window.fhsState.history.length > 0) {
-        const lastPageId = window.fhsState.history.pop();
-        
-        // Hide all standard pages
-        document.querySelectorAll('.container > div').forEach(div => {
-            if (!div.classList.contains('home-hero') && !div.classList.contains('home-grid')) {
-                div.classList.add('hidden');
-            }
+    /**
+     * Helper: Get standard page divs only
+     */
+    function getPageDivs() {
+        return Array.from(document.querySelectorAll('.container > div')).filter((div) => {
+            return !div.classList.contains('home-hero') && !div.classList.contains('home-grid');
         });
-        
-        const target = document.getElementById(lastPageId);
-        if (target) {
-            target.classList.remove('hidden');
-            window.scrollTo(0, 0);
+    }
 
-            // Run local tool logic on return
-            if (typeof window.handlePageLogic === 'function') {
-                window.handlePageLogic(lastPageId);
+    /**
+     * Helper: Get current visible page
+     */
+    function getCurrentPage() {
+        return document.querySelector('.container > div:not(.hidden):not(.home-hero):not(.home-grid)');
+    }
+
+    /**
+     * Helper: Hide all standard pages
+     */
+    function hideAllPages() {
+        getPageDivs().forEach((div) => {
+            div.classList.add('hidden');
+            div.setAttribute('aria-hidden', 'true');
+        });
+    }
+
+    /**
+     * Helper: Show a page safely
+     */
+    function showPage(target) {
+        if (!target) return false;
+
+        target.classList.remove('hidden');
+        target.setAttribute('aria-hidden', 'false');
+
+        if (!target.hasAttribute('tabindex')) {
+            target.setAttribute('tabindex', '-1');
+        }
+
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+        try {
+            target.focus({ preventScroll: true });
+        } catch (error) {
+            target.focus();
+        }
+
+        if (typeof window.handlePageLogic === 'function') {
+            window.handlePageLogic(target.id);
+        }
+
+        return true;
+    }
+
+    /**
+     * UI Helper: Handles Selection States using CSS Classes
+     */
+    function setSelected(ids, activeId) {
+        if (!Array.isArray(ids)) return;
+
+        ids.forEach((id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            const isActive = id === activeId;
+            el.classList.toggle('is-selected', isActive);
+            el.setAttribute('aria-pressed', String(isActive));
+        });
+    }
+
+    /**
+     * Navigation: Transition between "pages" (divs)
+     */
+    function goTo(id) {
+        if (typeof id !== 'string' || !id.trim()) return false;
+
+        const target = document.getElementById(id);
+        if (!target) return false;
+
+        const currentPage = getCurrentPage();
+
+        if (currentPage && currentPage.id && currentPage.id !== id) {
+            const lastHistoryItem = fhsState.history[fhsState.history.length - 1];
+            if (lastHistoryItem !== currentPage.id) {
+                fhsState.history.push(currentPage.id);
             }
         }
+
+        hideAllPages();
+        return showPage(target);
     }
-}
 
-/**
- * Theme Management
- */
-function initTheme() {
-    const body = document.body;
-    const toggleBtn = document.getElementById('darkModeToggle');
-    if (!toggleBtn) return;
+    /**
+     * Navigation: Return to previous page
+     */
+    function goBack() {
+        while (fhsState.history.length > 0) {
+            const lastPageId = fhsState.history.pop();
+            const target = document.getElementById(lastPageId);
 
-    const isDark = body.classList.contains('dark-mode');
-    toggleBtn.innerText = isDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
-
-    toggleBtn.addEventListener('click', () => {
-        body.classList.add('theme-transition');
-        body.classList.toggle('dark-mode');
-        
-        const currentlyDark = body.classList.contains('dark-mode');
-        
-        try {
-            // Failsafe in case user is in strict private browsing mode
-            window.localStorage.setItem('theme', currentlyDark ? 'dark' : 'light');
-        } catch (e) {
-            console.warn("Local storage is disabled; theme preference won't be saved.");
+            if (target) {
+                hideAllPages();
+                return showPage(target);
+            }
         }
-        
-        toggleBtn.innerText = currentlyDark ? "☀️ Switch to Light Mode" : "🌙 Switch to Dark Mode";
 
-        window.setTimeout(() => {
-            body.classList.remove('theme-transition');
-        }, 300);
+        return false;
+    }
+
+    /**
+     * Theme helpers
+     */
+    function getPreferredTheme() {
+        const savedTheme = safeGetStorage(STORAGE_KEY_THEME);
+
+        if (savedTheme === 'dark' || savedTheme === 'light') {
+            return savedTheme;
+        }
+
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+
+        return 'light';
+    }
+
+    function updateThemeToggleLabel(toggleBtn, isDark) {
+        if (!toggleBtn) return;
+
+        toggleBtn.textContent = isDark
+            ? '☀️ Switch to Light Mode'
+            : '🌙 Switch to Dark Mode';
+
+        toggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        toggleBtn.setAttribute('aria-pressed', String(isDark));
+    }
+
+    function applyTheme(theme) {
+        const body = document.body;
+        const toggleBtn = document.getElementById('darkModeToggle');
+        const isDark = theme === 'dark';
+
+        body.classList.toggle('dark-mode', isDark);
+        updateThemeToggleLabel(toggleBtn, isDark);
+    }
+
+    /**
+     * Theme Management
+     */
+    function initTheme() {
+        const body = document.body;
+        const toggleBtn = document.getElementById('darkModeToggle');
+
+        applyTheme(getPreferredTheme());
+
+        if (!toggleBtn) return;
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.add('theme-transition');
+
+            const nextTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+            applyTheme(nextTheme);
+            safeSetStorage(STORAGE_KEY_THEME, nextTheme);
+
+            window.setTimeout(() => {
+                body.classList.remove('theme-transition');
+            }, 300);
+        });
+    }
+
+    /**
+     * Expose shared functions globally for inline onclick handlers if needed
+     */
+    window.setSelected = setSelected;
+    window.goTo = goTo;
+    window.goBack = goBack;
+    window.initTheme = initTheme;
+
+    /**
+     * Initialize on DOM ready
+     */
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
     });
-}
-
-// Initialize theme on load
-document.addEventListener('DOMContentLoaded', initTheme);
+})();
