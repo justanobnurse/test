@@ -190,12 +190,12 @@ if (tone > 25) {
     addAlert('A uterine resting tone > 25 mmHg is consistent with tachysystole.');
 }
 
-if (peaks.some(p => p >= 75)) {
-    addAlert('A contraction peak ≥ 75 mmHg is consistent with tachysystole.');
+if (peaks.some(p => p >= 76)) {
+    addAlert('A contraction peak > 75 mmHg is consistent with tachysystole.');
 }
 
 if (peaks.length > 5) {
-    addAlert(`${peaks.length} contractions in 10 min is consistent with tachysystole.`);
+    addAlert(`${peaks.length} contractions in 10 min is consistent with tachysystole. Review the average number of contractions in 10 minutes over the last 30 minutes to confirm.`);
 }
 
 displayEl.textContent = Math.round(total);
