@@ -184,14 +184,40 @@ let state = { history: [] };
 
 
     function showResult(title, rationale) {
-        const header = document.getElementById('resHeader');
-        const neutralBlue = "#3498db"; 
-        header.innerHTML = `<h2 style="color: ${neutralBlue}; text-align: center; text-transform: uppercase;">${title}</h2>`;
-        const resBox = document.getElementById('resRationale');
-        resBox.style.borderLeftColor = neutralBlue;
-        resBox.innerHTML = `<strong>Definition</strong><br>${rationale}`;
-        nextStep('resPage');
+    const header = document.getElementById('resHeader');
+    const resBox = document.getElementById('resRationale');
+    const neutralBlue = "#3498db"; 
+
+    // Clear previous content
+    header.innerHTML = '';
+    resBox.innerHTML = '';
+
+    // Create Title Safely
+    const h2 = document.createElement('h2');
+    h2.style.color = neutralBlue;
+    h2.style.textAlign = 'center';
+    h2.style.textTransform = 'uppercase';
+    h2.textContent = title; // Safe from XSS
+    header.appendChild(h2);
+
+    // Create Rationale Safely
+    resBox.style.borderLeftColor = neutralBlue;
+    const strong = document.createElement('strong');
+    strong.textContent = 'Definition';
+    resBox.appendChild(strong);
+    resBox.appendChild(document.createElement('br'));
+
+    // If rationale contains <ul> (like in checkVariable), we handle that carefully
+    if (rationale.includes('<ul>')) {
+        resBox.insertAdjacentHTML('beforeend', rationale); // Used only for internal trusted logic
+    } else {
+        const p = document.createElement('p');
+        p.textContent = rationale; // Safe from XSS
+        resBox.appendChild(p);
     }
+
+    nextStep('resPage');
+}
 
     function toggleVariableCheck(element) {
         const noneBox = document.getElementById('v-none');
