@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Is it Tachysystole?</title>
+    <script src="theme-loader.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <script src="theme-loader.js"></script>
 <div class="container">
     <div id="page1">
         <h2 style="text-align: center; font-size: 2.2rem; color: #e91e63; margin-bottom: 25px;">Is it Tachysystole?</h2>
-        
+
         <div class="disclaimer-banner">
             <strong>Terms of Use & Disclaimer:</strong>
             <p>This tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
-            
+
             <ul>
                 <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
                 <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
@@ -23,171 +23,175 @@
                 <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
                 <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
             </ul>
-            
+
             <p style="display:block; margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "Begin," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button class="btn btn-primary" onclick="nextStep('page2')">I Understand & Accept - Begin</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep('page2')">I Understand & Accept - Begin</button>
             <div style="margin-top: 10px;">
                 <a href="index.html" class="btn btn-exit">Exit to Home</a>
             </div>
         </div>
     </div>
+
     <div id="page2" class="hidden">
         <h3>What type of uterine activity monitor is in use?</h3>
-        <button class="btn" onclick="nextStep('page3')">External Tocodynamometer (TOCO)</button>
-        <button class="btn" onclick="nextStep('page3c')">Internal Uterine Pressure Catheter (IUPC)</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="nextStep('page3')">External Tocodynamometer (TOCO)</button>
+        <button type="button" class="btn" onclick="nextStep('page3c')">Internal Uterine Pressure Catheter (IUPC)</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page3" class="hidden">
-    <div class="caution-box">
-        <strong>Reminder:</strong> TOCO does not measure contraction intensity or resting tone. Palpation is required to verify uterine tone and contraction strength.
+        <div class="caution-box">
+            <strong>Reminder:</strong> TOCO does not measure contraction intensity or resting tone. Palpation is required to verify uterine tone and contraction strength.
+        </div>
+
+        <h3>Is the contraction tracing adequate and aligns with palpation?</h3>
+        <button type="button" class="btn" onclick="nextStep('page4')">Yes</button>
+        <button type="button" class="btn" onclick="nextStep('page3b')">No</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
-    
-    <h3>Is the contraction tracing adequate and aligns with palpation?</h3>
-    <button class="btn" onclick="nextStep('page4')">Yes</button>
-    <button class="btn" onclick="nextStep('page3b')">No</button>
-    <button class="btn btn-back" onclick="prevStep()">← Back</button>
-</div>
 
     <div id="page3b" class="hidden">
         <div class="result-box" style="border-left-color: #e74c3c;">
-            <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include adjusting the TOCO, replacing the monitor, or using internal monitoring. 
+            <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include adjusting the TOCO, replacing the monitor, or using internal monitoring.
         </div>
         <p>If the TOCO remains unreliable, uterine activity must be assessed via manual palpation.</p>
-        <button class="btn" onclick="nextStep('page4')">Continue based on manual palpation</button>
-        <button class="btn btn-primary" onclick="location.reload()">Start Over</button>
+        <button type="button" class="btn" onclick="nextStep('page4')">Continue based on manual palpation</button>
+        <button type="button" class="btn btn-primary" onclick="location.reload()">Start Over</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
     <div id="page3c" class="hidden">
         <h3>Does the IUPC tracing match the clinical picture and palpation?</h3>
-        <button class="btn" onclick="nextStep('page4b')">Yes</button>
-        <button class="btn" onclick="nextStep('page3d')">No</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="nextStep('page4b')">Yes</button>
+        <button type="button" class="btn" onclick="nextStep('page3d')">No</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page3d" class="hidden">
         <div class="result-box" style="border-left-color: #e74c3c;">
-            <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include flushing the system and/or zeroing the IUPC. 
+            <strong>Action Required:</strong> Take steps to resolve the discrepancy as per institutional protocol. This may include flushing the system and/or zeroing the IUPC.
         </div>
         <p>If the IUPC remains unreliable, uterine activity must be assessed via manual palpation.</p>
-        <button class="btn" onclick="nextStep('page4')">Continue based on manual palpation</button>
-        <button class="btn btn-primary" onclick="location.reload()">Start Over</button>
+        <button type="button" class="btn" onclick="nextStep('page4')">Continue based on manual palpation</button>
+        <button type="button" class="btn btn-primary" onclick="location.reload()">Start Over</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
     <div id="page4" class="hidden">
         <h3>Uterine Contraction Frequency</h3>
         <p>Are there greater than 5 contractions in 10 minutes, averaged over 30 minutes?</p>
-        <button class="btn" onclick="nextStep('page5')">No</button>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Frequency exceeds > 5 contractions in 10 minutes averaged over the last 30 minutes.')">Yes</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="nextStep('page5')">No</button>
+        <button type="button" class="btn" onclick="showResult('TACHYSYSTOLE', 'Frequency exceeds > 5 contractions in 10 minutes averaged over the last 30 minutes.')">Yes</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page4b" class="hidden">
         <h3>Contraction Peak Intensity (IUPC)</h3>
         <p>Are there any contractions with a peak &ge; 75 mmHg (not applicable in the second stage)?</p>
-        <button class="btn" onclick="nextStep('page4c')">No</button>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Internal monitoring identifies at least one peak &ge; 75 mmHg.')">Yes</button>
-        <button class="btn" onclick="nextStep('page4c')">Not Applicable - Second Stage</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="nextStep('page4c')">No</button>
+        <button type="button" class="btn" onclick="showResult('TACHYSYSTOLE', 'Internal monitoring identifies at least one peak ≥ 75 mmHg.')">Yes</button>
+        <button type="button" class="btn" onclick="nextStep('page4c')">Not Applicable - Second Stage</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page4c" class="hidden">
         <h3>Resting Tone (IUPC)</h3>
         <p>Is the resting tone &ge; 25 mmHg?</p>
-        <button class="btn" onclick="nextStep('page4')">No</button>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone is &ge; 25 mmHg.')">Yes</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="nextStep('page4')">No</button>
+        <button type="button" class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone is ≥ 25 mmHg.')">Yes</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page5" class="hidden">
         <h3>Contraction Duration</h3>
-        <p>Are there any contractions lasting > 90 seconds in duration?</p>
-        <button class="btn" onclick="nextStep('page6')">No</button>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one contraction lasts > 90 seconds.')">Yes</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <p>Are there any contractions lasting &gt; 90 seconds in duration?</p>
+        <button type="button" class="btn" onclick="nextStep('page6')">No</button>
+        <button type="button" class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one contraction lasts > 90 seconds.')">Yes</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page6" class="hidden">
         <h3>Coupling or Tripling Contractions</h3>
-        <p>Are there any contractions that are coupling or tripling (without returning to a soft uterine tone in between) that have a total duration > 90 seconds?</p>
-        <button class="btn" onclick="nextStep('page7')">No</button>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one set of coupling/tripling contractions has a total duration > 90 seconds.')">Yes</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <p>Are there any contractions that are coupling or tripling (without returning to a soft uterine tone in between) that have a total duration &gt; 90 seconds?</p>
+        <button type="button" class="btn" onclick="nextStep('page7')">No</button>
+        <button type="button" class="btn" onclick="showResult('TACHYSYSTOLE', 'At least one set of coupling/tripling contractions has a total duration > 90 seconds.')">Yes</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page7" class="hidden">
         <h3>Resting Tone Duration</h3>
         <p>Is there &ge; 30 seconds of resting tone between all contractions?</p>
-        <button class="btn" onclick="nextStep('page8')">Yes</button>
-        <button class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone between contractions is < 30 seconds.')">No</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="nextStep('page8')">Yes</button>
+        <button type="button" class="btn" onclick="showResult('TACHYSYSTOLE', 'Resting tone between contractions is < 30 seconds.')">No</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
     <div id="page8" class="hidden">
         <h3>Clinical Presentation</h3>
         <p>Is the patient in constant pain with no periods of relief?</p>
-        <button class="btn" onclick="showResult('NORMAL UTERINE ACTIVITY', 'Uterine activity meets all assessed normal criteria.')">No</button>
-        <button class="btn" onclick="showResult('POSSIBLE TACHYSYSTOLE', 'Patient reports constant pain with no relief; requires further clinical assessment.')">Yes</button>
-        <button class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="showResult('NORMAL UTERINE ACTIVITY', 'Uterine activity meets all assessed normal criteria.')">No</button>
+        <button type="button" class="btn" onclick="showResult('POSSIBLE TACHYSYSTOLE', 'Patient reports constant pain with no relief; requires further clinical assessment.')">Yes</button>
+        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
     </div>
 
-  <div id="resPage" class="hidden">
-    <div id="resHeader"></div>
-    
-   <div id="tachyAlert" class="hidden alert-box">
-        <strong>⚠️ Reminder:</strong> 
-        <p>Tachysystole can reduce placental blood flow and may impact fetal oxygenation status over time, regardless of the current fetal heart rate classification.</p>
+    <div id="resPage" class="hidden">
+        <div id="resHeader" aria-live="polite"></div>
+
+        <div id="tachyAlert" class="hidden alert-box">
+            <strong>⚠️ Reminder:</strong>
+            <p>Tachysystole can reduce placental blood flow and may impact fetal oxygenation status over time, regardless of the current fetal heart rate classification.</p>
+        </div>
+
+        <div id="resRationale" class="result-box" aria-live="polite"></div>
+        <button type="button" class="btn btn-primary" onclick="location.reload()">Start Over</button>
+        <a href="index.html" class="btn btn-exit">Home</a>
     </div>
-
-    <div id="resRationale" class="result-box"></div>
-    <button class="btn btn-primary" onclick="location.reload()">Start Over</button>
-    <a href="index.html" class="btn btn-exit">Home</a>
 </div>
 
-</div>
-
-<script>
-
-    let state = { history: [] };
-
-    function nextStep(id) {
-        const curr = document.querySelector('.container > div:not(.hidden)')?.id;
-        if(curr && curr !== id) state.history.push(curr);
-        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-        document.getElementById(id).classList.remove('hidden');
-        window.scrollTo(0, 0);
-    }
-
-    function prevStep() {
-        if(state.history.length > 0) {
-            document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-            const last = state.history.pop(); // Use state.history
-        document.getElementById(last).classList.remove('hidden');
-        window.scrollTo(0, 0);
-        }
-    }
-
-   function showResult(title, rationale) {
-        const h = document.getElementById('resHeader');
-        h.innerHTML = `<h2 style="color: var(--accent); text-align: center; text-transform: uppercase;">${title}</h2>`;
-        document.getElementById('resRationale').innerHTML = `<strong>Definition & Logic:</strong><br>${rationale}`;
-        
-        // Logic to show/hide the caution banner
-        const alertBox = document.getElementById('tachyAlert');
-        if (title === 'TACHYSYSTOLE') {
-            alertBox.classList.remove('hidden');
-        } else {
-            alertBox.classList.add('hidden');
-        }
-        
-        nextStep('resPage');
-    }
-</script>
 <script src="common.js"></script>
+<script>
+function nextStep(id) {
+    goTo(id);
+}
+
+function prevStep() {
+    goBack();
+}
+
+function showResult(title, rationale) {
+    const header = document.getElementById('resHeader');
+    const rationaleBox = document.getElementById('resRationale');
+    const alertBox = document.getElementById('tachyAlert');
+
+    if (!header || !rationaleBox || !alertBox) return;
+
+    header.innerHTML = '';
+    rationaleBox.innerHTML = '';
+
+    const h2 = document.createElement('h2');
+    h2.style.color = 'var(--accent)';
+    h2.style.textAlign = 'center';
+    h2.style.textTransform = 'uppercase';
+    h2.textContent = title;
+    header.appendChild(h2);
+
+    const strong = document.createElement('strong');
+    strong.textContent = 'Definition & Logic:';
+    rationaleBox.appendChild(strong);
+    rationaleBox.appendChild(document.createElement('br'));
+    rationaleBox.appendChild(document.createTextNode(rationale));
+
+    if (title === 'TACHYSYSTOLE') {
+        alertBox.classList.remove('hidden');
+    } else {
+        alertBox.classList.add('hidden');
+    }
+
+    nextStep('resPage');
+}
+</script>
 </body>
 </html>
