@@ -190,6 +190,9 @@ input[type="number"]:focus:not(:focus-visible) {
     .theme-purple .btn-primary:hover:not(:disabled) {
         background: #8e44ad;
     }
+   .theme-blue .btn-primary:hover:not(:disabled) {
+    background: #2d84d8;
+}
 }
 
 /* Selected state */
