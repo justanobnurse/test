@@ -27,7 +27,7 @@ html {
     --focus-ring: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-body.dark-mode {
+html.dark-mode {
     --primary: #ecf0f1;
     --bg: #1a1a1a;
     --text: #e0e0e0;
@@ -68,6 +68,14 @@ body {
     padding: 20px 0;
     margin-bottom: 30px;
     text-align: center;
+}
+
+.home-hero h1 {
+    margin-bottom: 10px;
+}
+
+.home-hero p {
+    margin-top: 0;
 }
 
 .home-grid {
@@ -132,7 +140,7 @@ body {
         border-color: var(--accent);
     }
 
-    body.dark-mode .btn:hover:not(:disabled):not(.is-selected) {
+    html.dark-mode .btn:hover:not(:disabled):not(.is-selected) {
         background: #444;
     }
 
@@ -239,8 +247,8 @@ body {
     border: none;
 }
 
-body.dark-mode .btn-exit,
-body.dark-mode .btn-back {
+html.dark-mode .btn-exit,
+html.dark-mode .btn-back {
     background: #c0392b;
     color: #f8d7da;
 }
@@ -387,18 +395,18 @@ input[type="number"] {
 }
 
 /* Theme transition helper */
-body.theme-transition,
-body.theme-transition .container,
-body.theme-transition .tool-card,
-body.theme-transition .btn,
-body.theme-transition .footer-btn,
-body.theme-transition .alert-box,
-body.theme-transition .caution-box,
-body.theme-transition .disclaimer-banner,
-body.theme-transition .result-box,
-body.theme-transition .privacy-disclaimer,
-body.theme-transition .check-item,
-body.theme-transition input {
+html.theme-transition,
+html.theme-transition .container,
+html.theme-transition .tool-card,
+html.theme-transition .btn,
+html.theme-transition .footer-btn,
+html.theme-transition .alert-box,
+html.theme-transition .caution-box,
+html.theme-transition .disclaimer-banner,
+html.theme-transition .result-box,
+html.theme-transition .privacy-disclaimer,
+html.theme-transition .check-item,
+html.theme-transition input {
     transition:
         background-color 0.3s ease,
         color 0.3s ease,
