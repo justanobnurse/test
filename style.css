@@ -1,9 +1,11 @@
 /* ==========================================================================
    1. GLOBAL RESET & VARIABLES
    ========================================================================== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent; /* Fixes grey flash on iPhone tap */
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -19,7 +21,10 @@ html {
     --card-bg: #ffffff;
     --border-color: #eee;
     --item-bg: #fafafa;
-    --selected-bg: #e3f2fd; /* Light mode selection color */
+    --selected-bg: #e3f2fd;
+    --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 6px 15px rgba(0, 0, 0, 0.1);
+    --focus-ring: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
 body.dark-mode {
@@ -30,186 +35,78 @@ body.dark-mode {
     --card-bg: #3d3d3d;
     --border-color: #444;
     --item-bg: #333;
-    --selected-bg: #34495e; /* Dark mode selection color */
+    --selected-bg: #34495e;
 }
 
-body { 
-    font-family: 'Segoe UI', system-ui, sans-serif; 
-    background-color: var(--bg); 
-    color: var(--text); 
-    line-height: 1.6; 
-    margin: 0; 
-    display: flex; 
-    justify-content: center; 
+body {
+    margin: 0;
     min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
 /* ==========================================================================
    2. LAYOUT & CONTAINERS
    ========================================================================== */
-.container { 
-    background: var(--container-bg); 
-    max-width: 900px; 
-    width: 95%; 
-    padding: 40px; 
-    border-radius: 12px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
-    margin: 40px auto; 
+.container {
+    width: 95%;
+    max-width: 900px;
     min-height: 600px;
-}
-
-.home-hero { text-align: center; padding: 20px 0; margin-bottom: 30px; }
-.home-grid { display: flex; flex-direction: column; gap: 20px; }
-
-@media (min-width: 768px) {
-    .home-grid { display: grid; grid-template-columns: 1fr 1fr; }
-}
-
-@media (max-width: 600px) {
-    .container { padding: 25px 15px; margin: 15px auto; min-height: auto; }
-}
-
-/* ==========================================================================
-   3. COMPONENTS (CARDS & BUTTONS)
-   ========================================================================== */
-
-/* Shared Interactive Styles */
-.tool-card, .btn, .footer-btn {
+    margin: 40px auto;
+    padding: 40px;
+    background: var(--container-bg);
     border-radius: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    box-shadow: var(--shadow-sm);
 }
 
-/* Focus States & Safari Fixes */
-.btn:focus-visible, .footer-btn:focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 2px;
+.home-hero {
+    padding: 20px 0;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
-.btn:focus:not(:focus-visible), .footer-btn:focus:not(:focus-visible) {
-    outline: none;
-}
-
-/* Hover & Selected Logic */
-.tool-card:hover, 
-.btn:hover:not(:disabled):not(.is-selected), 
-.footer-btn:hover:not(.is-selected) { 
-    transform: translateY(-3px); 
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-}
-
-.btn.is-selected {
-    background: var(--selected-bg) !important;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-    transform: none;
-}
-
-/* Tool Cards */
-.tool-card { 
-    border: 1px solid var(--border-color); 
-    padding: 25px; 
-    background: var(--card-bg); 
-    border-left: 5px solid var(--accent); 
+.home-grid {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    gap: 20px;
 }
-
-.tool-card h2 { margin: 0 0 10px 0; font-size: 1.4rem; color: var(--accent); }
-.tool-card p { margin: 0 0 20px 0; flex-grow: 1; font-size: 0.95rem; line-height: 1.5; }
-.tool-card .btn { margin-top: auto; }
-
-/* Standard Buttons */
-.btn { 
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    width: 100%; 
-    padding: 16px; 
-    margin: 12px 0; 
-    border: 1px solid var(--border-color); 
-    background: var(--card-bg); 
-    cursor: pointer; 
-    font-size: 16px; 
-    text-decoration: none; 
-    color: var(--text); 
-    min-height: 52px;
-    font-weight: bold;
-}
-
-.btn:hover:not(:disabled):not(.is-selected) { background: #f0f7ff; border-color: var(--accent); }
-body.dark-mode .btn:hover:not(:disabled):not(.is-selected) { background: #444; }
-
-.btn-primary { background: var(--accent); color: white !important; border: none; }
-.btn-primary:hover:not(:disabled) { background: #2980b9 !important; }
-
-.btn-exit, .btn-back { background: #e74c3c; color: white !important; border: none; margin-top: 20px; }
-.btn-exit:hover:not(:disabled), .btn-back:hover:not(:disabled) { background: #c0392b !important; }
-
-body.dark-mode .btn-exit, body.dark-mode .btn-back { background: #c0392b; color: #f8d7da !important; }
-
-.footer-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 25px;
-    border-radius: 50px;
-    background: var(--item-bg);
-    color: var(--text);
-    border: 1px solid var(--border-color);
-    font-size: 0.85rem;
-    text-decoration: none;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* ==========================================================================
-   4. INFO BOXES, FORMS & ANIMATIONS
-   ========================================================================== */
-.alert-box, .caution-box, .disclaimer-banner, .result-box, .privacy-disclaimer {
-    padding: 20px; border-radius: 12px; margin: 20px auto; border: 1px solid var(--border-color); border-left-width: 6px; color: var(--text);
-}
-
-.alert-box { background: rgba(231, 76, 60, 0.05); border-color: #e74c3c; }
-.caution-box { background: rgba(243, 156, 18, 0.08); border-color: #f39c12; }
-.disclaimer-banner { background: rgba(0, 128, 128, 0.05); border-color: #008080; max-width: 90%; }
-.result-box { border-left-color: var(--accent); }
-.privacy-disclaimer { background-color: rgba(128, 128, 128, 0.05); text-align: center; max-width: 750px; border-left-width: 1px; }
-
-.check-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--item-bg); border-radius: 8px; border-left: 4px solid var(--border-color); cursor: pointer; margin-bottom: 12px; }
-
-input[type="number"] { background: var(--card-bg); color: var(--text); border: 2px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 1rem; width: 100%; max-width: 120px; }
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-input[type=number] { -moz-appearance: textfield; }
-
-.hidden { display: none; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.container > div:not(.hidden) { animation: fadeIn 0.4s ease-out; }
-
-body.theme-transition, body.theme-transition * {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
-}.home-grid { display: flex; flex-direction: column; gap: 20px; }
 
 @media (min-width: 768px) {
-    .home-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .home-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media (max-width: 600px) {
-    .container { padding: 25px 15px; margin: 15px auto; min-height: auto; }
+    .container {
+        min-height: auto;
+        margin: 15px auto;
+        padding: 25px 15px;
+    }
 }
 
 /* ==========================================================================
    3. COMPONENTS (CARDS & BUTTONS)
    ========================================================================== */
-
-/* Shared Interactive Styles (Base) */
-.tool-card, .btn, .footer-btn {
+.tool-card,
+.btn,
+.footer-btn {
     border-radius: 12px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
-/* Accessibility: Focus Indicators */
+/* Focus states */
 .btn:focus-visible,
 .footer-btn:focus-visible {
     outline: 3px solid var(--accent);
@@ -221,169 +118,386 @@ body.theme-transition, body.theme-transition * {
     outline: none;
 }
 
-/* Hover & Selected States */
-.tool-card:hover, 
-.btn:hover:not(:disabled):not(.is-selected), 
-.footer-btn:hover:not(.is-selected) { 
-    transform: translateY(-3px); 
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+/* Hover only where hover actually exists */
+@media (hover: hover) {
+    .tool-card:hover,
+    .btn:hover:not(:disabled):not(.is-selected),
+    .footer-btn:hover:not(.is-selected) {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-hover);
+    }
+
+    .btn:hover:not(:disabled):not(.is-selected) {
+        background: #f0f7ff;
+        border-color: var(--accent);
+    }
+
+    body.dark-mode .btn:hover:not(:disabled):not(.is-selected) {
+        background: #444;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+        background: #2980b9;
+    }
+
+    .btn-exit:hover:not(:disabled),
+    .btn-back:hover:not(:disabled) {
+        background: #c0392b;
+    }
+
+    .theme-green .btn-primary:hover:not(:disabled) {
+        background: #219653;
+    }
+
+    .theme-pink .btn-primary:hover:not(:disabled) {
+        background: #c2185b;
+    }
+
+    .theme-orange .btn-primary:hover:not(:disabled) {
+        background: #d68910;
+    }
+
+    .theme-purple .btn-primary:hover:not(:disabled) {
+        background: #8e44ad;
+    }
 }
 
-/* FIX: The "is-selected" class (replaces inline background styles) */
+/* Selected state */
 .btn.is-selected {
-    background: var(--selected-bg) !important;
+    background: var(--selected-bg);
     border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2); /* Subtle glow */
-    transform: none; /* Usually, selected items don't need to 'float' */
+    box-shadow: var(--focus-ring);
+    transform: none;
 }
 
-/* Tool Cards */
-.tool-card { 
-    border: 1px solid var(--border-color); 
-    padding: 25px; 
-    background: var(--card-bg); 
-    border-left: 5px solid var(--accent); 
+/* Tool cards */
+.tool-card {
     display: flex;
     flex-direction: column;
     height: 100%;
+    padding: 25px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--accent);
 }
 
-.tool-card h2 { margin: 0 0 10px 0; font-size: 1.4rem; color: var(--accent); }
-.tool-card p { margin: 0 0 20px 0; flex-grow: 1; font-size: 0.95rem; line-height: 1.5; }
-.tool-card .btn { margin-top: auto; }
+.tool-card h2,
+.tool-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.4rem;
+    color: var(--accent);
+}
 
-/* Standard Buttons */
-.btn { 
-    display: flex; 
+.tool-card p {
+    flex-grow: 1;
+    margin: 0 0 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.tool-card .btn {
+    margin-top: auto;
+}
+
+/* Standard buttons */
+.btn {
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%; 
-    padding: 16px; 
-    margin: 12px 0; 
-    border: 1px solid var(--border-color); 
-    background: var(--card-bg); 
-    cursor: pointer; 
-    font-size: 16px; 
-    text-decoration: none; 
-    color: var(--text); 
+    width: 100%;
     min-height: 52px;
-    font-weight: bold;
+    margin: 12px 0;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
 }
 
-/* Standard Button Hover Colors */
-.btn:hover:not(:disabled):not(.is-selected) { 
-    background: #f0f7ff; 
-    border-color: var(--accent);
+/* Disabled state */
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
-body.dark-mode .btn:hover:not(:disabled):not(.is-selected) { 
-    background: #444; 
+/* Button variants */
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
 }
 
-/* Button Variants (Primary & Exit) */
-.btn-primary { 
-    background: var(--accent); 
-    color: white !important; 
-    border: none; 
-}
-.btn-primary:hover:not(:disabled) { 
-    background: #2980b9 !important; 
+.btn-exit,
+.btn-back {
+    margin-top: 20px;
+    background: #e74c3c;
+    color: #fff;
+    border: none;
 }
 
-.btn-exit, .btn-back { 
-    background: #e74c3c; 
-    color: white !important; 
-    border: none; 
-    margin-top: 20px; 
-}
-.btn-exit:hover:not(:disabled), .btn-back:hover:not(:disabled) { 
-    background: #c0392b !important; 
+body.dark-mode .btn-exit,
+body.dark-mode .btn-back {
+    background: #c0392b;
+    color: #f8d7da;
 }
 
-body.dark-mode .btn-exit, 
-body.dark-mode .btn-back { 
-    background: #c0392b; 
-    color: #f8d7da !important; 
-}
-
-/* Footer Pill Buttons */
+/* Footer pill buttons */
 .footer-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 25px;
-    border-radius: 50px; /* Pill shape */
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
     background: var(--item-bg);
     color: var(--text);
-    border: 1px solid var(--border-color);
-    font-size: 0.85rem;
-    text-decoration: none;
     cursor: pointer;
-    font-weight: bold;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
 }
+
 /* ==========================================================================
-   4. SHARED NOTIFICATION BOXES
+   4. INFO / NOTIFICATION BOXES
    ========================================================================== */
-.alert-box, .caution-box, .disclaimer-banner, .result-box, .privacy-disclaimer {
-    padding: 20px;
-    border-radius: 12px;
+.alert-box,
+.caution-box,
+.disclaimer-banner,
+.result-box,
+.privacy-disclaimer {
     margin: 20px auto;
+    padding: 20px;
     border: 1px solid var(--border-color);
     border-left-width: 6px;
+    border-radius: 12px;
     color: var(--text);
 }
 
-.alert-box { background: rgba(231, 76, 60, 0.05); border-color: #e74c3c; }
-.caution-box { background: rgba(243, 156, 18, 0.08); border-color: #f39c12; }
-.disclaimer-banner { background: rgba(0, 128, 128, 0.05); border-color: #008080; max-width: 90%; }
-.result-box { border-left-color: var(--accent); }
-.privacy-disclaimer { background-color: rgba(128, 128, 128, 0.05); text-align: center; max-width: 750px; border-left-width: 1px; }
+.alert-box {
+    background: rgba(231, 76, 60, 0.05);
+    border-color: #e74c3c;
+}
+
+.caution-box {
+    background: rgba(243, 156, 18, 0.08);
+    border-color: #f39c12;
+}
+
+.disclaimer-banner {
+    max-width: 90%;
+    background: rgba(0, 128, 128, 0.05);
+    border-color: #008080;
+}
+
+.result-box {
+    border-left-color: var(--accent);
+}
+
+.privacy-disclaimer {
+    max-width: 750px;
+    text-align: center;
+    background-color: rgba(128, 128, 128, 0.05);
+    border-left-width: 1px;
+}
 
 /* Typography inside boxes */
-.alert-box strong, .caution-box strong, .disclaimer-banner strong, .privacy-disclaimer strong {
+.alert-box strong,
+.caution-box strong,
+.disclaimer-banner strong,
+.privacy-disclaimer strong {
     display: inline-block;
     margin-bottom: 4px;
     font-size: 1rem;
 }
-.alert-box strong { color: #c0392b; }
-.caution-box strong { color: #f39c12; }
-.disclaimer-banner strong, .privacy-disclaimer strong { color: #008080; }
 
-.check-item { 
-    display: flex; align-items: center; gap: 12px; padding: 14px; 
-    background: var(--item-bg); border-radius: 8px; 
-    border-left: 4px solid var(--border-color); cursor: pointer; margin-bottom: 12px;
+.alert-box strong {
+    color: #c0392b;
+}
+
+.caution-box strong {
+    color: #f39c12;
+}
+
+.disclaimer-banner strong,
+.privacy-disclaimer strong {
+    color: #008080;
+}
+
+/* Checklist items */
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 14px;
+    background: var(--item-bg);
+    border-left: 4px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 /* ==========================================================================
    5. FORM ELEMENTS
    ========================================================================== */
 input[type="number"] {
-    background: var(--card-bg); 
-    color: var(--text); 
-    border: 2px solid var(--border-color); 
-    border-radius: 8px; 
-    padding: 12px; 
-    font-size: 1rem; 
-    width: 100%; 
+    width: 100%;
     max-width: 120px;
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 1rem;
 }
 
-input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-input[type=number] { -moz-appearance: textfield; }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
 
-.hidden { display: none; }
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.hidden {
+    display: none;
+}
 
 /* ==========================================================================
    6. ANIMATIONS
    ========================================================================== */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.container > div:not(.hidden) { animation: fadeIn 0.4s ease-out; }
+.container > div:not(.hidden) {
+    animation: fadeIn 0.4s ease-out;
+}
 
-body.theme-transition, body.theme-transition * {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+/* Theme transition helper */
+body.theme-transition,
+body.theme-transition .container,
+body.theme-transition .tool-card,
+body.theme-transition .btn,
+body.theme-transition .footer-btn,
+body.theme-transition .alert-box,
+body.theme-transition .caution-box,
+body.theme-transition .disclaimer-banner,
+body.theme-transition .result-box,
+body.theme-transition .privacy-disclaimer,
+body.theme-transition .check-item,
+body.theme-transition input {
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ==========================================================================
+   7. INDEX PAGE SPECIFIC THEMES & FOOTER
+   ========================================================================== */
+.site-footer {
+    margin-top: 50px;
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    color: #7f8c8d;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.version-text {
+    margin-top: 20px;
+    color: #888;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* Theme variants */
+.theme-green {
+    border-left-color: #27ae60;
+}
+
+.theme-green h2,
+.theme-green h3 {
+    color: #27ae60;
+}
+
+.theme-green .btn-primary {
+    background: #27ae60;
+}
+
+.theme-blue {
+    border-left-color: #3498db;
+}
+
+.theme-blue h2,
+.theme-blue h3 {
+    color: #3498db;
+}
+
+.theme-blue .btn-primary {
+    background: #3498db;
+}
+
+.theme-pink {
+    border-left-color: #e91e63;
+}
+
+.theme-pink h2,
+.theme-pink h3 {
+    color: #e91e63;
+}
+
+.theme-pink .btn-primary {
+    background: #e91e63;
+}
+
+.theme-orange {
+    border-left-color: #f39c12;
+}
+
+.theme-orange h2,
+.theme-orange h3 {
+    color: #f39c12;
+}
+
+.theme-orange .btn-primary {
+    background: #f39c12;
+}
+
+.theme-purple {
+    border-left-color: #9b59b6;
+}
+
+.theme-purple h2,
+.theme-purple h3 {
+    color: #9b59b6;
+}
+
+.theme-purple .btn-primary {
+    background: #9b59b6;
 }
