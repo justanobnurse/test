@@ -207,7 +207,6 @@ body {
     margin-top: auto;
 }
 
-/* Standard buttons */
 .btn {
     display: flex;
     align-items: center;
@@ -216,13 +215,18 @@ body {
     min-height: 52px;
     margin: 12px 0;
     padding: 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #dcdfe3;
     background: #f7f9fb;
     color: var(--text);
     cursor: pointer;
     font-size: 16px;
     font-weight: 700;
     text-decoration: none;
+}
+
+html.dark-mode .btn {
+    border-color: var(--border-color);
+    background: var(--card-bg);
 }
 
 /* Disabled state */
