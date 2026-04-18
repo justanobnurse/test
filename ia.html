@@ -104,7 +104,7 @@
         <hr style="margin: 30px 0; border: 0; border-top: 2px solid var(--border-color);">
         <h3>Systematic Assessment Summary</h3>
         <div id="audit" class="result-box"></div>
-        <button class="btn btn-primary" onclick="resetTool()">Classify Another</button>
+        <button class="btn btn-primary" onclick="location.reload()">Classify Another</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
@@ -235,34 +235,6 @@ if (state.audit.device === 'EFM Ultrasound') {
 
         nextStep('page10');
     }
-	function resetTool() {
-    // 1. Reset the JavaScript state object
-    state = {
-        history: [],
-        findings: {},
-        audit: { device: '' }
-    };
-
-    // 2. Manually clear the input field
-    const fhrInput = document.getElementById('fhrInput');
-    if (fhrInput) {
-        fhrInput.value = "";
-    }
-
-    // 3. Reset the "Continue" button state for the FHR page
-    const fhrBtn = document.getElementById('fhrBtn');
-    if (fhrBtn) {
-        fhrBtn.disabled = true;
-        fhrBtn.style.opacity = "0.5";
-    }
-
-    // 4. Send the user back to the start (Page 1)
-    // We don't use nextStep here because we don't want Page 10 in the history
-    document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-    document.getElementById('page1').classList.remove('hidden');
-    
-    window.scrollTo(0, 0);
-}
 </script>
 <script src="common.js"></script>
 </body>
