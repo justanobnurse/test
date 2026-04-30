@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FHS CEFM Classifier</title>
-  <script src="theme-loader.js"></script>
-<link rel="stylesheet" href="style.css">
+    <script src="theme-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
 
-  <div id="page1">
+    <!-- ==========================================================================
+       1. START / DISCLAIMER
+       ========================================================================== -->
+
+    <div id="page1">
         <h2 style="text-align: center; font-size: 2.2rem; color: #27ae60; margin-bottom: 25px;">CEFM Classifier</h2>
-        
+
         <div class="disclaimer-banner">
             <strong>Terms of Use & Disclaimer:</strong>
             <p>This tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
-            
+
             <ul>
                 <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
                 <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
@@ -24,24 +28,32 @@
                 <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
                 <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
             </ul>
-            
+
             <p style="display:block; margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "I Understand," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
 
         <button type="button" class="btn btn-primary" style="margin-top: 20px;" onclick="goTo('page2')">I Understand & Accept - Begin</button>
+
         <div style="margin-top: 10px;">
             <a href="index.html" class="btn btn-exit">Exit to Home</a>
         </div>
     </div>
 
+    <!-- ==========================================================================
+       2. MONITOR TYPE / INTERPRETABILITY
+       ========================================================================== -->
+
     <div id="page2" class="hidden">
         <h3>What type of monitors are being used?</h3>
+
         <p><strong>Fetal Heart Monitor:</strong></p>
         <button id="f-us" type="button" class="btn" onclick="selF('External Ultrasound', 'us')">External Ultrasound</button>
         <button id="f-fse" type="button" class="btn" onclick="selF('Internal Fetal Scalp Electrode (FSE)', 'fse')">Internal Fetal Scalp Electrode (FSE)</button>
+
         <p><strong>Uterine Activity Monitor:</strong></p>
         <button id="u-toco" type="button" class="btn" onclick="selU('External Tocodynamometer (TOCO)', 'toco')">External Tocodynamometer (TOCO)</button>
         <button id="u-iupc" type="button" class="btn" onclick="selU('Internal Uterine Pressure Catheter (IUPC)', 'iupc')">Internal Uterine Pressure Catheter (IUPC)</button>
+
         <button id="page2-next" type="button" class="btn btn-primary" disabled onclick="goTo('page3')">Continue</button>
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
@@ -53,19 +65,24 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
- <div id="page4a" class="hidden">
-    <div class="alert-box">
-        <strong>⚠️ UNABLE TO CLASSIFY: UNINTERPRETABLE STRIP</strong>
-        <p>Consider the following troubleshooting tips to improve quality:</p>
-        <ul>
-            <li>Reposition the monitor; add ultrasound gel; minimize motion when clinically necessary</li>
-            <li>If using wireless monitors, confirm battery and connection; consider switching to wired monitors; try different monitoring equipment if necessary</li>
-            <li>Consider internal monitoring if clinically indicated and patient consents</li>
-        </ul>
+    <div id="page4a" class="hidden">
+        <div class="alert-box">
+            <strong>⚠️ UNABLE TO CLASSIFY: UNINTERPRETABLE STRIP</strong>
+            <p>Consider the following troubleshooting tips to improve quality:</p>
+            <ul>
+                <li>Reposition the monitor; add ultrasound gel; minimize motion when clinically necessary</li>
+                <li>If using wireless monitors, confirm battery and connection; consider switching to wired monitors; try different monitoring equipment if necessary</li>
+                <li>Consider internal monitoring if clinically indicated and patient consents</li>
+            </ul>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Classify Another CEFM Strip</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
-    <button type="button" class="btn btn-primary" onclick="resetTool()">Classify Another CEFM Strip</button>
-    <a href="index.html" class="btn btn-exit">Exit to Home</a>
-</div>
+
+    <!-- ==========================================================================
+       3. UTERINE ACTIVITY
+       ========================================================================== -->
 
     <div id="page4" class="hidden">
         <h3>Uterine Activity (External)</h3>
@@ -82,22 +99,30 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-   <div id="page5" class="hidden">
-    <h3>Maternal Factors</h3>
-    <div class="checklist">
-        <label class="check-item" style="border-left-color: #27ae60;">
-            <input type="checkbox" id="mat-none" value="None"> <strong>None</strong>
-        </label>
-        <hr>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Tachycardia"> Maternal Tachycardia (>110bpm)</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Fever"> Maternal Fever (>38.0°C)</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Cardiac Arrhythmia"> Maternal Cardiac Arrhythmia</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypotension"> Maternal Hypotension</label>
-        <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypoxia"> Maternal Hypoxia (Oxygen Saturation < 95%)</label>
+    <!-- ==========================================================================
+       4. MATERNAL FACTORS / MATERNAL-FETAL HEART RATE COINCIDENCE
+       ========================================================================== -->
+
+    <div id="page5" class="hidden">
+        <h3>Maternal Factors</h3>
+
+        <div class="checklist">
+            <label class="check-item" style="border-left-color: #27ae60;">
+                <input type="checkbox" id="mat-none" value="None"> <strong>None</strong>
+            </label>
+
+            <hr>
+
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Tachycardia"> Maternal Tachycardia (>110bpm)</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Fever"> Maternal Fever (>38.0°C)</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Cardiac Arrhythmia"> Maternal Cardiac Arrhythmia</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypotension"> Maternal Hypotension</label>
+            <label class="check-item"><input type="checkbox" class="mat-factor" value="Maternal Hypoxia"> Maternal Hypoxia (Oxygen Saturation < 95%)</label>
+        </div>
+
+        <button id="mat-next" type="button" class="btn btn-primary" disabled onclick="setMat()">Continue</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
-    <button id="mat-next" type="button" class="btn btn-primary" disabled onclick="setMat()">Continue</button>
-    <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
-</div>
 
     <div id="page6" class="hidden">
         <h3>Maternal-Fetal Heart Rate Coincidence?</h3>
@@ -106,30 +131,35 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-   <div id="page7a" class="hidden">
-    <div class="alert-box">
-        <strong>⚠️ UNABLE TO CLASSIFY: IMMEDIATE ACTION REQUIRED</strong>
-        <p>Promptly take all necessary steps to resolve maternal-fetal heart rate coincidence and reassess the fetal status once resolved:</p>
-        <ul>
-            <li>Place oximeter on maternal finger / Manually assess maternal pulse rate</li>
-            <li>Reposition external fetal monitor</li>
-            <li>Consider Internal Fetal Scalp Electrode (FSE)</li>
-            <li>If coincidence continues with FSE in place, consider a real-time bedside ultrasound to verify fetal heart rate and distinguish from maternal heart rate</li>
-        </ul>
+    <div id="page7a" class="hidden">
+        <div class="alert-box">
+            <strong>⚠️ UNABLE TO CLASSIFY: IMMEDIATE ACTION REQUIRED</strong>
+            <p>Promptly take all necessary steps to resolve maternal-fetal heart rate coincidence and reassess the fetal status once resolved:</p>
+            <ul>
+                <li>Place oximeter on maternal finger / Manually assess maternal pulse rate</li>
+                <li>Reposition external fetal monitor</li>
+                <li>Consider Internal Fetal Scalp Electrode (FSE)</li>
+                <li>If coincidence continues with FSE in place, consider a real-time bedside ultrasound to verify fetal heart rate and distinguish from maternal heart rate</li>
+            </ul>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Classify Another CEFM Strip</button>
+        <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
-    <button type="button" class="btn btn-primary" onclick="resetTool()">Classify Another CEFM Strip</button>
-    <a href="index.html" class="btn btn-exit">Exit to Home</a>
-</div>
-                
-   <div id="page7" class="hidden">
+
+    <!-- ==========================================================================
+       5. BASELINE / TREND
+       ========================================================================== -->
+
+    <div id="page7" class="hidden">
         <h3>What is the fetal heart rate baseline (rounded to the nearest 5bpm)?</h3>
         <input type="number" id="baseIn" placeholder="BPM" style="padding:10px; width:100px; margin-bottom:10px;" oninput="validateBaseInput()"><br>
-        
+
         <button id="baseContinueBtn" type="button" class="btn btn-primary" onclick="evalBase()" disabled>Continue</button>
-        
+
         <button type="button" class="btn" onclick="goTo('page7c')">Indeterminate</button>
         <button type="button" class="btn" onclick="setTachy('ABNORMAL','Erratic Baseline (>10 minutes)', true)">Erratic Baseline</button>
-        
+
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
@@ -138,7 +168,7 @@
         <button type="button" class="btn" onclick="setTachy('NORMAL','Tachycardia < 30 minutes')">&lt; 30 minutes</button>
         <button type="button" class="btn" onclick="setTachy('ATYPICAL','Tachycardia 30-80 minutes')">30 - 80 minutes</button>
         <button type="button" class="btn" onclick="setTachy('ABNORMAL','Tachycardia &ge; 80 minutes')">&ge; 80 minutes</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page7c" class="hidden">
@@ -146,7 +176,7 @@
         <button type="button" class="btn" onclick="goTo('page4a')">Poor Tracing Quality</button>
         <button type="button" class="btn" onclick="setTachy('ABNORMAL','Marked Variability &ge; 10 minutes', true)">Marked Variability (&ge; 10 minutes)</button>
         <button type="button" class="btn" onclick="setTachy('ABNORMAL','Sinusoidal Pattern', true)">Sinusoidal</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page8" class="hidden">
@@ -156,30 +186,34 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-   <div id="page9" class="hidden">
+    <!-- ==========================================================================
+       6. VARIABILITY / ACCELERATIONS
+       ========================================================================== -->
+
+    <div id="page9" class="hidden">
         <h3>Baseline Variability</h3>
         <button type="button" class="btn" onclick="setVar('NORMAL','Moderate Variability','page10')">Moderate (6-25bpm)</button>
         <button type="button" class="btn" onclick="goToVarDuration('Minimal')">Minimal (≤5bpm)</button>
         <button type="button" class="btn" onclick="goToVarDuration('Absent')">Absent (amplitude undetectable)</button>
-        
+
         <button type="button" class="btn" onclick="goTo('page9b')">Marked (>25bpm)</button>
         <button type="button" class="btn" onclick="setVar('ABNORMAL','Sinusoidal Pattern','FINAL')">Sinusoidal</button>
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-   <div id="page9a" class="hidden">
-    <h3>Minimal or Absent Variability Duration?</h3>
-    <button type="button" class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
-    <button type="button" class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
-    <button type="button" class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
-    <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
-</div>
+    <div id="page9a" class="hidden">
+        <h3>Minimal or Absent Variability Duration?</h3>
+        <button type="button" class="btn" onclick="setVar('NORMAL','Minimal/Absent Variability < 40 minutes','page10')">&lt; 40 minutes</button>
+        <button type="button" class="btn" onclick="setVar('ATYPICAL','Minimal/Absent Variability 40-80 minutes','page10')">40 - 80 minutes</button>
+        <button type="button" class="btn" onclick="setVar('ABNORMAL','Minimal/Absent Variability &ge; 80 minutes','page10')">&ge; 80 minutes</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+    </div>
 
     <div id="page9b" class="hidden">
         <h3>Marked Variability Duration?</h3>
         <button type="button" class="btn" onclick="setVar('NORMAL','Marked Variability < 10 minutes','page10')">&lt; 10 minutes</button>
         <button type="button" class="btn" onclick="setVar('ABNORMAL','Marked Variability &ge; 10 minutes','FINAL')">&ge; 10 minutes</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page10" class="hidden">
@@ -191,81 +225,100 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-<div id="page11" class="hidden">
-    <h3>Are there any decelerations?</h3>
-    <p class="tip">Select all that apply.</p>
-    <div class="checklist">
-        <label class="check-item" style="border-left-color: #27ae60;">
-            <input type="checkbox" id="d-none"> <strong>None</strong>
-        </label>
-        <hr>
+    <!-- ==========================================================================
+       7. DECELERATIONS
+       ========================================================================== -->
 
-        <label class="check-item">
-            <input type="checkbox" id="d-uv" class="decel-factor"> Uncomplicated Variable Deceleration
-        </label>
+    <div id="page11" class="hidden">
+        <h3>Are there any decelerations?</h3>
+        <p class="tip">Select all that apply.</p>
 
-        <div id="uv-caution" class="hidden caution-box">
-            <strong>⚠️ Caution:</strong>
-            <p>A baseline abnormality was selected. A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure the correct selection is made based on the full clinical picture and appropriate deceleration identification.</p>
+        <div class="checklist">
+            <label class="check-item" style="border-left-color: #27ae60;">
+                <input type="checkbox" id="d-none"> <strong>None</strong>
+            </label>
+
+            <hr>
+
+            <label class="check-item">
+                <input type="checkbox" id="d-uv" class="decel-factor"> Uncomplicated Variable Deceleration
+            </label>
+
+            <div id="uv-caution" class="hidden caution-box">
+                <strong>⚠️ Caution:</strong>
+                <p>A baseline abnormality was selected. A variable deceleration in the presence of a baseline abnormality (Tachycardia, Bradycardia, Minimal or Absent Variability) is classified as a <strong>Complicated Variable</strong>. Ensure the correct selection is made based on the full clinical picture and appropriate deceleration identification.</p>
+            </div>
+
+            <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor"> Complicated Variable Deceleration</label>
+            <label class="check-item"><input type="checkbox" id="d-early" class="decel-factor"> Early Deceleration</label>
+            <label class="check-item"><input type="checkbox" id="d-late" class="decel-factor"> Late Deceleration</label>
+            <label class="check-item"><input type="checkbox" id="d-pro" class="decel-factor"> Prolonged Deceleration</label>
         </div>
 
-        <label class="check-item"><input type="checkbox" id="d-cv" class="decel-factor"> Complicated Variable Deceleration</label>
-        <label class="check-item"><input type="checkbox" id="d-early" class="decel-factor"> Early Deceleration</label>
-        <label class="check-item"><input type="checkbox" id="d-late" class="decel-factor"> Late Deceleration</label>
-        <label class="check-item"><input type="checkbox" id="d-pro" class="decel-factor"> Prolonged Deceleration</label>
+        <button id="decel-next" type="button" class="btn btn-primary" disabled onclick="startDecelFlow()">Classify</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
-    <button id="decel-next" type="button" class="btn btn-primary" disabled onclick="startDecelFlow()">Classify</button>
-    <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
-</div>
 
     <div id="page11a" class="hidden">
         <h3>Uncomplicated Variable Decelerations are:</h3>
         <button type="button" class="btn" onclick="logDecel('uv','ATYPICAL','Repetitive Uncomplicated Variable Decelerations')">Repetitive (&ge;3)</button>
         <button type="button" class="btn" onclick="logDecel('uv','NORMAL','Non-Repetitive Uncomplicated Variable Decelerations')">Non-Repetitive (1-2)</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
+
     <div id="page11b" class="hidden">
         <h3>Complicated Variable Decelerations are:</h3>
         <button type="button" class="btn" onclick="logDecel('cv','ABNORMAL','Repetitive Complicated Variable Decelerations')">Repetitive (&ge;3)</button>
         <button type="button" class="btn" onclick="logDecel('cv','ATYPICAL','Non-Repetitive Complicated Variable Decelerations')">Non-Repetitive (1-2)</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
+
     <div id="page11c" class="hidden">
         <h3>Late Decelerations are:</h3>
         <button type="button" class="btn" onclick="logDecel('late','ABNORMAL','Recurrent Late Decelerations (&ge;50%)')">Recurrent (&ge;50%)</button>
         <button type="button" class="btn" onclick="logDecel('late','ATYPICAL','Intermittent Late Decelerations (<50%)')">Intermittent (< 50%)</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
+
     <div id="page11d" class="hidden">
         <h3>Prolonged Decelerations Count?</h3>
         <button type="button" class="btn" onclick="goTo('page11e')">Exactly 1</button>
         <button type="button" class="btn" onclick="logDecel('pro','ABNORMAL','More than 1 Prolonged Deceleration')">More than 1</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
+
     <div id="page11e" class="hidden">
         <h3>Prolonged Deceleration Duration?</h3>
         <button type="button" class="btn" onclick="logDecel('pro','ATYPICAL','Prolonged Deceleration 2-3 minutes')">2 to 3 minutes</button>
         <button type="button" class="btn" onclick="logDecel('pro','ABNORMAL','Prolonged Deceleration 3-10 minutes')">3 to 10 minutes</button>
-	<button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
+
+    <!-- ==========================================================================
+       8. FINAL RESULT
+       ========================================================================== -->
 
     <div id="page12" class="hidden">
         <h1 id="finalRank" style="font-size: 3rem; text-align: center; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;"></h1>
         <div id="resBox"></div>
+
         <hr style="margin: 30px 0; border: 0; border-top: 2px solid #eee;">
+
         <h3>Systematic Assessment Summary</h3>
-       <div id="audit" class="result-box" style="line-height: 1.8;"></div>
+        <div id="audit" class="result-box" style="line-height: 1.8;"></div>
+
         <button type="button" class="btn btn-primary" onclick="resetTool()">Classify Another</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
 </div>
-<script src="common.js"></script>
-<script>
 
-/* ================================
-   STATE
-================================ */
+<script src="common.js"></script>
+
+<script>
+/* ==========================================================================
+   1. STATE
+   ========================================================================== */
 
 let state = {
     tempVarType: null,
@@ -284,10 +337,9 @@ let state = {
     decelQueue: []
 };
 
-
-/* ================================
-   DOM HELPERS
-================================ */
+/* ==========================================================================
+   2. DOM HELPERS
+   ========================================================================== */
 
 const $ = id => document.getElementById(id);
 const $$ = selector => document.querySelectorAll(selector);
@@ -297,9 +349,9 @@ function setButtonState(btn, enabled) {
     btn.disabled = !enabled;
 }
 
-/* ================================
-   NAVIGATION
-================================ */
+/* ==========================================================================
+   3. PAGE-SPECIFIC LOGIC HOOK
+   ========================================================================== */
 
 function handlePageLogic(id) {
     if (id === 'page2') chkM();
@@ -322,9 +374,9 @@ function handlePageLogic(id) {
     }
 }
 
-/* ================================
-   VALIDATION HELPERS
-================================ */
+/* ==========================================================================
+   4. VALIDATION HELPERS
+   ========================================================================== */
 
 function validateCheckboxGroup(noneId, groupClass, btnId) {
     const noneEl = $(noneId);
@@ -364,29 +416,25 @@ function validateBaseInput() {
     setButtonState(btn, value !== '' && Number.isFinite(bpm) && bpm > 0);
 }
 
-
-/* ================================
-   SELECTION FUNCTIONS
-================================ */
+/* ==========================================================================
+   5. MONITOR SELECTION
+   ========================================================================== */
 
 function selF(l, c) {
     state.audit.fhrMon = l;
-    // This tells common.js to handle the highlight using CSS classes
-    setSelected(['f-us', 'f-fse'], `f-${c}`); 
+    setSelected(['f-us', 'f-fse'], `f-${c}`);
     chkM();
 }
-    
+
 function selU(l, c) {
     state.audit.uaMon = l;
-    // This tells common.js to handle the highlight using CSS classes
-    setSelected(['u-toco', 'u-iupc'], `u-${c}`); 
+    setSelected(['u-toco', 'u-iupc'], `u-${c}`);
     chkM();
 }
 
-
-/* ================================
-   FLOW LOGIC
-================================ */
+/* ==========================================================================
+   6. UTERINE ACTIVITY / MATERNAL FACTORS
+   ========================================================================== */
 
 function handleInt() {
     const uaMon = state.audit.uaMon || '';
@@ -418,10 +466,9 @@ function setMat() {
     goTo('page6');
 }
 
-
-/* ================================
-   BASELINE EVALUATION
-================================ */
+/* ==========================================================================
+   7. BASELINE EVALUATION
+   ========================================================================== */
 
 function evalBase() {
     const input = $('baseIn');
@@ -445,6 +492,7 @@ function evalBase() {
         goTo('page8');
     }
 }
+
 function setTachy(cat, detail, bypass = false) {
     state.audit.baseDetail = { cat, detail };
 
@@ -472,10 +520,9 @@ function setTachy(cat, detail, bypass = false) {
     finalize();
 }
 
-
-/* ================================
-   VARIABILITY / TREND / ACCELS
-================================ */
+/* ==========================================================================
+   8. TREND / VARIABILITY / ACCELERATIONS
+   ========================================================================== */
 
 function setTrend(cat, detail) {
     state.audit.trend = { cat, detail };
@@ -504,8 +551,7 @@ function setVar(cat, detail, next) {
     if (finalDetail === 'Sinusoidal Pattern') {
         state.audit.base = 'Indeterminate (Sinusoidal)';
         state.audit.variability.isBypass = true;
-    }
-    else if (finalDetail.includes('Marked')) {
+    } else if (finalDetail.includes('Marked')) {
         state.audit.base = 'Indeterminate (Marked)';
         state.audit.variability.isBypass = true;
     }
@@ -522,10 +568,9 @@ function setAcc(cat, detail) {
     goTo('page11');
 }
 
-
-/* ================================
-   DECEL FLOW
-================================ */
+/* ==========================================================================
+   9. DECELERATION FLOW
+   ========================================================================== */
 
 function startDecelFlow() {
     state.audit.decels = {};
@@ -541,6 +586,7 @@ function startDecelFlow() {
             if (i.id === 'd-cv') state.decelQueue.push('page11b');
             if (i.id === 'd-late') state.decelQueue.push('page11c');
             if (i.id === 'd-pro') state.decelQueue.push('page11d');
+
             if (i.id === 'd-early') {
                 state.audit.decels.early = { cat: 'NORMAL', detail: 'Early Decelerations' };
             }
@@ -561,10 +607,9 @@ function logDecel(key, cat, detail) {
     nextDecel();
 }
 
-
-/* ================================
-   UV CAUTION
-================================ */
+/* ==========================================================================
+   10. UNCOMPLICATED VARIABLE CAUTION
+   ========================================================================== */
 
 function handleUVCaution() {
     const uvCaution = $('uv-caution');
@@ -581,12 +626,10 @@ function handleUVCaution() {
     uvCaution.classList.toggle('hidden', !(baselineAbnormal || varAbnormal));
 }
 
+/* ==========================================================================
+   11. FINAL RESULT RENDERING
+   ========================================================================== */
 
-/* ================================
-   FINALIZE
-================================ */
-
-// SECURE HELPER FUNCTION: Replaces the old buildFeatureList
 function renderSecureList(container, features, color, title) {
     if (!features.length) return;
 
@@ -604,7 +647,7 @@ function renderSecureList(container, features, color, title) {
     features.forEach(f => {
         if (f.detail !== 'N/A' && !f.isBypass) {
             const li = document.createElement('li');
-            li.textContent = f.detail; // This makes it 100% safe from XSS
+            li.textContent = f.detail;
             ul.appendChild(li);
         }
     });
@@ -638,29 +681,27 @@ function finalize() {
     }
 
     const rEl = $('finalRank');
-    rEl.textContent = finalRank; // textContent is safer than innerText
+    rEl.textContent = finalRank;
     rEl.style.color = rankColor;
 
     const resBox = $('resBox');
-    resBox.innerHTML = ''; // Clear previous content
+    resBox.innerHTML = '';
 
-    // Handle Tachysystole (Secure Static Warning)
     if (state.audit.ua.includes('Tachysystole')) {
         const tachBox = document.createElement('div');
         tachBox.className = 'caution-box';
-        
+
         const tachStrong = document.createElement('strong');
         tachStrong.textContent = '⚠️ Note: ';
-        
+
         const tachP = document.createElement('p');
         tachP.textContent = 'Tachysystole is present. While tachysystole alone does not change the classification of the CEFM strip, steps should be taken to resolve tachysystole to optimize fetal oxygenation, regardless of the fetal heart rate classification.';
-        
+
         tachBox.appendChild(tachStrong);
         tachBox.appendChild(tachP);
         resBox.appendChild(tachBox);
     }
 
-    // Handle Findings (Secure Data Injection)
     if (finalRank === 'ABNORMAL') {
         renderSecureList(resBox, abnormal, '#e74c3c', "Why it's Abnormal:");
         renderSecureList(resBox, atypical, '#f39c12', "Atypical Features:");
@@ -675,14 +716,13 @@ function finalize() {
         resBox.appendChild(p);
     }
 
-    let decelSummary = Object.values(state.audit.decels)
+    const decelSummary = Object.values(state.audit.decels)
         .map(f => f.detail)
-        .join(', ') || "No Decelerations";
+        .join(', ') || 'No Decelerations';
 
-    // Securely build the Audit Table Grid
     const auditBox = $('audit');
-    auditBox.innerHTML = ''; // Clear previous
-    
+    auditBox.innerHTML = '';
+
     const auditGrid = document.createElement('div');
     auditGrid.style.display = 'grid';
     auditGrid.style.gridTemplateColumns = '1fr 1fr';
@@ -718,10 +758,9 @@ function finalize() {
     goTo('page12');
 }
 
-
-/* ================================
-   SMART TOGGLES
-================================ */
+/* ==========================================================================
+   12. SMART CHECKBOX TOGGLES
+   ========================================================================== */
 
 function setupSmartToggles() {
     const matNone = $('mat-none');
@@ -729,14 +768,22 @@ function setupSmartToggles() {
 
     if (matNone) {
         matNone.addEventListener('change', function () {
-            if (this.checked) matFactors.forEach(f => { f.checked = false; });
+            if (this.checked) {
+                matFactors.forEach(f => {
+                    f.checked = false;
+                });
+            }
+
             validateMat();
         });
     }
 
     matFactors.forEach(f => {
         f.addEventListener('change', function () {
-            if (this.checked && matNone) matNone.checked = false;
+            if (this.checked && matNone) {
+                matNone.checked = false;
+            }
+
             validateMat();
         });
     });
@@ -746,20 +793,28 @@ function setupSmartToggles() {
 
     if (decelNone) {
         decelNone.addEventListener('change', function () {
-            if (this.checked) decelFactors.forEach(d => { d.checked = false; });
+            if (this.checked) {
+                decelFactors.forEach(d => {
+                    d.checked = false;
+                });
+            }
+
             validateDecel();
         });
     }
 
     decelFactors.forEach(d => {
         d.addEventListener('change', function () {
-            if (this.checked && decelNone) decelNone.checked = false;
+            if (this.checked && decelNone) {
+                decelNone.checked = false;
+            }
+
             validateDecel();
         });
     });
 }
-document.addEventListener('DOMContentLoaded', setupSmartToggles);
 
+document.addEventListener('DOMContentLoaded', setupSmartToggles);
 </script>
 </body>
 </html>
