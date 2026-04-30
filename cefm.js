@@ -191,7 +191,6 @@ function evalBase() {
         goTo('page8');
     }
 }
-}
 
 function setTachy(cat, detail, bypass = false) {
     const baseline = state.audit.base || '';
@@ -395,6 +394,21 @@ function finalize() {
 
     const resBox = $('resBox');
     resBox.innerHTML = '';
+
+    if (state.audit.baseRoundingNote) {
+        const roundingBox = document.createElement('div');
+        roundingBox.className = 'caution-box';
+
+        const strong = document.createElement('strong');
+        strong.textContent = '⚠️ Automatic Rounding Applied:';
+
+        const p = document.createElement('p');
+        p.textContent = `The entered baseline FHR was ${state.audit.baseRoundingNote.entered} bpm and was automatically rounded to ${state.audit.baseRoundingNote.rounded} bpm. Verify that this rounded baseline accurately reflects the clinical tracing before applying the classification.`;
+
+        roundingBox.appendChild(strong);
+        roundingBox.appendChild(p);
+        resBox.appendChild(roundingBox);
+    }
 
     if (state.audit.ua.includes('Tachysystole')) {
         const tachBox = document.createElement('div');
