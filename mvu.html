@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MVU Calculator</title>
-   <script src="theme-loader.js"></script>
-<link rel="stylesheet" href="style.css">
+    <script src="theme-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
-   <div id="page1">
+
+    <div id="page1">
         <h2 style="text-align: center; font-size: 2.2rem; color: #f39c12; margin-bottom: 25px;">MVU Calculator</h2>
-        
+
         <div class="disclaimer-banner">
             <strong>Terms of Use & Disclaimer:</strong>
             <p>This tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
-            
+
             <ul>
                 <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
                 <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
@@ -23,7 +24,7 @@
                 <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
                 <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
             </ul>
-            
+
             <p style="display:block; margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "Begin," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
 
@@ -35,29 +36,47 @@
         </div>
     </div>
 
-   <div id="page2" class="hidden" style="text-align: center;">
+    <div id="page2" class="hidden" style="text-align: center;">
         <h3>Uterine Resting Tone</h3>
         <p>Resting tone baseline (mmHg):</p>
-        <input type="number" id="restingTone" min="0" inputmode="numeric" placeholder="Resting Tone" oninput="validateRT()" style="text-align: center;">
+
+        <input
+            type="number"
+            id="restingTone"
+            min="0"
+            inputmode="numeric"
+            placeholder="Resting Tone"
+            oninput="validateRT()"
+            style="text-align: center;"
+        >
+
         <br><br>
+
         <button id="rtBtn" type="button" class="btn btn-primary" onclick="goTo('page3')" disabled>Continue</button>
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-  <div id="page3" class="hidden" style="text-align: center;">
+    <div id="page3" class="hidden" style="text-align: center;">
         <h3>Contraction Peaks (mmHg)</h3>
         <p>Input the peak of each contraction within a 10-minute window.</p>
-	  <div id="peakError" class="hidden alert-box">
-    <strong>⚠️ Input Note:</strong>
-    <p>One or more contraction peaks are lower than the resting tone baseline. Please verify your entries.</p>
-</div>
-        
+
+        <div id="peakError" class="hidden alert-box">
+            <strong>⚠️ Input Note:</strong>
+            <p>One or more contraction peaks are lower than the resting tone baseline. Please verify your entries.</p>
+        </div>
+
         <div id="peakInputsContainer" style="display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 300px; margin: 0 auto; justify-items: center;">
-   <input type="number" class="peak-box" min="0" inputmode="numeric" placeholder="Peak 1"
-       oninput="spawnNextBox(this); validatePeaks()"
-       onchange="validatePeaks()"
-       style="text-align: center;">
-</div>
+            <input
+                type="number"
+                class="peak-box"
+                min="0"
+                inputmode="numeric"
+                placeholder="Peak 1"
+                oninput="spawnNextBox(this); validatePeaks()"
+                onchange="validatePeaks()"
+                style="text-align: center;"
+            >
+        </div>
 
         <button id="calcBtn" type="button" class="btn btn-primary" onclick="calculateMVU()" disabled style="margin-top:20px;">Calculate MVUs</button>
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
@@ -65,22 +84,29 @@
 
     <div id="page4" class="hidden">
         <h2 style="text-align:center">Result</h2>
-        
+
         <div id="mvuAlerts" aria-live="polite" style="margin-bottom: 20px;"></div>
 
-<div style="text-align:center; margin: 20px 0;">
-    <span id="mvuDisplay" aria-live="polite" style="font-size: 4rem; font-weight: bold; color: var(--accent);">0</span>
-    <p>MVUs (mmHg)</p>
-</div>
-<div id="mvuSummary" class="result-box" aria-live="polite"></div>
-        <button type="button" class="btn btn-primary" onclick="location.reload()">Reset</button>
+        <div style="text-align:center; margin: 20px 0;">
+            <span id="mvuDisplay" aria-live="polite" style="font-size: 4rem; font-weight: bold; color: var(--accent);">0</span>
+            <p>MVUs (mmHg)</p>
+        </div>
+
+        <div id="mvuSummary" class="result-box" aria-live="polite"></div>
+
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Reset</button>
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
+
 </div>
 
 <script src="common.js"></script>
 <script>
-    function validateRT() {
+/* ==========================================================================
+   1. RESTING TONE VALIDATION
+   ========================================================================== */
+
+function validateRT() {
     const input = document.getElementById('restingTone');
     const btn = document.getElementById('rtBtn');
 
@@ -92,8 +118,13 @@
 
     btn.disabled = !isValid;
 }
-    // This makes the next box appear immediately as you type
-   function spawnNextBox(element) {
+
+
+/* ==========================================================================
+   2. DYNAMIC PEAK INPUTS
+   ========================================================================== */
+
+function spawnNextBox(element) {
     const container = document.getElementById('peakInputsContainer');
     if (!container || !element) return;
 
@@ -102,6 +133,7 @@
 
     if (element === lastInput && element.value.trim() !== '' && allInputs.length < 8) {
         const newInput = document.createElement('input');
+
         newInput.type = 'number';
         newInput.min = '0';
         newInput.inputMode = 'numeric';
@@ -113,6 +145,7 @@
             spawnNextBox(this);
             validatePeaks();
         };
+
         newInput.onchange = function () {
             validatePeaks();
         };
@@ -121,7 +154,11 @@
     }
 }
 
-    // This only shows the error box when the user clicks off the input
+
+/* ==========================================================================
+   3. PEAK VALIDATION
+   ========================================================================== */
+
 function validatePeaks() {
     const restingToneInput = document.getElementById('restingTone');
     const errorBox = document.getElementById('peakError');
@@ -133,14 +170,14 @@ function validatePeaks() {
     const safeTone = Number.isFinite(tone) && tone >= 0 ? tone : 0;
 
     const peakElements = Array.from(document.querySelectorAll('.peak-box'));
-    const filledInputs = peakElements.filter(input => input.value.trim() !== '');
+    const filledInputs = peakElements.filter((input) => input.value.trim() !== '');
 
-    const hasInvalidPeak = filledInputs.some(input => {
+    const hasInvalidPeak = filledInputs.some((input) => {
         const val = Number(input.value);
         return Number.isFinite(val) && val < safeTone;
     });
 
-    const hasValidData = filledInputs.some(input => {
+    const hasValidData = filledInputs.some((input) => {
         const val = Number(input.value);
         return Number.isFinite(val) && val >= safeTone && val > 0;
     });
@@ -149,30 +186,12 @@ function validatePeaks() {
     calcBtn.disabled = hasInvalidPeak || !hasValidData;
 }
 
-    function calculateMVU() {
-    const restingToneInput = document.getElementById('restingTone');
-    if (!restingToneInput) return;
 
-    const tone = Number(restingToneInput.value);
-    if (!Number.isFinite(tone) || tone < 0) return;
+/* ==========================================================================
+   4. SECURE ALERT RENDERING
+   ========================================================================== */
 
-    const peakElements = Array.from(document.querySelectorAll('.peak-box'));
-const peaks = peakElements
-    .filter(input => input.value.trim() !== '')
-    .map(input => Number(input.value))
-    .filter(value => Number.isFinite(value));
-
-    const total = peaks.reduce((acc, p) => acc + Math.max(0, p - tone), 0);
-        const alertsEl = document.getElementById('mvuAlerts');
-const displayEl = document.getElementById('mvuDisplay');
-const summaryEl = document.getElementById('mvuSummary');
-
-if (!alertsEl || !displayEl || !summaryEl) return;
-
-alertsEl.innerHTML = '';
-summaryEl.innerHTML = '';
-
-function addAlert(message) {
+function addAlert(container, message) {
     const box = document.createElement('div');
     box.className = 'alert-box';
 
@@ -184,36 +203,68 @@ function addAlert(message) {
 
     box.appendChild(strong);
     box.appendChild(p);
-    alertsEl.appendChild(box);
+    container.appendChild(box);
 }
 
-if (tone > 25) {
-    addAlert('A uterine resting tone > 25 mmHg is consistent with tachysystole.');
-}
 
-if (peaks.some(p => p >= 76)) {
-    addAlert('A contraction peak > 75 mmHg is consistent with tachysystole. Note: This does not apply during the active second stage of labour.');
-}
+/* ==========================================================================
+   5. MVU CALCULATION
+   ========================================================================== */
 
-if (peaks.length > 5) {
-    addAlert(`${peaks.length} contractions in 10 min is consistent with tachysystole. Review the average number of contractions in 10 minutes over the last 30 minutes to confirm.`);
-}
+function calculateMVU() {
+    const restingToneInput = document.getElementById('restingTone');
+    if (!restingToneInput) return;
 
-displayEl.textContent = Math.round(total);
+    const tone = Number(restingToneInput.value);
+    if (!Number.isFinite(tone) || tone < 0) return;
 
-const contractionsStrong = document.createElement('strong');
-contractionsStrong.textContent = 'Contractions:';
-summaryEl.appendChild(contractionsStrong);
-summaryEl.appendChild(document.createTextNode(` ${peaks.length}`));
-summaryEl.appendChild(document.createElement('br'));
+    const peakElements = Array.from(document.querySelectorAll('.peak-box'));
 
-const toneStrong = document.createElement('strong');
-toneStrong.textContent = 'Resting Tone:';
-summaryEl.appendChild(toneStrong);
-summaryEl.appendChild(document.createTextNode(` ${tone} mmHg`));
+    const peaks = peakElements
+        .filter((input) => input.value.trim() !== '')
+        .map((input) => Number(input.value))
+        .filter((value) => Number.isFinite(value));
 
-goTo('page4');
+    const total = peaks.reduce((acc, peak) => {
+        return acc + Math.max(0, peak - tone);
+    }, 0);
+
+    const alertsEl = document.getElementById('mvuAlerts');
+    const displayEl = document.getElementById('mvuDisplay');
+    const summaryEl = document.getElementById('mvuSummary');
+
+    if (!alertsEl || !displayEl || !summaryEl) return;
+
+    alertsEl.innerHTML = '';
+    summaryEl.innerHTML = '';
+
+    if (tone > 25) {
+        addAlert(alertsEl, 'A uterine resting tone > 25 mmHg is consistent with tachysystole.');
     }
+
+    if (peaks.some((peak) => peak >= 76)) {
+        addAlert(alertsEl, 'A contraction peak > 75 mmHg is consistent with tachysystole. Note: This does not apply during the active second stage of labour.');
+    }
+
+    if (peaks.length > 5) {
+        addAlert(alertsEl, `${peaks.length} contractions in 10 min is consistent with tachysystole. Review the average number of contractions in 10 minutes over the last 30 minutes to confirm.`);
+    }
+
+    displayEl.textContent = Math.round(total);
+
+    const contractionsStrong = document.createElement('strong');
+    contractionsStrong.textContent = 'Contractions:';
+    summaryEl.appendChild(contractionsStrong);
+    summaryEl.appendChild(document.createTextNode(` ${peaks.length}`));
+    summaryEl.appendChild(document.createElement('br'));
+
+    const toneStrong = document.createElement('strong');
+    toneStrong.textContent = 'Resting Tone:';
+    summaryEl.appendChild(toneStrong);
+    summaryEl.appendChild(document.createTextNode(` ${tone} mmHg`));
+
+    goTo('page4');
+}
 </script>
 </body>
 </html>
