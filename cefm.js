@@ -181,7 +181,16 @@ function evalBase() {
 }
 
 function setTachy(cat, detail, bypass = false) {
-    state.audit.baseDetail = { cat, detail };
+    const baseline = state.audit.base || '';
+
+    if (detail.includes('Tachycardia') && baseline) {
+        state.audit.baseDetail = {
+            cat,
+            detail: `Baseline ${baseline}; tachycardia duration ${detail.replace('Tachycardia ', '')}`
+        };
+    } else {
+        state.audit.baseDetail = { cat, detail };
+    }
 
     if (!bypass) {
         goTo('page8');
