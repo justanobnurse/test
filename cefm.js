@@ -186,7 +186,7 @@ function setTachy(cat, detail, bypass = false) {
     if (detail.includes('Tachycardia') && baseline) {
         state.audit.baseDetail = {
             cat,
-            detail: `Baseline ${baseline}; tachycardia duration ${detail.replace('Tachycardia ', '')}`
+            detail: `Baseline ${baseline} for ${detail.replace('Tachycardia ', '')}`
         };
     } else {
         state.audit.baseDetail = { cat, detail };
