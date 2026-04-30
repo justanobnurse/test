@@ -163,13 +163,23 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-    <div id="page7b" class="hidden">
-        <h3>Tachycardia Duration (>160bpm)?</h3>
-        <button type="button" class="btn" onclick="setTachy('NORMAL','Tachycardia < 30 minutes')">&lt; 30 minutes</button>
-        <button type="button" class="btn" onclick="setTachy('ATYPICAL','Tachycardia 30-80 minutes')">30 - 80 minutes</button>
-        <button type="button" class="btn" onclick="setTachy('ABNORMAL','Tachycardia &ge; 80 minutes')">&ge; 80 minutes</button>
-        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
-    </div>
+   <div id="page7b" class="hidden">
+    <h3>Tachycardia Duration (&gt;160bpm)?</h3>
+
+    <button type="button" class="btn" onclick="setTachy('NORMAL','Tachycardia < 30 minutes')">
+        &lt; 30 minutes
+    </button>
+
+    <button type="button" class="btn" onclick="setTachy('ATYPICAL','Tachycardia 30-80 minutes')">
+        30 - 80 minutes
+    </button>
+
+    <button type="button" class="btn" onclick="setTachy('ABNORMAL','Tachycardia ≥ 80 minutes')">
+        &ge; 80 minutes
+    </button>
+
+    <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+</div>
 
     <div id="page7c" class="hidden">
         <h3>Why is the baseline Indeterminate?</h3>
