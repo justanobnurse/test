@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IA Classification Tool</title>
     <script src="theme-loader.js"></script>
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
 
     <div id="page1">
         <h2 style="text-align: center; font-size: 2.2rem; color: #9b59b6; margin-bottom: 25px;">IA Classifier</h2>
-        
+
         <div class="disclaimer-banner">
             <strong>Terms of Use & Disclaimer:</strong>
             <p>This tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
-            
+
             <ul>
                 <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
                 <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
@@ -24,12 +24,12 @@
                 <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
                 <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
             </ul>
-            
+
             <p style="display:block; margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "Begin," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button type="button" class="btn btn-primary" onclick="nextStep('page2')">I Understand & Accept - Begin</button>
+            <button type="button" class="btn btn-primary" onclick="goTo('page2')">I Understand & Accept - Begin</button>
             <div style="margin-top: 10px;">
                 <a href="index.html" class="btn btn-exit">Exit to Home</a>
             </div>
@@ -38,112 +38,125 @@
 
     <div id="page2" class="hidden">
         <h3>What device is being used for IA?</h3>
-        <button type="button" class="btn" onclick="setAudit('device', 'Handheld Doppler'); nextStep('page3')">Handheld Doppler</button>
-        <button type="button" class="btn" onclick="setAudit('device', 'EFM Ultrasound'); nextStep('page3')">EFM Ultrasound</button>
-        <button type="button" class="btn" onclick="setAudit('device', 'Other'); nextStep('page3')">Other</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="setAudit('device', 'Handheld Doppler'); goTo('page3')">Handheld Doppler</button>
+        <button type="button" class="btn" onclick="setAudit('device', 'EFM Ultrasound'); goTo('page3')">EFM Ultrasound</button>
+        <button type="button" class="btn" onclick="setAudit('device', 'Other'); goTo('page3')">Other</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page3" class="hidden">
         <h3>Uterine Activity</h3>
-        <button type="button" class="btn" onclick="log('NORMAL', 'Uterine Activity', 'Normal'); nextStep('page4')">Normal</button>
-        <button type="button" class="btn" onclick="log('ABNORMAL', 'Uterine Activity', 'Tachysystole'); nextStep('page4')">Tachysystole</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="log('NORMAL', 'Uterine Activity', 'Normal'); goTo('page4')">Normal</button>
+        <button type="button" class="btn" onclick="log('ABNORMAL', 'Uterine Activity', 'Tachysystole'); goTo('page4')">Tachysystole</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page4" class="hidden">
         <h3>Are the maternal vitals normal?</h3>
-        <button type="button" class="btn" onclick="log('NORMAL', 'Maternal Vitals', 'Normal'); nextStep('page5')">Yes, maternal vitals are all normal</button>
-        <button type="button" class="btn" onclick="log('ABNORMAL', 'Maternal Vitals', 'Abnormal'); nextStep('page5')">No, maternal vitals are not all normal</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="log('NORMAL', 'Maternal Vitals', 'Normal'); goTo('page5')">Yes, maternal vitals are all normal</button>
+        <button type="button" class="btn" onclick="log('ABNORMAL', 'Maternal Vitals', 'Abnormal'); goTo('page5')">No, maternal vitals are not all normal</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-   <div id="page5" class="hidden" style="text-align: center;">
+    <div id="page5" class="hidden" style="text-align: center;">
         <h3>Baseline Fetal Heart Rate?</h3>
         <p>Enter the baseline FHR (bpm) rounded to the nearest 5bpm as counted via the audible signal:</p>
-        
+
         <div style="margin: 20px 0;">
-            <input type="number" id="fhrInput" min="1" inputmode="numeric" placeholder="bpm" oninput="validateFHR()" style="text-align: center;">
+            <input
+                type="number"
+                id="fhrInput"
+                min="1"
+                inputmode="numeric"
+                autocomplete="off"
+                placeholder="bpm"
+                oninput="validateFHR()"
+                style="text-align: center;"
+            >
         </div>
 
         <button id="fhrBtn" type="button" class="btn btn-primary" onclick="submitFHR()" disabled>Continue</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page6" class="hidden">
         <h3>Baseline FHR Trend?</h3>
-        <button type="button" class="btn" onclick="log('NORMAL', 'Baseline Trend', 'Stable'); nextStep('page7')">Stable</button>
-        <button type="button" class="btn" onclick="log('ABNORMAL', 'Baseline Trend', 'Persistently Rising'); nextStep('page7')">Persistently Rising</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="log('NORMAL', 'Baseline Trend', 'Stable'); goTo('page7')">Stable</button>
+        <button type="button" class="btn" onclick="log('ABNORMAL', 'Baseline Trend', 'Persistently Rising'); goTo('page7')">Persistently Rising</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page7" class="hidden">
         <h3>Fetal Heart Rhythm?</h3>
-        <button type="button" class="btn" onclick="log('NORMAL', 'Fetal Heart Rhythm', 'Regular'); nextStep('page8')">Regular</button>
-        <button type="button" class="btn" onclick="log('ABNORMAL', 'Fetal Heart Rhythm', 'Irregular'); nextStep('page8')">Irregular</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="log('NORMAL', 'Fetal Heart Rhythm', 'Regular'); goTo('page8')">Regular</button>
+        <button type="button" class="btn" onclick="log('ABNORMAL', 'Fetal Heart Rhythm', 'Irregular'); goTo('page8')">Irregular</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page8" class="hidden">
         <h3>Accelerations?</h3>
-        <button type="button" class="btn" onclick="log('NORMAL', 'Accelerations', 'None heard'); nextStep('page9')">None heard</button>
-        <button type="button" class="btn" onclick="log('NORMAL', 'Accelerations', 'Acceleration Heard'); nextStep('page9')">Acceleration heard</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn" onclick="log('NORMAL', 'Accelerations', 'None heard'); goTo('page9')">None heard</button>
+        <button type="button" class="btn" onclick="log('NORMAL', 'Accelerations', 'Acceleration Heard'); goTo('page9')">Acceleration heard</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page9" class="hidden">
         <h3>Decelerations?</h3>
         <button type="button" class="btn" onclick="log('NORMAL', 'Decelerations', 'None heard'); finalizeIA()">None heard</button>
         <button type="button" class="btn" onclick="log('ABNORMAL', 'Decelerations', 'Deceleration heard'); finalizeIA()">Deceleration heard</button>
-        <button type="button" class="btn btn-back" onclick="prevStep()">← Back</button>
+        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="page10" class="hidden">
         <h1 id="finalRank" aria-live="polite" style="font-size: 3rem; text-align: center; margin-bottom: 10px; text-transform: uppercase;"></h1>
-<div id="resBox" aria-live="polite"></div>
+        <div id="resBox" aria-live="polite"></div>
+
         <hr style="margin: 30px 0; border: 0; border-top: 2px solid var(--border-color);">
+
         <h3>Systematic Assessment Summary</h3>
         <div id="audit" class="result-box"></div>
-        <button type="button" class="btn btn-primary" onclick="location.reload()">Classify Another</button>
+
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Classify Another</button>
         <a href="index.html" class="btn btn-exit">Exit to Home</a>
     </div>
 
 </div>
+
 <script src="common.js"></script>
 <script>
+/* ==========================================================================
+   1. STATE & DATA
+   ========================================================================== */
 
-/* ================================
-   STATE & DATA
-================================ */
-    
-    let state = {
+let state = {
     findings: {},
-    audit: { device: '' }
+    audit: {
+        device: ''
+    }
 };
 
-/* ================================
-   NAVIGATION (Internal)
-================================ */
 
-   function nextStep(id) {
-    goTo(id);
+/* ==========================================================================
+   2. IA DATA HELPERS
+   ========================================================================== */
+
+function setAudit(key, value) {
+    state.audit[key] = value;
 }
 
-function prevStep() {
-    goBack();
+function log(category, label, detail) {
+    state.findings[label] = {
+        cat: category,
+        detail: detail
+    };
 }
 
-/* ================================
-   IA LOGIC
-================================ */
 
-    function setAudit(k,v) { state.audit[k]=v; }
+/* ==========================================================================
+   3. INPUT VALIDATION
+   ========================================================================== */
 
-    function log(cat, label, detail) { 
-        state.findings[label] = { cat, detail }; 
-    }
-
-    function validateFHR() {
+function validateFHR() {
     const input = document.getElementById('fhrInput');
     const btn = document.getElementById('fhrBtn');
 
@@ -156,7 +169,12 @@ function prevStep() {
     btn.disabled = !isValid;
 }
 
-    function submitFHR() {
+
+/* ==========================================================================
+   4. BASELINE FHR LOGIC
+   ========================================================================== */
+
+function submitFHR() {
     const input = document.getElementById('fhrInput');
     if (!input) return;
 
@@ -177,64 +195,30 @@ function prevStep() {
     }
 
     log(category, 'Baseline Fetal Heart Rate', description);
-    nextStep('page6');
+    goTo('page6');
 }
 
-/* ================================
-   FINALIZE IA
-================================ */
 
-    function finalizeIA() {
-        const fhrFeatures = [
-            state.findings['Uterine Activity'], 
-            state.findings['Baseline Fetal Heart Rate'],
-            state.findings['Baseline Trend'], 
-            state.findings['Fetal Heart Rhythm'],
-            state.findings['Decelerations']
-        ];
+/* ==========================================================================
+   5. RESULT RENDER HELPERS
+   ========================================================================== */
 
-        let abnormalFHR = fhrFeatures.filter(f => f && f.cat === 'ABNORMAL');
-        let finalRank = (abnormalFHR.length > 0) ? 'ABNORMAL' : 'NORMAL';
-        let rankColor = (finalRank === 'ABNORMAL') ? '#e74c3c' : '#27ae60';
-
-        const rEl = document.getElementById('finalRank');
-        rEl.textContent = finalRank;
-        rEl.style.color = rankColor;
-
-       const resBox = document.getElementById('resBox');
-resBox.innerHTML = '';
-
-if (state.findings['Maternal Vitals']?.detail === 'Abnormal') {
-    const alertBox = document.createElement('div');
-    alertBox.className = 'alert-box';
+function addMessageBox(container, className, title, message) {
+    const box = document.createElement('div');
+    box.className = className;
 
     const strong = document.createElement('strong');
-    strong.textContent = '⚠️ Recommendation:';
+    strong.textContent = title;
 
     const p = document.createElement('p');
-    p.textContent = 'CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.';
+    p.textContent = message;
 
-    alertBox.appendChild(strong);
-    alertBox.appendChild(p);
-    resBox.appendChild(alertBox);
+    box.appendChild(strong);
+    box.appendChild(p);
+    container.appendChild(box);
 }
 
-if (state.audit.device === 'EFM Ultrasound') {
-    const cautionBox = document.createElement('div');
-    cautionBox.className = 'caution-box';
-
-    const strong = document.createElement('strong');
-    strong.textContent = '⚠️ IA Technique Note:';
-
-    const p = document.createElement('p');
-    p.textContent = 'When using an EFM Ultrasound transducer for IA, you must rely on the audible signal only. Do not use the digital display or printed trace to classify FHR characteristics.';
-
-    cautionBox.appendChild(strong);
-    cautionBox.appendChild(p);
-    resBox.appendChild(cautionBox);
-}
-
-if (finalRank === 'ABNORMAL') {
+function renderAbnormalReasons(container, abnormalFindings) {
     const wrap = document.createElement('div');
     wrap.style.marginBottom = '20px';
 
@@ -243,42 +227,105 @@ if (finalRank === 'ABNORMAL') {
 
     const ul = document.createElement('ul');
 
-    abnormalFHR.forEach(f => {
+    abnormalFindings.forEach((finding) => {
         const li = document.createElement('li');
-        li.textContent = f.detail;
+        li.textContent = finding.detail;
         ul.appendChild(li);
     });
 
     wrap.appendChild(strong);
     wrap.appendChild(ul);
-    resBox.appendChild(wrap);
-} else {
+    container.appendChild(wrap);
+}
+
+function renderNormalResult(container) {
     const p = document.createElement('p');
+
     p.style.color = '#27ae60';
     p.style.fontWeight = 'bold';
     p.style.fontSize = '1.1rem';
     p.textContent = 'Meets all Normal FHS IA criteria.';
-    resBox.appendChild(p);
+
+    container.appendChild(p);
 }
 
-       const auditEl = document.getElementById('audit');
-auditEl.innerHTML = '';
+function renderAuditSummary(container) {
+    container.innerHTML = '';
 
-Object.keys(state.findings).forEach(k => {
-    const row = document.createElement('div');
-    row.style.marginBottom = '5px';
+    Object.keys(state.findings).forEach((key) => {
+        const row = document.createElement('div');
+        row.style.marginBottom = '5px';
 
-    const strong = document.createElement('strong');
-    strong.textContent = `${k}:`;
+        const strong = document.createElement('strong');
+        strong.textContent = `${key}:`;
 
-    row.appendChild(strong);
-    row.appendChild(document.createTextNode(` ${state.findings[k].detail}`));
+        row.appendChild(strong);
+        row.appendChild(document.createTextNode(` ${state.findings[key].detail}`));
 
-    auditEl.appendChild(row);
-});
+        container.appendChild(row);
+    });
+}
 
-        nextStep('page10');
+
+/* ==========================================================================
+   6. FINALIZE IA
+   ========================================================================== */
+
+function finalizeIA() {
+    const fhrFeatures = [
+        state.findings['Uterine Activity'],
+        state.findings['Baseline Fetal Heart Rate'],
+        state.findings['Baseline Trend'],
+        state.findings['Fetal Heart Rhythm'],
+        state.findings['Decelerations']
+    ];
+
+    const abnormalFHR = fhrFeatures.filter((finding) => {
+        return finding && finding.cat === 'ABNORMAL';
+    });
+
+    const finalRank = abnormalFHR.length > 0 ? 'ABNORMAL' : 'NORMAL';
+    const rankColor = finalRank === 'ABNORMAL' ? '#e74c3c' : '#27ae60';
+
+    const rankEl = document.getElementById('finalRank');
+    const resBox = document.getElementById('resBox');
+    const auditEl = document.getElementById('audit');
+
+    if (!rankEl || !resBox || !auditEl) return;
+
+    rankEl.textContent = finalRank;
+    rankEl.style.color = rankColor;
+
+    resBox.innerHTML = '';
+
+    if (state.findings['Maternal Vitals']?.detail === 'Abnormal') {
+        addMessageBox(
+            resBox,
+            'alert-box',
+            '⚠️ Recommendation:',
+            'CEFM is indicated for abnormal maternal vitals even if the FHR IA is otherwise considered normal.'
+        );
     }
+
+    if (state.audit.device === 'EFM Ultrasound') {
+        addMessageBox(
+            resBox,
+            'caution-box',
+            '⚠️ IA Technique Note:',
+            'When using an EFM Ultrasound transducer for IA, you must rely on the audible signal only. Do not use the digital display or printed trace to classify FHR characteristics.'
+        );
+    }
+
+    if (finalRank === 'ABNORMAL') {
+        renderAbnormalReasons(resBox, abnormalFHR);
+    } else {
+        renderNormalResult(resBox);
+    }
+
+    renderAuditSummary(auditEl);
+
+    goTo('page10');
+}
 </script>
 </body>
 </html>
