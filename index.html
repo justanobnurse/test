@@ -1,81 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- ==========================================================================
+       1. DOCUMENT SETUP
+       ========================================================================== -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canadian FHS Educational Tools</title>
+
+    <!-- ==========================================================================
+       2. SITE ASSETS
+       ========================================================================== -->
     <script src="theme-loader.js"></script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="container">
-        <div class="home-hero">
-            <h1>Canadian Fetal Health Surveillance Tools</h1>
-            <p>Educational reference and logic-based tools adapted from the SOGC 2020 Fetal Health Surveillance guidelines.</p>
+<div class="container">
 
-            <div class="privacy-disclaimer">
-                <strong>About this Project:</strong>
-                <p>This site was developed by a Canadian nurse to provide free, accessible educational tools for Fetal Health Surveillance. This is a non-commercial project: no data is collected, no user tracking is employed, and no monetary gain is derived from its use.</p>
-            </div>
+    <!-- ==========================================================================
+       3. HERO / PROJECT INTRODUCTION
+       ========================================================================== -->
+    <div class="home-hero">
+        <h1>Canadian Fetal Health Surveillance Tools</h1>
+        <p>Educational reference and logic-based tools adapted from the SOGC 2020 Fetal Health Surveillance guidelines.</p>
+
+        <div class="privacy-disclaimer">
+            <strong>About this Project:</strong>
+            <p>This site was developed by a Canadian nurse to provide free, accessible educational tools for Fetal Health Surveillance. This is a non-commercial project: no data is collected, no user tracking is employed, and no monetary gain is derived from its use.</p>
         </div>
-
-        <div class="home-grid">
-            <div class="tool-card theme-green">
-                <h3>CEFM Classifier</h3>
-                <p>A systematic tool for CEFM classification (Normal, Atypical, Abnormal) based on the 2020 SOGC Fetal Health Surveillance Guidelines.</p>
-                <a href="cefm.html" class="btn btn-primary">Launch CEFM Classifier →</a>
-            </div>
-
-            <div class="tool-card theme-blue">
-                <h3>Deceleration Identifier</h3>
-                <p>A step-by-step tool to identify the type of deceleration.</p>
-                <a href="identifier.html" class="btn btn-primary">Launch Deceleration Identifier →</a>
-            </div>
-
-            <div class="tool-card theme-pink">
-                <h3>Is it Tachysystole?</h3>
-                <p>Identify uterine tachysystole.</p>
-                <a href="tachy.html" class="btn btn-primary">Launch Tachysystole Tool →</a>
-            </div>
-
-            <div class="tool-card theme-orange">
-                <h3>MVU Calculator</h3>
-                <p>Quantify uterine activity when using an Internal Uterine Pressure Catheter (IUPC) using the Montevideo Units (MVU) formula.</p>
-                <a href="mvu.html" class="btn btn-primary">Launch MVU Calculator →</a>
-            </div>
-
-            <div class="tool-card theme-purple">
-                <h3>Intermittent Auscultation Classifier</h3>
-                <p>A systematic tool for classifying Intermittent Auscultation (IA) based on the 2020 SOGC Fetal Health Surveillance Guidelines.</p>
-                <a href="ia.html" class="btn btn-primary">Launch IA Classifier →</a>
-            </div>
-        </div>
-
-        <footer class="site-footer">
-            <p><strong>Notice:</strong> By using any of these tools, you acknowledge that they are for educational purposes only. This information is not a substitute for clinical knowledge, judgment, or decision-making. The creator is not responsible for any clinical decisions made or outcomes based on this logic. These tools and the information provided are not considered medical opinion or consultation.</p>
-
-            <div class="footer-actions">
-                <button id="darkModeToggle" class="footer-btn" type="button">
-                    ☀️ Switch to Light Mode
-                </button>
-
-                <a
-                    href="https://forms.gle/uty6b6hfLdT3L1716"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="footer-btn"
-                >
-                    💬 Help improve these tools: Submit Feedback
-                </a>
-            </div>
-        </footer>
-
-        <p class="version-text">
-            Version 1.4 | Updated April 2026 | Adapted from the 2020 SOGC Fetal Health Surveillance Guidelines
-        </p>
     </div>
 
-    <script src="common.js"></script>
+    <!-- ==========================================================================
+       4. TOOL LAUNCH CARDS
+       ========================================================================== -->
+    <div class="home-grid">
+
+        <!-- CEFM Classifier -->
+        <div class="tool-card theme-green">
+            <h3>CEFM Classifier</h3>
+            <p>A systematic tool for CEFM classification (Normal, Atypical, Abnormal) based on the 2020 SOGC Fetal Health Surveillance Guidelines.</p>
+            <a href="cefm.html" class="btn btn-primary">Launch CEFM Classifier →</a>
+        </div>
+
+        <!-- Deceleration Identifier -->
+        <div class="tool-card theme-blue">
+            <h3>Deceleration Identifier</h3>
+            <p>A step-by-step tool to identify the type of deceleration.</p>
+            <a href="identifier.html" class="btn btn-primary">Launch Deceleration Identifier →</a>
+        </div>
+
+        <!-- Intermittent Auscultation Classifier -->
+        <div class="tool-card theme-purple">
+            <h3>Intermittent Auscultation Classifier</h3>
+            <p>A systematic tool for classifying Intermittent Auscultation (IA) based on the 2020 SOGC Fetal Health Surveillance Guidelines.</p>
+            <a href="ia.html" class="btn btn-primary">Launch IA Classifier →</a>
+        </div>
+
+        <!-- MVU Calculator -->
+        <div class="tool-card theme-orange">
+            <h3>MVU Calculator</h3>
+            <p>Quantify uterine activity when using an Internal Uterine Pressure Catheter (IUPC) using the Montevideo Units (MVU) formula.</p>
+            <a href="mvu.html" class="btn btn-primary">Launch MVU Calculator →</a>
+        </div>
+
+        <!-- Tachysystole Tool -->
+        <div class="tool-card theme-pink">
+            <h3>Is it Tachysystole?</h3>
+            <p>Identify uterine tachysystole.</p>
+            <a href="tachy.html" class="btn btn-primary">Launch Tachysystole Tool →</a>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+       5. SITE FOOTER / DISCLAIMER / ACTIONS
+       ========================================================================== -->
+    <footer class="site-footer">
+        <p><strong>Notice:</strong> By using any of these tools, you acknowledge that they are for educational purposes only. This information is not a substitute for clinical knowledge, judgment, or decision-making. The creator is not responsible for any clinical decisions made or outcomes based on this logic. These tools and the information provided are not considered medical opinion or consultation.</p>
+
+        <div class="footer-actions">
+            <button id="darkModeToggle" class="footer-btn" type="button">
+                ☀️ Switch to Light Mode
+            </button>
+
+            <a
+                href="https://forms.gle/uty6b6hfLdT3L1716"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-btn"
+            >
+                💬 Help improve these tools: Submit Feedback
+            </a>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+       6. VERSION
+       ========================================================================== -->
+    <p class="version-text">
+        Version 1.4 | Updated April 2026 | Adapted from the 2020 SOGC Fetal Health Surveillance Guidelines
+    </p>
+</div>
+
+<!-- ==========================================================================
+   7. SHARED SCRIPT
+   ========================================================================== -->
+<script src="common.js"></script>
 </body>
 </html>
