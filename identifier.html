@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FHS Deceleration Identifier</title>
-   <script src="theme-loader.js"></script>
-<link rel="stylesheet" href="style.css">
+    <script src="theme-loader.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container">
 
-   <div id="page1">
+    <div id="page1">
         <h2 style="text-align: center; font-size: 2.2rem; color: #3498db; margin-bottom: 25px;">Deceleration Identifier</h2>
-        
+
         <div class="disclaimer-banner">
             <strong>Terms of Use & Disclaimer:</strong>
             <p>This tool is designed for educational purposes and is adapted from the SOGC 2020 Fetal Health Surveillance (FHS) guidelines. <strong>It can make mistakes.</strong> Clinical judgment is paramount.</p>
-            
+
             <ul>
                 <li><strong>Not a Diagnostic Tool:</strong> This is NOT a clinical diagnostic tool or a medical device. It is an educational tool only.</li>
                 <li><strong>User Responsibility:</strong> The user assumes all responsibility for clinical interpretation, diagnosis, and management plans.</li>
@@ -24,7 +24,7 @@
                 <li><strong>No Liability:</strong> The creator explicitly disclaims all liability for any damages, medical errors, or adverse outcomes resulting from the use of this tool.</li>
                 <li><strong>Institutional Protocol:</strong> This tool does not replace institutional policy or professional clinical training.</li>
             </ul>
-            
+
             <p style="display:block; margin-top: 10px; font-style: italic; font-size: 0.85rem;">By clicking "Begin," you acknowledge these limitations and assume full responsibility for the clinical application of any output.</p>
         </div>
 
@@ -43,14 +43,14 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-   <div id="page3" class="hidden">
-    <div class="alert-box">
-        <strong>⚠️ ASSESSMENT STOPPED</strong>
-        <p>Cannot reliably define a deceleration with an indeterminate baseline, marked variability, or sinusoidal pattern.</p>
+    <div id="page3" class="hidden">
+        <div class="alert-box">
+            <strong>⚠️ ASSESSMENT STOPPED</strong>
+            <p>Cannot reliably define a deceleration with an indeterminate baseline, marked variability, or sinusoidal pattern.</p>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Identify Another Deceleration</button>
+        <a href="index.html" class="btn btn-exit">Home</a>
     </div>
-    <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
-    <a href="index.html" class="btn btn-exit">Home</a>
-</div>
 
     <div id="page4" class="hidden">
         <h3>What is the FHR Variability while at baseline?</h3>
@@ -72,7 +72,7 @@
     <div id="page5b" class="hidden">
         <h3>Does the FHR drop at least 15bpm below baseline?</h3>
         <button type="button" class="btn" onclick="goTo('page12')">Yes, the nadir of the deceleration is ≥ 15bpm below the baseline</button>
-        <button type="button" class="btn" onclick="goTo('page8c')">No, the nadir of the deceleration is < 15bpm below the baseline</button>
+        <button type="button" class="btn" onclick="goTo('page8c')">No, the nadir of the deceleration is &lt; 15bpm below the baseline</button>
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
@@ -102,9 +102,9 @@
     <div id="page8b" class="hidden">
         <div class="result-box" style="border-left-color: #3498db;">
             <h3 style="color: #3498db;">VARIABILITY</h3>
-            <p>An abrupt (<30 seconds) FHR decrease that does not meet the 15bpm depth AND 15s duration rule is considered variability and NOT a deceleration.</p>
+            <p>An abrupt (&lt;30 seconds) FHR decrease that does not meet the 15bpm depth AND 15s duration rule is considered variability and NOT a deceleration.</p>
         </div>
-       <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Identify Another Deceleration</button>
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
 
@@ -113,33 +113,65 @@
             <h3 style="color: #3498db;">MAY NOT BE A DECELERATION: EVALUATE WHOLE CLINICAL PICTURE</h3>
             <p>For a deceleration to be prolonged, it must have a nadir ≥ 15bpm below baseline.</p>
         </div>
-        <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Identify Another Deceleration</button>
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
 
-   <div id="page9" class="hidden">
+    <div id="page9" class="hidden">
         <h3>Do any of the following apply?</h3>
+
         <div class="checklist">
             <label class="check-item" style="border-left-color: #27ae60;">
                 <input type="checkbox" id="v-none" onchange="toggleVariableCheck(this)"> <strong>None</strong>
             </label>
+
             <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
-            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Failure to recover to baseline" onchange="toggleVariableCheck(this)"> Fails to recover to baseline by end of contraction</label>
-            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60s" onchange="toggleVariableCheck(this)"> Deceleration duration ≥ 60s</label>
-            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60bpm" onchange="toggleVariableCheck(this)"> Nadir reaches 60bpm or below</label>
-            <label class="check-item"><input type="checkbox" class="v-comp" id="c-60drop" onchange="toggleVariableCheck(this)"> Nadir is ≥ 60bpm below baseline</label>
-            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Baseline Tachycardia (>160 bpm)" onchange="toggleVariableCheck(this)"> FHR baseline is > 160 bpm</label>
-            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Baseline Bradycardia (<110 bpm)" onchange="toggleVariableCheck(this)"> FHR baseline is < 110 bpm</label>
-            <label class="check-item"><input type="checkbox" class="v-comp comp-auto" data-label="Minimal/Absent Variability" onchange="toggleVariableCheck(this)"> FHR variability at baseline is minimal or absent</label>
+
+            <label class="check-item">
+                <input type="checkbox" class="v-comp comp-auto" data-label="Failure to recover to baseline" onchange="toggleVariableCheck(this)">
+                Fails to recover to baseline by end of contraction
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox" class="v-comp" id="c-60s" onchange="toggleVariableCheck(this)">
+                Deceleration duration ≥ 60s
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox" class="v-comp" id="c-60bpm" onchange="toggleVariableCheck(this)">
+                Nadir reaches 60bpm or below
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox" class="v-comp" id="c-60drop" onchange="toggleVariableCheck(this)">
+                Nadir is ≥ 60bpm below baseline
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox" class="v-comp comp-auto" data-label="Baseline Tachycardia (>160 bpm)" onchange="toggleVariableCheck(this)">
+                FHR baseline is &gt; 160 bpm
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox" class="v-comp comp-auto" data-label="Baseline Bradycardia (<110 bpm)" onchange="toggleVariableCheck(this)">
+                FHR baseline is &lt; 110 bpm
+            </label>
+
+            <label class="check-item">
+                <input type="checkbox" class="v-comp comp-auto" data-label="Minimal/Absent Variability" onchange="toggleVariableCheck(this)">
+                FHR variability at baseline is minimal or absent
+            </label>
         </div>
+
         <button id="classifyVarBtn" type="button" class="btn btn-primary" disabled onclick="checkVariable()">Classify Variable</button>
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
     <div id="resPage" class="hidden">
         <div id="resHeader" aria-live="polite"></div>
-<div id="resRationale" class="result-box" aria-live="polite"></div>
-        <button type="button" class="btn btn-primary" onclick="location.reload()">Identify Another Deceleration</button>
+        <div id="resRationale" class="result-box" aria-live="polite"></div>
+
+        <button type="button" class="btn btn-primary" onclick="resetTool()">Identify Another Deceleration</button>
         <a href="index.html" class="btn btn-exit">Home</a>
     </div>
 
@@ -163,7 +195,11 @@
 
 <script src="common.js"></script>
 <script>
-    function showResult(title, baseDef, listItems = null) {
+/* ==========================================================================
+   1. RESULT RENDERING
+   ========================================================================== */
+
+function showResult(title, baseDef, listItems = null) {
     const header = document.getElementById('resHeader');
     const resBox = document.getElementById('resRationale');
     const neutralBlue = '#3498db';
@@ -197,19 +233,25 @@
         resBox.appendChild(compStrong);
 
         const ul = document.createElement('ul');
-        listItems.forEach(item => {
+
+        listItems.forEach((item) => {
             const li = document.createElement('li');
             li.textContent = item;
             ul.appendChild(li);
         });
+
         resBox.appendChild(ul);
     }
 
     goTo('resPage');
 }
 
-    // CHECKBOX LOGIC
-   function toggleVariableCheck(element) {
+
+/* ==========================================================================
+   2. VARIABLE DECELERATION CHECKBOX LOGIC
+   ========================================================================== */
+
+function toggleVariableCheck(element) {
     const noneBox = document.getElementById('v-none');
     const compBoxes = document.querySelectorAll('.v-comp');
     const classifyBtn = document.getElementById('classifyVarBtn');
@@ -217,19 +259,26 @@
     if (!element || !noneBox || !classifyBtn) return;
 
     if (element.id === 'v-none' && element.checked) {
-        compBoxes.forEach(cb => {
-            cb.checked = false;
+        compBoxes.forEach((checkbox) => {
+            checkbox.checked = false;
         });
     } else if (element.classList.contains('v-comp') && element.checked) {
         noneBox.checked = false;
     }
 
-    const anyChecked = noneBox.checked || Array.from(compBoxes).some(cb => cb.checked);
+    const anyChecked =
+        noneBox.checked ||
+        Array.from(compBoxes).some((checkbox) => checkbox.checked);
+
     classifyBtn.disabled = !anyChecked;
 }
 
-    // VARIABLE CLASSIFIER LOGIC
-    function checkVariable() {
+
+/* ==========================================================================
+   3. VARIABLE DECELERATION CLASSIFICATION
+   ========================================================================== */
+
+function checkVariable() {
     const autoCompNodes = document.querySelectorAll('.comp-auto:checked');
     const c60s = document.getElementById('c-60s');
     const c60bpm = document.getElementById('c-60bpm');
@@ -247,20 +296,21 @@
     if (autoCompNodes.length > 0 || ruleOf60) {
         const reasons = [];
 
-        autoCompNodes.forEach(node => {
+        autoCompNodes.forEach((node) => {
             const label = node.getAttribute('data-label');
             if (label) reasons.push(label);
         });
 
         if (ruleOf60) {
-            reasons.push('Rule of 60s (Duration ≥ 60s AND nadir ≤ 60bpm OR drop ≥ 60bpm below baseline)');
+            reasons.push('Rule of 60s (Duration ≥ 60s AND either one of: nadir ≤ 60bpm OR drop ≥ 60bpm below baseline)');
         }
 
         showResult('COMPLICATED VARIABLE DECELERATION', baseVariableDef, reasons);
-    } else {
-        const uncompText = `${baseVariableDef}\n\nThis deceleration is classified as Uncomplicated because it does not meet any individual complication triggers or the combined "Rule of 60s" thresholds.`;
-        showResult('UNCOMPLICATED VARIABLE DECELERATION', uncompText);
+        return;
     }
+
+    const uncompText = `${baseVariableDef}\n\nThis deceleration is classified as Uncomplicated because it does not meet any individual complication triggers or the combined "Rule of 60s" thresholds.`;
+    showResult('UNCOMPLICATED VARIABLE DECELERATION', uncompText);
 }
 </script>
 </body>
