@@ -15,6 +15,7 @@ let state = {
         ua: '',
         maternal: 'None',
         base: '',
+        baseRoundingNote: null,
         baseDetail: { cat: 'NORMAL', detail: 'Baseline 110-160' },
         trend: { cat: 'NORMAL', detail: 'Stable Trend' },
         variability: { cat: 'NORMAL', detail: 'Moderate Variability' },
@@ -161,23 +162,35 @@ function evalBase() {
     const input = $('baseIn');
     if (!input) return;
 
-    const b = Number(input.value);
-    if (!Number.isFinite(b) || b <= 0) return;
+    const enteredBpm = Number(input.value);
+    if (!Number.isFinite(enteredBpm) || enteredBpm <= 0) return;
 
-    state.audit.base = `${b} bpm`;
+    const roundedBpm = Math.round(enteredBpm / 5) * 5;
 
-    if (b < 100) {
+    state.audit.base = `${roundedBpm} bpm`;
+
+    if (enteredBpm !== roundedBpm) {
+        state.audit.baseRoundingNote = {
+            entered: enteredBpm,
+            rounded: roundedBpm
+        };
+    } else {
+        state.audit.baseRoundingNote = null;
+    }
+
+    if (roundedBpm < 100) {
         state.audit.baseDetail = { cat: 'ABNORMAL', detail: 'Baseline Bradycardia < 100' };
         goTo('page8');
-    } else if (b < 110) {
+    } else if (roundedBpm < 110) {
         state.audit.baseDetail = { cat: 'ATYPICAL', detail: 'Baseline 100-110' };
         goTo('page8');
-    } else if (b > 160) {
+    } else if (roundedBpm > 160) {
         goTo('page7b');
     } else {
         state.audit.baseDetail = { cat: 'NORMAL', detail: 'Baseline 110-160' };
         goTo('page8');
     }
+}
 }
 
 function setTachy(cat, detail, bypass = false) {
