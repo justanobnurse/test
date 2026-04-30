@@ -157,9 +157,10 @@ function validatePeaks() {
     if (!Number.isFinite(tone) || tone < 0) return;
 
     const peakElements = Array.from(document.querySelectorAll('.peak-box'));
-    const peaks = peakElements
-        .map(i => Number(i.value))
-        .filter(v => Number.isFinite(v));
+const peaks = peakElements
+    .filter(input => input.value.trim() !== '')
+    .map(input => Number(input.value))
+    .filter(value => Number.isFinite(value));
 
     const total = peaks.reduce((acc, p) => acc + Math.max(0, p - tone), 0);
         const alertsEl = document.getElementById('mvuAlerts');
