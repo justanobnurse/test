@@ -173,6 +173,11 @@
 
     <div id="page7" class="hidden">
         <h3>What is the fetal heart rate baseline (rounded to the nearest 5bpm)?</h3>
+          <details class="edu-drop">
+        <summary>What is baseline fetal heart rate?</summary>
+        <div data-edu="baselineFHR"></div>
+    </details>
+
         <input type="number" id="baseIn" placeholder="BPM" style="padding:10px; width:100px; margin-bottom:10px;" oninput="validateBaseInput()"><br>
 
         <button id="baseContinueBtn" type="button" class="btn btn-primary" onclick="evalBase()" disabled>Continue</button>
