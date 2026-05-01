@@ -8,21 +8,44 @@
 
     const educationContent = {
         monitorTypes: `
-    <p><strong>Monitoring types</strong> refers to the equipment used to assess the fetal heart rate and uterine activity during continuous electronic fetal monitoring. This information is educational only and should be applied alongside clinical judgment, institutional policy, patient consent, and manufacturer guidance.</p>
-
-    <hr>
-
     <p><strong>Fetal heart monitoring</strong></p>
 
-    <p><strong>External ultrasound:</strong> an ultrasound transducer is placed on the maternal abdomen to detect fetal heart motion. External ultrasound may be wired or wireless depending on the equipment available. It is non-invasive and commonly used.</p>
+    <p><strong>External ultrasound:</strong> a non-invasive fetal heart monitoring method that uses an ultrasound transducer placed on the maternal abdomen to detect fetal heart motion. Depending on available equipment, external ultrasound systems may be wired, wireless, and/or waterproof for use in appropriate clinical settings.</p>
 
-    <p><strong>Useful considerations:</strong> external ultrasound tracing quality can be affected by fetal position, maternal movement, signal loss, maternal body habitus, monitor placement, or inadvertent monitoring of the maternal heart rate. If the tracing does not clearly represent the fetal heart rate, further assessment or troubleshooting is needed before interpretation.</p>
+<div class="edu-indent">
+    <p><strong>Advantages:</strong></p>
+    <ul>
+        <li>Non-invasive and commonly used.</li>
+        <li>Can be applied without ruptured membranes.</li>
+        <li>May allow flexible monitoring options depending on the equipment available, such as wired, wireless, or waterproof systems.</li>
+    </ul>
 
-    <p><strong>Internal fetal scalp electrode (FSE):</strong> an electrode is applied directly to the fetal presenting part, usually the fetal scalp, after membrane rupture. It detects the fetal heart rate from the fetal electrocardiographic signal and may provide a more consistent tracing when external monitoring is difficult.</p>
+    <p><strong>Limitations:</strong></p>
+    <ul>
+        <li>Tracing quality can be affected by fetal position, maternal movement, signal loss, maternal body habitus, or monitor placement.</li>
+        <li>May inadvertently detect the maternal heart rate instead of the fetal heart rate.</li>
+        <li>If the tracing does not clearly represent the fetal heart rate, further assessment or troubleshooting is needed before interpretation.</li>
+    </ul>
+</div>
 
-    <p><strong>Useful considerations:</strong> FSE is invasive and requires appropriate clinical conditions, patient consent, and adherence to institutional policy. Potential limitations and risks include local fetal skin injury, bleeding, infection risk, artifact, and inappropriate use when contraindications are present. Manufacturer-specific contraindications, warnings, or use restrictions should be reviewed when applicable.</p>
+<p><strong>Internal fetal scalp electrode (FSE):</strong> an internal fetal heart monitoring method, sometimes also called a fetal spiral electrode, where an electrode is applied directly to the fetal presenting part, usually the fetal scalp, after membrane rupture. It detects the fetal heart rate from the fetal electrocardiographic signal and may provide a more consistent tracing when external monitoring is difficult.</p>
 
-    <hr>
+<div class="edu-indent">
+    <p><strong>Advantages:</strong></p>
+    <ul>
+        <li>May provide a more consistent fetal heart rate tracing when external monitoring is difficult.</li>
+        <li>Can help clarify the fetal heart rate when there is ongoing external signal loss or uncertainty.</li>
+    </ul>
+
+    <p><strong>Limitations:</strong></p>
+    <ul>
+        <li>Invasive and requires appropriate clinical conditions, patient consent, and adherence to institutional policy.</li>
+        <li>Potential risks include local fetal skin injury, bleeding, infection risk, artifact, and inappropriate use when contraindications are present.</li>
+        <li>Manufacturer-specific contraindications, warnings, or use restrictions should be reviewed when applicable.</li>
+    </ul>
+</div>
+
+<hr>
 
     <p><strong>Uterine activity monitoring</strong></p>
 
