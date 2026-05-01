@@ -45,7 +45,10 @@
 
     <div id="page2" class="hidden">
         <h3>What type of monitors are being used?</h3>
-
+     <details class="edu-drop">
+        <summary>Learn about fetal heart monitoring options</summary>
+        <div data-edu="monitors"></div>
+    </details>
         <p><strong>Fetal Heart Monitor:</strong></p>
         <button id="f-us" type="button" class="btn" onclick="selF('External Ultrasound', 'us')">External Ultrasound</button>
         <button id="f-fse" type="button" class="btn" onclick="selF('Internal Fetal Scalp Electrode (FSE)', 'fse')">Internal Fetal Scalp Electrode (FSE)</button>
@@ -324,6 +327,7 @@
 </div>
 
 <script src="common.js"></script>
+<script src="cefm-education.js"></script>
 <script src="cefm.js"></script>
 </body>
 </html>
