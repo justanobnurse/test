@@ -66,6 +66,15 @@
 
     <p>Tachysystole can reduce uteroplacental blood flow and may affect fetal oxygenation over time. If fetal heart rate characteristics are atypical or abnormal during excessive uterine activity, response should not be delayed while waiting to complete a 30-minute average.</p>
 `,
+       maternalFactors: `
+    <p><strong>Maternal factors matter</strong> because maternal physiology can affect fetal oxygen delivery and can also influence how the fetal heart rate tracing is interpreted.</p>
+
+    <p>Maternal tachycardia, fever, hypotension, hypoxia, cardiac arrhythmia, or other clinical changes may alter uteroplacental blood flow, fetal oxygenation, or the ability to clearly distinguish the fetal heart rate from the maternal heart rate.</p>
+
+    <p>When maternal factors are present, the fetal tracing should be interpreted in the full clinical context. Maternal assessment, vital signs, symptoms, medications, labour progress, and the quality of the tracing may all affect clinical interpretation and next steps.</p>
+
+    <p><strong>Clinical reminder:</strong> abnormal maternal findings do not automatically determine the fetal heart rate classification, but they may increase concern, require correction or escalation, and support closer reassessment according to clinical judgment and institutional policy.</p>
+`,
     };
 
     function renderEducationContent() {
