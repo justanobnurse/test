@@ -124,6 +124,19 @@
 
     <p>The older terms “short-term variability,” “beat-to-beat variability,” and “long-term variability” are no longer recommended for visual interpretation because variability is visually assessed as a single characteristic.</p>
 `,
+       accelerations: `
+    <p><strong>Accelerations</strong> are visually apparent abrupt increases in fetal heart rate above the established baseline. “Abrupt” means the onset of the acceleration to the peak occurs in less than 30 seconds.</p>
+
+    <p>At 32 weeks gestation or greater, an acceleration is an increase of <strong>15 bpm or more</strong> above baseline, lasting <strong>15 seconds or more</strong> and less than 2 minutes from the time it leaves the baseline until it returns.</p>
+
+    <p>Before 32 weeks gestation, an acceleration is typically defined as an increase of <strong>10 bpm or more</strong> above baseline, lasting <strong>10 seconds or more</strong> and less than 2 minutes.</p>
+
+    <p>An acceleration lasting <strong>2 minutes to less than 10 minutes</strong> is considered a prolonged acceleration. An increase lasting <strong>10 minutes or more</strong> is considered a baseline change.</p>
+
+    <p><strong>Physiology:</strong> accelerations reflect a sympathetic fetal response and are commonly associated with fetal movement, normal cardiovascular responsiveness, or direct fetal stimulation such as scalp stimulation.</p>
+
+    <p><strong>Classification reminder:</strong> the presence of accelerations is normal and reassuring. However, accelerations are not required for a tracing to be classified as normal in labour, and the absence of accelerations in labour is common and does not automatically make the tracing atypical or abnormal.</p>
+`,
     };
 
     function renderEducationContent() {
