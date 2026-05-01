@@ -61,12 +61,18 @@
         <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
     </div>
 
-    <div id="page3" class="hidden">
-        <h3>Is the FHS CEFM Strip Interpretable?</h3>
-        <button type="button" class="btn" onclick="handleInt()">Interpretable</button>
-        <button type="button" class="btn" onclick="goTo('page4a')">Uninterpretable</button>
-        <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
-    </div>
+  <div id="page3" class="hidden">
+    <h3>Is the FHS CEFM Strip Interpretable?</h3>
+
+    <details class="edu-drop">
+        <summary>Learn about interpretable and uninterpretable tracings</summary>
+        <div data-edu="interpretability"></div>
+    </details>
+
+    <button type="button" class="btn" onclick="handleInt()">Interpretable</button>
+    <button type="button" class="btn" onclick="goTo('page4a')">Uninterpretable</button>
+    <button type="button" class="btn btn-back" onclick="goBack()">← Back</button>
+</div>
 
     <div id="page4a" class="hidden">
         <div class="alert-box">
