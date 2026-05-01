@@ -419,6 +419,20 @@ html.dark-mode .btn-back {
     margin-bottom: 6px;
 }
 
+.edu-indent {
+    margin: 8px 0 18px 18px;
+    padding-left: 14px;
+    border-left: 3px solid var(--border-color);
+}
+
+.edu-indent p {
+    margin: 8px 0 4px;
+}
+
+.edu-indent ul {
+    margin-top: 4px;
+}
+
 /* ==========================================================================
    5. FORM ELEMENTS
    ========================================================================== */
