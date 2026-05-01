@@ -198,7 +198,7 @@ function setTachy(cat, detail, bypass = false) {
     if (detail.includes('Tachycardia') && baseline) {
         state.audit.baseDetail = {
             cat,
-            detail: `Baseline ${baseline} for ${detail.replace('Tachycardia ', '')}`
+            detail: `${baseline} for ${detail.replace('Tachycardia ', '')}`
         };
     } else {
         state.audit.baseDetail = { cat, detail };
@@ -403,7 +403,7 @@ function finalize() {
         strong.textContent = '⚠️ Automatic Rounding Applied:';
 
         const p = document.createElement('p');
-        p.textContent = `The entered baseline FHR was ${state.audit.baseRoundingNote.entered} bpm and was automatically rounded to ${state.audit.baseRoundingNote.rounded} bpm. Verify that this rounded baseline accurately reflects the clinical tracing before applying the classification.`;
+        p.textContent = `The entered baseline FHR was ${state.audit.baseRoundingNote.entered} bpm. This was automatically rounded to ${state.audit.baseRoundingNote.rounded} bpm. Verify that this rounded baseline accurately reflects the tracing.`;
 
         roundingBox.appendChild(strong);
         roundingBox.appendChild(p);
@@ -443,7 +443,12 @@ function finalize() {
         .map(f => f.detail)
         .join(', ') || 'No Decelerations';
 
-    const auditBox = $('audit');
+   const baselineSummary =
+    state.audit.baseDetail?.detail?.includes('bpm for')
+        ? state.audit.baseDetail.detail
+        : state.audit.base;
+    
+   const auditBox = $('audit');
     auditBox.innerHTML = '';
 
     const auditGrid = document.createElement('div');
@@ -456,7 +461,7 @@ function finalize() {
         { label: 'Monitors in Use:', value: `${state.audit.fhrMon} / ${state.audit.uaMon}` },
         { label: 'Maternal Factors:', value: state.audit.maternal },
         { label: 'Uterine Activity:', value: state.audit.ua },
-        { label: 'FHR Baseline:', value: state.audit.base },
+        { label: 'FHR Baseline:', value: baselineSummary },
         { label: 'Trend:', value: state.audit.trend.detail },
         { label: 'Variability:', value: state.audit.variability.detail },
         { label: 'Accelerations:', value: state.audit.accels.detail },
