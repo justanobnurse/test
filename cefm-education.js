@@ -137,6 +137,29 @@
 
     <p><strong>Classification reminder:</strong> the presence of accelerations is normal and reassuring. However, accelerations are not required for a tracing to be classified as normal in labour, and the absence of accelerations in labour is common and does not automatically make the tracing atypical or abnormal.</p>
 `,
+       decelerations: `
+    <p><strong>Decelerations</strong> are decreases in the fetal heart rate below the established baseline. The type of deceleration is determined by the <strong>slope</strong> of the decrease and its <strong>timing in relation to uterine contractions</strong>.</p>
+
+    <p><strong>Abrupt onset</strong> means the time from the beginning of the deceleration to the nadir is less than 30 seconds. Abrupt decelerations are usually variable decelerations.</p>
+
+    <p><strong>Gradual onset</strong> means the time from the beginning of the deceleration to the nadir is 30 seconds or more. Gradual decelerations are usually assessed by their relationship to the contraction and may be early or late.</p>
+
+    <p><strong>Early decelerations</strong> are gradual decreases that usually mirror the contraction. The onset, nadir, and recovery generally correspond with the beginning, peak, and end of the contraction. Early decelerations are commonly associated with fetal head compression and are classified as normal when they meet early deceleration criteria.</p>
+
+    <p><strong>Variable decelerations</strong> are abrupt decreases in the fetal heart rate and are commonly associated with umbilical cord compression. They may be episodic or occur with contractions. Variable decelerations may be uncomplicated or complicated depending on their features and the surrounding tracing.</p>
+
+    <p><strong>Uncomplicated variable decelerations</strong> are abrupt decreases of at least 15 bpm below baseline, lasting at least 15 seconds and less than 2 minutes, without complicating features. Non-repetitive uncomplicated variables may be normal, while repetitive uncomplicated variables are classified as atypical in this tool.</p>
+
+    <p><strong>Complicated variable decelerations</strong> have features suggesting greater concern, such as delayed return to baseline after the contraction, prolonged duration, deep nadir, large drop from baseline, overshoot, or occurrence with baseline tachycardia, bradycardia, minimal variability, or absent variability. In this tool, non-repetitive complicated variables are atypical and repetitive complicated variables are abnormal.</p>
+
+    <p><strong>Late decelerations</strong> are gradual decreases where the onset, nadir, and recovery occur after the beginning, peak, and end of the contraction. They may reflect uteroplacental insufficiency and require careful assessment in the full clinical context.</p>
+
+    <p><strong>Intermittent late decelerations</strong> occur with less than 50% of contractions in a 20-minute window and are classified as atypical in this tool. <strong>Recurrent late decelerations</strong> occur with 50% or more of contractions in a 20-minute window and are classified as abnormal.</p>
+
+    <p><strong>Prolonged decelerations</strong> last at least 2 minutes but less than 10 minutes. A decrease lasting 10 minutes or more is considered a baseline change, but still represents a significant finding requiring clinical assessment and response.</p>
+
+    <p><strong>Occurrence terms:</strong> periodic decelerations occur with contractions, episodic decelerations are not associated with contractions, repetitive means 3 or more decelerations in a row, recurrent means occurring with 50% or more of contractions, and intermittent means occurring with less than 50% of contractions.</p>
+`,
     };
 
     function renderEducationContent() {
