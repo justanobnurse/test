@@ -84,6 +84,17 @@
 
     <p><strong>Clinical reminder:</strong> when coincidence is suspected, the maternal pulse should be confirmed by palpation or appropriate maternal monitoring and compared with the displayed fetal heart rate. Ongoing or repetitive coincidence should be resolved before fetal heart rate classification is applied.</p>
 `,
+       baselineFHR: `
+    <p><strong>Baseline fetal heart rate</strong> is the approximate mean fetal heart rate, rounded to increments of 5 bpm, during a 10-minute segment of the tracing.</p>
+
+    <p>The baseline is assessed <strong>between contractions</strong> and excludes accelerations, decelerations, and periods of marked variability greater than 25 bpm.</p>
+
+    <p>There must be at least <strong>2 minutes of identifiable baseline</strong> within a 10-minute window. The identifiable baseline does not need to be continuous. If there is not enough identifiable baseline, the baseline is considered indeterminate.</p>
+
+    <p><strong>Normal baseline FHR</strong> is 110 to 160 bpm. A preterm fetus may have a baseline toward the higher end of the normal range, while a term or post-term fetus may have a baseline toward the lower end because of maturation of the autonomic nervous system.</p>
+
+    <p>A baseline change may occur gradually. To be considered a new baseline, the change should be maintained for 10 minutes. Reviewing the previous 10-minute segment can help compare the prior baseline with the current tracing.</p>
+`,
     };
 
     function renderEducationContent() {
