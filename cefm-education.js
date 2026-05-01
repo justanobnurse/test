@@ -56,24 +56,37 @@
     externalUterineActivity: `
     <p><strong>Uterine activity assessment</strong> evaluates the contraction pattern in relation to the fetal heart rate. With external monitoring, this includes use of the tocodynamometer and manual palpation of the maternal abdomen.</p>
 
-    <p>Uterine activity is described by four characteristics: <strong>frequency</strong>, <strong>duration</strong>, <strong>intensity</strong>, and <strong>resting tone</strong>.</p>
+    <p>Uterine activity is described by four characteristics:</p>
 
-    <p><strong>Frequency</strong> is how often contractions occur, usually counted as the number of contractions in 10 minutes and averaged over 30 minutes. Normal frequency is generally 5 or fewer contractions in 10 minutes.</p>
-
-    <p><strong>Duration</strong> is the length of each contraction, from the start of uterine tightening to return of uterine relaxation. Normal duration is generally 90 seconds or less.</p>
-
-    <p><strong>Intensity</strong> and <strong>resting tone</strong> cannot be measured by an external tocodynamometer. They require palpation. Intensity is commonly described as mild, moderate, or strong. Resting tone should feel soft between contractions and should be present for at least 30 seconds.</p>
+    <ul>
+        <li><strong>Frequency:</strong> how often contractions occur, usually counted as the number of contractions in 10 minutes and averaged over 30 minutes. Normal frequency is generally 5 or fewer contractions in 10 minutes.</li>
+        <li><strong>Duration:</strong> the length of each contraction, from the start of uterine tightening to return of uterine relaxation. Normal duration is generally 90 seconds or less.</li>
+        <li><strong>Intensity:</strong> the strength of the contraction. Intensity cannot be measured by an external tocodynamometer and requires palpation. It is commonly described as mild, moderate, or strong.</li>
+        <li><strong>Resting tone:</strong> the tone of the uterus between contractions. Resting tone cannot be measured by an external tocodynamometer and requires palpation. The uterus should feel soft between contractions, with resting tone present for at least 30 seconds.</li>
+    </ul>
 
     <p><strong>Clinical reminder:</strong> palpation should accompany external monitoring to confirm the contraction pattern, assess intensity and resting tone, support correct transducer placement, and ensure the tracing matches the clinical picture. The labouring person’s perception of contractions should also be considered.</p>
 
-    <p><strong>Tachysystole</strong> is the term for excessive uterine activity and includes any of the following: more than 5 contractions in 10 minutes averaged over 30 minutes, contraction duration greater than 90 seconds, insufficient resting tone between contractions, or excessive intensity when measured by IUPC.</p>
+    <hr>
 
-<ul>
-    <li><strong>Frequency:</strong> &gt;5 contractions in 10 minutes averaged over 30 minutes.</li>
-    <li><strong>Duration:</strong> contraction duration &gt;90 seconds.</li>
-    <li><strong>Resting tone:</strong> resting period between contractions &lt;30 seconds, or the uterus remains firm between contractions.</li>
-    <li><strong>Intensity:</strong> IUPC measurement &ge;75 mmHg above baseline, except in second stage.</li>
-</ul>
+    <p><strong>Normal uterine activity</strong></p>
+
+    <ul>
+        <li><strong>Frequency:</strong> 5 or fewer contractions in 10 minutes, averaged over 30 minutes.</li>
+        <li><strong>Duration:</strong> 90 seconds or less.</li>
+        <li><strong>Resting tone:</strong> uterus soft between contractions, with at least 30 seconds of resting tone.</li>
+    </ul>
+
+    <hr>
+
+    <p><strong>Tachysystole</strong> is the term for excessive uterine activity and includes any of the following:</p>
+
+    <ul>
+        <li><strong>Frequency:</strong> more than 5 contractions in 10 minutes, averaged over 30 minutes.</li>
+        <li><strong>Duration:</strong> contraction duration greater than 90 seconds.</li>
+        <li><strong>Resting tone:</strong> resting period between contractions less than 30 seconds, or the uterus remains firm between contractions.</li>
+        <li><strong>Intensity:</strong> IUPC measurement 75 mmHg or greater above baseline, except in second stage.</li>
+    </ul>
 
     <p>Tachysystole can reduce uteroplacental blood flow and may affect fetal oxygenation over time. If fetal heart rate characteristics are atypical or abnormal during excessive uterine activity, response should not be delayed while waiting to complete a 30-minute average.</p>
 `,
