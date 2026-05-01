@@ -29,24 +29,43 @@
             <p>IUPC use is invasive and requires appropriate clinical conditions, patient consent, and adherence to institutional policy. Potential limitations and risks include insertion difficulty, inaccurate readings if not functioning or zeroed correctly, infection, bleeding, uterine or placental injury, and rare serious complications. Manufacturer-specific instructions, warnings, and contraindications should be reviewed when applicable.</p>
         `,
 
-        interpretability: `
-            <p><strong>Interpretable tracing:</strong> contains enough visually clear fetal heart rate and uterine activity data to allow the clinician to assess the fetal health surveillance findings being evaluated.</p>
+    interpretability: `
+    <p><strong>Interpretable tracing:</strong> contains enough visually clear fetal heart rate and uterine activity data to allow the clinician to assess the fetal health surveillance findings being evaluated.</p>
 
-            <p><strong>Uninterpretable tracing:</strong> does not contain enough visually clear data to allow clinicians to interpret the information they are seeking. If electronic fetal monitoring is indicated, troubleshooting should be initiated so that the tracing records the information needed for assessment.</p>
+    <p><strong>Uninterpretable tracing:</strong> does not contain enough visually clear data to allow clinicians to interpret the information they are seeking. If electronic fetal monitoring is indicated, troubleshooting should be initiated so that the tracing records the information needed for assessment.</p>
 
-            <p><strong>Artifact:</strong> refers to a signal that interferes with the fetal heart rate display and may arise from sources other than the fetal heart. This can occur when the monitor is detecting the wrong input, such as the maternal heart rate, or when the system displays a misleading output signal.</p>
-        `,
-       externalUterineActivity: `
-            <p><strong>External uterine activity assessment</strong> refers to evaluating contraction pattern using an external tocodynamometer and clinical assessment.</p>
+    <p><strong>Artifact:</strong> refers to a signal that interferes with the fetal heart rate display and may arise from sources other than the fetal heart. Artifact can occur when the monitor is detecting the wrong input, such as the maternal heart rate, or when the system displays a misleading output signal.</p>
 
-            <p><strong>Normal uterine activity</strong> generally includes a contraction pattern that allows adequate uterine relaxation between contractions. Assessment should consider contraction frequency, duration, resting tone between contractions, and the overall clinical picture.</p>
+    <p><strong>External ultrasound artifact:</strong> may appear as gaps, irregular marks, or “chicken scratches” that make the baseline difficult to determine. It may also create small vertical markings that falsely suggest variability. It is important to distinguish true fetal heart rate variability from artifact.</p>
 
-            <p><strong>External TOCO limitation:</strong> an external tocodynamometer can help show contraction frequency and approximate duration, but it does not directly measure contraction strength or true resting tone. Because of this, palpation remains important when assessing uterine tone, contraction intensity, and whether the tracing matches the clinical picture.</p>
+    <p><strong>FSE artifact:</strong> internal fetal scalp electrode monitoring can also produce artifact. Possible causes include fetal movement, excess fetal hair, poor electrode contact, placement on maternal tissue, signal disruption during vaginal examination, or equipment-related issues.</p>
 
-            <p><strong>Tachysystole</strong> is commonly described as more than 5 contractions in 10 minutes, averaged over 30 minutes. However, different fetal surveillance resources and institutional policies may include additional criteria, such as excessive contraction duration, inadequate resting tone between contractions, coupling or tripling contractions, elevated resting tone, or excessive intensity when measured internally.</p>
+    <p>Whenever the tracing does not clearly represent the fetal heart rate, interpretation should be delayed until the signal is clarified. Ongoing difficulty obtaining interpretable data should be escalated according to institutional policy, and efforts to obtain interpretable data should be documented.</p>
+`,
+    externalUterineActivity: `
+    <p><strong>Uterine activity assessment</strong> evaluates the contraction pattern in relation to the fetal heart rate. With external monitoring, this includes use of the tocodynamometer and manual palpation of the maternal abdomen.</p>
 
-            <p>When tachysystole is suspected, consider the full clinical context, fetal heart rate response, medications or oxytocin exposure, labour progress, maternal symptoms, and institutional policy. Tachysystole can reduce uteroplacental blood flow and may affect fetal oxygenation over time, even if the current fetal heart rate classification is otherwise reassuring.</p>
-        `,
+    <p>Uterine activity is described by four characteristics: <strong>frequency</strong>, <strong>duration</strong>, <strong>intensity</strong>, and <strong>resting tone</strong>.</p>
+
+    <p><strong>Frequency</strong> is how often contractions occur, usually counted as the number of contractions in 10 minutes and averaged over 30 minutes. Normal frequency is generally 5 or fewer contractions in 10 minutes.</p>
+
+    <p><strong>Duration</strong> is the length of each contraction, from the start of uterine tightening to return of uterine relaxation. Normal duration is generally 90 seconds or less.</p>
+
+    <p><strong>Intensity</strong> and <strong>resting tone</strong> cannot be measured by an external tocodynamometer. They require palpation. Intensity is commonly described as mild, moderate, or strong. Resting tone should feel soft between contractions and should be present for at least 30 seconds.</p>
+
+    <p><strong>Clinical reminder:</strong> palpation should accompany external monitoring to confirm the contraction pattern, assess intensity and resting tone, support correct transducer placement, and ensure the tracing matches the clinical picture. The labouring person’s perception of contractions should also be considered.</p>
+
+    <p><strong>Tachysystole</strong> is the term for excessive uterine activity and includes any of the following: more than 5 contractions in 10 minutes averaged over 30 minutes, contraction duration greater than 90 seconds, insufficient resting tone between contractions, or excessive intensity when measured by IUPC.</p>
+
+<ul>
+    <li><strong>Frequency:</strong> &gt;5 contractions in 10 minutes averaged over 30 minutes.</li>
+    <li><strong>Duration:</strong> contraction duration &gt;90 seconds.</li>
+    <li><strong>Resting tone:</strong> resting period between contractions &lt;30 seconds, or the uterus remains firm between contractions.</li>
+    <li><strong>Intensity:</strong> IUPC measurement &ge;75 mmHg above baseline, except in second stage.</li>
+</ul>
+
+    <p>Tachysystole can reduce uteroplacental blood flow and may affect fetal oxygenation over time. If fetal heart rate characteristics are atypical or abnormal during excessive uterine activity, response should not be delayed while waiting to complete a 30-minute average.</p>
+`,
     };
 
     function renderEducationContent() {
