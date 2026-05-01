@@ -106,6 +106,24 @@
 
     <p><strong>Clinical note:</strong> a decreasing baseline can occur, but it generally becomes concerning when the baseline reaches bradycardia, defined as less than 110 bpm.</p>
 `,
+       baselineVariability: `
+    <p><strong>Baseline variability</strong> refers to irregular fluctuations in the baseline fetal heart rate. These fluctuations vary in amplitude and frequency and are visually assessed by estimating the peak-to-trough amplitude in bpm.</p>
+
+    <p>Variability reflects the interaction between the sympathetic and parasympathetic nervous systems. The presence of variability requires an intact medulla, a sufficiently mature central nervous system, and an oxygenated brainstem.</p>
+
+    <p><strong>Moderate variability</strong> is generally reassuring and is associated with the absence of fetal metabolic acidemia at the time it is observed. It reflects intact fetal heart rate modulation, cardiac responsiveness, and adequate oxygenation.</p>
+
+    <ul>
+        <li><strong>Absent variability:</strong> undetectable amplitude.</li>
+        <li><strong>Minimal variability:</strong> amplitude of 5 bpm or less.</li>
+        <li><strong>Moderate variability:</strong> amplitude of 6 to 25 bpm.</li>
+        <li><strong>Marked variability:</strong> amplitude greater than 25 bpm.</li>
+    </ul>
+
+    <p><strong>Terminology reminder:</strong> use standardized terms such as absent, minimal, moderate, and marked. Avoid undefined subjective terms such as “good variability” or “improving variability.”</p>
+
+    <p>The older terms “short-term variability,” “beat-to-beat variability,” and “long-term variability” are no longer recommended for visual interpretation because variability is visually assessed as a single characteristic.</p>
+`,
     };
 
     function renderEducationContent() {
