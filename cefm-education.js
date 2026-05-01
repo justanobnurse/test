@@ -75,6 +75,15 @@
 
     <p><strong>Clinical reminder:</strong> abnormal maternal findings do not automatically determine the fetal heart rate classification, but they may increase concern, require correction or escalation, and support closer reassessment according to clinical judgment and institutional policy.</p>
 `,
+       coincidence: `
+    <p><strong>Maternal-fetal heart rate coincidence</strong> occurs when the displayed fetal heart rate is the same as, very similar to, or difficult to distinguish from the maternal heart rate.</p>
+
+    <p>This can happen when the external fetal monitor inadvertently detects the maternal pulse instead of the fetal heart rate, or when the maternal and fetal heart rates are close enough that the tracing source becomes uncertain.</p>
+
+    <p>Coincidence is a safety concern because the tracing may appear to show fetal heart rate characteristics when it is actually displaying maternal heart rate data. This can delay recognition of fetal compromise or lead to incorrect interpretation.</p>
+
+    <p><strong>Clinical reminder:</strong> when coincidence is suspected, the maternal pulse should be confirmed by palpation or appropriate maternal monitoring and compared with the displayed fetal heart rate. Ongoing or repetitive coincidence should be resolved before fetal heart rate classification is applied.</p>
+`,
     };
 
     function renderEducationContent() {
