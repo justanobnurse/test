@@ -34,13 +34,18 @@
 
             <p><strong>Uninterpretable tracing:</strong> does not contain enough visually clear data to allow clinicians to interpret the information they are seeking. If electronic fetal monitoring is indicated, troubleshooting should be initiated so that the tracing records the information needed for assessment.</p>
 
-            <p><strong>Troubleshooting:</strong> may include repositioning the monitor, improving contact, reducing signal loss where possible, checking equipment function, confirming the maternal pulse, and considering internal monitoring of the fetal heart rate and/or uterine activity when clinically appropriate and consented. Ongoing difficulty obtaining interpretable data should be escalated according to institutional policy, and efforts to obtain interpretable data should be documented.</p>
-
             <p><strong>Artifact:</strong> refers to a signal that interferes with the fetal heart rate display and may arise from sources other than the fetal heart. This can occur when the monitor is detecting the wrong input, such as the maternal heart rate, or when the system displays a misleading output signal.</p>
+        `,
+       externalUterineActivity: `
+            <p><strong>External uterine activity assessment</strong> refers to evaluating contraction pattern using an external tocodynamometer and clinical assessment.</p>
 
-            <p><strong>External ultrasound artifact:</strong> may appear as gaps, irregular marks, or “chicken scratches” that make the baseline difficult to determine. It may also create small vertical markings that falsely suggest variability. It is important to distinguish true fetal heart rate variability from artifact.</p>
+            <p><strong>Normal uterine activity</strong> generally includes a contraction pattern that allows adequate uterine relaxation between contractions. Assessment should consider contraction frequency, duration, resting tone between contractions, and the overall clinical picture.</p>
 
-            <p><strong>Maternal heart rate artifact:</strong> is a major safety concern. When there is uncertainty about whether the displayed heart rate is fetal or maternal, the maternal pulse should be confirmed by palpation or appropriate monitoring and documented. Providers should also understand their local monitoring equipment, including coincidence alarms and the appropriate response to alarms.</p>
+            <p><strong>External TOCO limitation:</strong> an external tocodynamometer can help show contraction frequency and approximate duration, but it does not directly measure contraction strength or true resting tone. Because of this, palpation remains important when assessing uterine tone, contraction intensity, and whether the tracing matches the clinical picture.</p>
+
+            <p><strong>Tachysystole</strong> is commonly described as more than 5 contractions in 10 minutes, averaged over 30 minutes. However, different fetal surveillance resources and institutional policies may include additional criteria, such as excessive contraction duration, inadequate resting tone between contractions, coupling or tripling contractions, elevated resting tone, or excessive intensity when measured internally.</p>
+
+            <p>When tachysystole is suspected, consider the full clinical context, fetal heart rate response, medications or oxytocin exposure, labour progress, maternal symptoms, and institutional policy. Tachysystole can reduce uteroplacental blood flow and may affect fetal oxygenation over time, even if the current fetal heart rate classification is otherwise reassuring.</p>
         `,
     };
 
