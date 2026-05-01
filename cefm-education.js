@@ -47,15 +47,45 @@
 
 <hr>
 
-    <p><strong>Uterine activity monitoring</strong></p>
+   <p><strong>Uterine activity monitoring</strong></p>
 
-    <p><strong>External tocodynamometer (TOCO):</strong> a pressure-sensitive transducer is placed on the maternal abdomen, usually near the uterine fundus. It detects changes in abdominal wall contour during contractions.</p>
+<p><strong>External tocodynamometer (TOCO):</strong> an external uterine activity monitoring method that uses a pressure-sensitive transducer placed on the maternal abdomen, usually near the uterine fundus, to detect changes in abdominal wall contour during contractions.</p>
 
-    <p><strong>Useful considerations:</strong> TOCO can help assess contraction frequency and approximate duration, but it does not directly measure contraction strength or true resting tone. Palpation remains important when assessing contraction intensity, resting tone, and whether the tracing matches the clinical picture. TOCO accuracy can be affected by maternal position, movement, body habitus, belt placement, and poor contact with the abdomen.</p>
+<div class="edu-indent">
+    <p><strong>Advantages:</strong></p>
+    <ul>
+        <li>Non-invasive and commonly used.</li>
+        <li>Can help assess contraction frequency and approximate contraction duration.</li>
+        <li>Can show the timing of contractions in relation to the fetal heart rate.</li>
+    </ul>
 
-    <p><strong>Internal uterine pressure catheter (IUPC):</strong> a catheter is placed inside the uterus after membrane rupture and connected to the monitor. It measures intrauterine pressure in mmHg and can provide information about contraction intensity, resting tone, and Montevideo Units.</p>
+    <p><strong>Limitations:</strong></p>
+    <ul>
+        <li>Does not directly measure contraction strength or true resting tone.</li>
+        <li>Requires palpation to assess contraction intensity and resting tone.</li>
+        <li>Accuracy can be affected by maternal position, movement, body habitus, belt placement, and poor contact with the abdomen.</li>
+        <li>If the tracing does not match the clinical picture, further assessment or troubleshooting is needed before interpretation.</li>
+    </ul>
+</div>
 
-    <p><strong>Useful considerations:</strong> IUPC is invasive and requires appropriate clinical conditions, patient consent, and adherence to institutional policy. Potential limitations and risks include insertion difficulty, inaccurate readings if the system is not functioning or zeroed correctly, infection, bleeding, uterine or placental injury, and rare serious complications. Manufacturer-specific instructions, warnings, and contraindications should be reviewed when applicable.</p>
+<p><strong>Internal uterine pressure catheter (IUPC):</strong> an internal uterine activity monitoring method where a catheter is placed inside the uterus after membrane rupture and connected to the monitor. It measures intrauterine pressure in mmHg and can provide information about contraction intensity, resting tone, and Montevideo Units.</p>
+
+<div class="edu-indent">
+    <p><strong>Advantages:</strong></p>
+    <ul>
+        <li>Can directly measure intrauterine pressure in mmHg.</li>
+        <li>Can provide more objective information about contraction intensity and resting tone.</li>
+        <li>Can be used to calculate Montevideo Units.</li>
+    </ul>
+
+    <p><strong>Limitations:</strong></p>
+    <ul>
+        <li>Invasive and requires appropriate clinical conditions, patient consent, and adherence to institutional policy.</li>
+        <li>Requires correct function and zeroing to provide accurate readings.</li>
+        <li>Potential risks include insertion difficulty, infection, bleeding, uterine or placental injury, inaccurate readings, and rare serious complications.</li>
+        <li>Manufacturer-specific instructions, warnings, and contraindications should be reviewed when applicable.</li>
+    </ul>
+</div>
 `,
     interpretability: `
     <p><strong>Interpretable tracing:</strong> contains enough visually clear fetal heart rate and uterine activity data to allow the clinician to assess the fetal health surveillance findings being evaluated.</p>
