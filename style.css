@@ -385,6 +385,41 @@ html.dark-mode .btn-back {
 }
 
 /* ==========================================================================
+   EDUCATIONAL DROPDOWNS
+   ========================================================================== */
+
+.edu-drop {
+    margin: 16px 0;
+    padding: 14px 16px;
+    background: var(--item-bg);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+}
+
+.edu-drop summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.edu-drop summary:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+.edu-drop p,
+.edu-drop ul {
+    margin-top: 12px;
+    color: var(--text);
+}
+
+.edu-drop li {
+    margin-bottom: 6px;
+}
+
+/* ==========================================================================
    5. FORM ELEMENTS
    ========================================================================== */
 input[type="number"] {
