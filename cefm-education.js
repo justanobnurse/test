@@ -95,6 +95,17 @@
 
     <p>A baseline change may occur gradually. To be considered a new baseline, the change should be maintained for 10 minutes. Reviewing the previous 10-minute segment can help compare the prior baseline with the current tracing.</p>
 `,
+       baselineTrend: `
+    <p><strong>Baseline trend</strong> refers to whether the fetal heart rate baseline remains stable or shows a progressive change over time.</p>
+
+    <p><strong>Stable baseline:</strong> the baseline remains relatively consistent without a persistent upward trend.</p>
+
+    <p><strong>Persistently rising baseline:</strong> the baseline fetal heart rate progressively increases over time. A baseline that is consistently rising is considered concerning because it may be associated with evolving fetal stress, maternal fever, infection, dehydration, medication effects, or other clinical changes.</p>
+
+    <p>In this tool, a persistently rising baseline is treated as an <strong>atypical</strong> finding.</p>
+
+    <p><strong>Clinical note:</strong> a decreasing baseline can occur, but it generally becomes concerning when the baseline reaches bradycardia, defined as less than 110 bpm.</p>
+`,
     };
 
     function renderEducationContent() {
