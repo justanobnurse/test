@@ -195,7 +195,7 @@
                     <input id="lmpAsOfDate" type="date">
                     <button class="btn set-today-btn" type="button" data-target="lmpAsOfDate">Use Today</button>
                 </div>
-                <p class="form-hint">Defaults to today’s date.</p>
+                <p class="form-hint">Defaults to today’s date if left blank.</p>
             </div>
 
             <div class="inline-actions">
@@ -221,6 +221,7 @@
                     <input id="edbAsOfDate" type="date">
                     <button class="btn set-today-btn" type="button" data-target="edbAsOfDate">Use Today</button>
                 </div>
+                <p class="form-hint">Defaults to today’s date if left blank.</p>
             </div>
 
             <div class="inline-actions">
@@ -262,6 +263,7 @@
                     <input id="knownGaAsOfDate" type="date">
                     <button class="btn set-today-btn" type="button" data-target="knownGaAsOfDate">Use Today</button>
                 </div>
+                <p class="form-hint">Defaults to today’s date if left blank.</p>
             </div>
 
             <div class="inline-actions">
@@ -323,6 +325,13 @@
             function todayLocal() {
                 const now = new Date();
                 return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+            }
+
+            function getDateInputOrToday(inputId) {
+                const input = document.getElementById(inputId);
+                const parsedDate = input ? parseDateInput(input.value) : null;
+
+                return parsedDate || todayLocal();
             }
 
             function addDays(date, days) {
@@ -411,15 +420,10 @@
             function calculateFromLmp() {
                 const lmpDate = parseDateInput(document.getElementById('lmpDate').value);
                 const ovulationDate = parseDateInput(document.getElementById('ovulationDate').value);
-                const asOfDate = parseDateInput(document.getElementById('lmpAsOfDate').value);
+                const asOfDate = getDateInputOrToday('lmpAsOfDate');
 
                 if (!lmpDate && !ovulationDate) {
                     showError('Enter either an LMP date or an ovulation date.');
-                    return;
-                }
-
-                if (!asOfDate) {
-                    showError('Enter an “as of” date.');
                     return;
                 }
 
@@ -459,10 +463,10 @@
 
             function calculateFromEdb() {
                 const edbDate = parseDateInput(document.getElementById('edbDate').value);
-                const asOfDate = parseDateInput(document.getElementById('edbAsOfDate').value);
+                const asOfDate = getDateInputOrToday('edbAsOfDate');
 
-                if (!edbDate || !asOfDate) {
-                    showError('Enter an EDB and an “as of” date.');
+                if (!edbDate) {
+                    showError('Enter an EDB.');
                     return;
                 }
 
@@ -481,10 +485,10 @@
                 const weeks = Number.parseInt(document.getElementById('knownWeeks').value, 10);
                 const days = Number.parseInt(document.getElementById('knownDays').value, 10);
                 const knownGaDate = parseDateInput(document.getElementById('knownGaDate').value);
-                const asOfDate = parseDateInput(document.getElementById('knownGaAsOfDate').value);
+                const asOfDate = getDateInputOrToday('knownGaAsOfDate');
 
-                if (!Number.isInteger(weeks) || !Number.isInteger(days) || !knownGaDate || !asOfDate) {
-                    showError('Enter weeks, days, the date the gestational age was known, and an “as of” date.');
+                if (!Number.isInteger(weeks) || !Number.isInteger(days) || !knownGaDate) {
+                    showError('Enter weeks, days, and the date the gestational age was known.');
                     return;
                 }
 
@@ -511,10 +515,13 @@
             function setDefaultDates() {
                 const todayValue = toDateInputValue(todayLocal());
 
-                document.getElementById('lmpAsOfDate').value = todayValue;
-                document.getElementById('edbAsOfDate').value = todayValue;
-                document.getElementById('knownGaAsOfDate').value = todayValue;
-                document.getElementById('knownGaDate').value = todayValue;
+                ['lmpAsOfDate', 'edbAsOfDate', 'knownGaAsOfDate', 'knownGaDate'].forEach((id) => {
+                    const input = document.getElementById(id);
+
+                    if (input && !input.value) {
+                        input.value = todayValue;
+                    }
+                });
             }
 
             modeButtons.forEach((button) => {
