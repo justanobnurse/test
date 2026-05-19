@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimated Date of Birth Calculator</title>
+    <script src="theme-loader.js"></script>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .tool-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .tool-header h1 {
+    margin-bottom: 10px;
+    color: #008080;
+}
+
+        .mode-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        @media (min-width: 768px) {
+            .mode-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .mode-panel {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--item-bg);
+        }
+
+        .form-row {
+            margin-bottom: 18px;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .form-hint {
+            margin-top: 4px;
+            color: var(--muted-text);
+            font-size: 0.9rem;
+        }
+
+        input[type="date"],
+        input[type="number"] {
+            width: 100%;
+            max-width: 220px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        input[type="date"]:focus-visible,
+        input[type="number"]:focus-visible {
+            border-color: var(--accent);
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .ga-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .ga-inputs input[type="number"] {
+            max-width: 120px;
+        }
+
+        .inline-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .inline-actions .btn {
+            width: auto;
+            min-width: 180px;
+            margin: 0;
+        }
+
+        .result-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .result-list li {
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .subtle-note {
+            margin-top: 16px;
+            color: var(--muted-text);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="tool-header">
+            <h1>Estimated Date of Birth Calculator</h1>
+            <p>Calculate an estimated date of birth, estimated LMP, or current gestational age using common pregnancy dating methods.</p>
+        </div>
+
+        <div class="disclaimer-banner">
+            <strong>Educational Use Only:</strong>
+            <p>This calculator is intended for educational reference only. Pregnancy dating should be confirmed using clinical judgment, local policy, and appropriate provider assessment.</p>
+        </div>
+
+        <div class="mode-grid" role="group" aria-label="Calculator options">
+            <button class="btn btn-primary mode-btn is-selected" type="button" data-mode="lmp" aria-pressed="true">
+                Calculate EDB from LMP
+            </button>
+
+            <button class="btn mode-btn" type="button" data-mode="edb" aria-pressed="false">
+                Calculate GA from EDB
+            </button>
+
+            <button class="btn mode-btn" type="button" data-mode="known-ga" aria-pressed="false">
+                Calculate EDB from Known GA
+            </button>
+        </div>
+
+        <!-- LMP PANEL -->
+        <section id="panel-lmp" class="mode-panel">
+            <h2>Calculate EDB from LMP</h2>
+
+            <div class="form-row">
+                <label for="lmpDate">First day of last menstrual period</label>
+                <input id="lmpDate" type="date">
+                <p class="form-hint">Uses Naegele’s rule: LMP + 280 days.</p>
+            </div>
+
+            <div class="form-row">
+                <label for="lmpAsOfDate">Calculate gestational age as of</label>
+                <input id="lmpAsOfDate" type="date">
+                <p class="form-hint">Defaults to today’s date.</p>
+            </div>
+
+            <div class="inline-actions">
+                <button id="calculateFromLmpBtn" class="btn btn-primary" type="button">Calculate</button>
+                <button class="btn set-today-btn" type="button" data-target="lmpAsOfDate">Use Today</button>
+            </div>
+        </section>
+
+        <!-- EDB PANEL -->
+        <section id="panel-edb" class="mode-panel hidden">
+            <h2>Calculate Current Gestational Age from EDB</h2>
+
+            <div class="form-row">
+                <label for="edbDate">Estimated date of birth</label>
+                <input id="edbDate" type="date">
+            </div>
+
+            <div class="form-row">
+                <label for="edbAsOfDate">Calculate gestational age as of</label>
+                <input id="edbAsOfDate" type="date">
+                <p class="form-hint">Defaults to today’s date.</p>
+            </div>
+
+            <div class="inline-actions">
+                <button id="calculateFromEdbBtn" class="btn btn-primary" type="button">Calculate</button>
+                <button class="btn set-today-btn" type="button" data-target="edbAsOfDate">Use Today</button>
+            </div>
+        </section>
+
+        <!-- KNOWN GA PANEL -->
+        <section id="panel-known-ga" class="mode-panel hidden">
+            <h2>Calculate EDB from Known Gestational Age</h2>
+
+            <div class="form-row">
+                <label>Known gestational age</label>
+
+                <div class="ga-inputs">
+                    <div>
+                        <label for="knownWeeks">Weeks</label>
+                        <input id="knownWeeks" type="number" min="0" max="45" inputmode="numeric" placeholder="Weeks">
+                    </div>
+
+                    <div>
+                        <label for="knownDays">Days</label>
+                        <input id="knownDays" type="number" min="0" max="6" inputmode="numeric" placeholder="Days">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <label for="knownGaDate">Date this gestational age was known</label>
+                <input id="knownGaDate" type="date">
+            </div>
+
+            <div class="form-row">
+                <label for="knownGaAsOfDate">Calculate current gestational age as of</label>
+                <input id="knownGaAsOfDate" type="date">
+                <p class="form-hint">Defaults to today’s date.</p>
+            </div>
+
+            <div class="inline-actions">
+                <button id="calculateFromKnownGaBtn" class="btn btn-primary" type="button">Calculate</button>
+                <button class="btn set-today-btn" type="button" data-target="knownGaAsOfDate">Use Today</button>
+            </div>
+        </section>
+
+        <div id="resultBox" class="result-box hidden" aria-live="polite"></div>
+
+        <div class="caution-box">
+            <strong>Important:</strong>
+            <p>Results are estimates. This tool does not adjust for cycle length, assisted reproduction dating, early ultrasound dating, or clinical redating rules.</p>
+        </div>
+
+        <a href="index.html" class="btn btn-back">← Back to Home</a>
+
+        <footer class="site-footer">
+            <div class="footer-actions">
+                <button id="darkModeToggle" class="footer-btn" type="button">
+                    ☀️ Switch to Light Mode
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="common.js"></script>
+
+    <script>
+        (() => {
+            'use strict';
+
+            const FULL_TERM_DAYS = 280;
+            const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+            const modeButtons = Array.from(document.querySelectorAll('.mode-btn'));
+            const panels = {
+                lmp: document.getElementById('panel-lmp'),
+                edb: document.getElementById('panel-edb'),
+                'known-ga': document.getElementById('panel-known-ga')
+            };
+
+            const resultBox = document.getElementById('resultBox');
+
+            function parseDateInput(value) {
+                if (!value) return null;
+
+                const parts = value.split('-').map(Number);
+                if (parts.length !== 3) return null;
+
+                const [year, month, day] = parts;
+
+                if (!year || !month || !day) return null;
+
+                return new Date(year, month - 1, day, 12, 0, 0, 0);
+            }
+
+            function toDateInputValue(date) {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+
+                return `${year}-${month}-${day}`;
+            }
+
+            function todayLocal() {
+                const now = new Date();
+                return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0, 0);
+            }
+
+            function addDays(date, days) {
+                return new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate() + days,
+                    12,
+                    0,
+                    0,
+                    0
+                );
+            }
+
+            function diffDays(startDate, endDate) {
+                const start = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 12, 0, 0, 0);
+                const end = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 12, 0, 0, 0);
+
+                return Math.round((end - start) / MS_PER_DAY);
+            }
+
+            function formatDate(date) {
+                return new Intl.DateTimeFormat('en-CA', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }).format(date);
+            }
+
+            function formatGestationalAge(totalDays) {
+                if (!Number.isFinite(totalDays)) {
+                    return 'Unable to calculate';
+                }
+
+                if (totalDays < 0) {
+                    return `Before 0 weeks 0 days by this dating method (${totalDays} days)`;
+                }
+
+                const weeks = Math.floor(totalDays / 7);
+                const days = totalDays % 7;
+
+                return `${weeks} weeks ${days} days`;
+            }
+
+            function showResult(title, items, note = '') {
+                const listItems = items.map((item) => {
+                    return `<li>${item.label}: <span class="result-value">${item.value}</span></li>`;
+                }).join('');
+
+                resultBox.innerHTML = `
+                    <h2>${title}</h2>
+                    <ul class="result-list">
+                        ${listItems}
+                    </ul>
+                    ${note ? `<p class="subtle-note">${note}</p>` : ''}
+                `;
+
+                resultBox.classList.remove('hidden');
+            }
+
+            function showError(message) {
+                resultBox.innerHTML = `
+                    <h2>Please check your entries</h2>
+                    <p>${message}</p>
+                `;
+
+                resultBox.classList.remove('hidden');
+            }
+
+            function setMode(mode) {
+                modeButtons.forEach((button) => {
+                    const isSelected = button.dataset.mode === mode;
+                    button.classList.toggle('is-selected', isSelected);
+                    button.classList.toggle('btn-primary', isSelected);
+                    button.setAttribute('aria-pressed', String(isSelected));
+                });
+
+                Object.entries(panels).forEach(([key, panel]) => {
+                    panel.classList.toggle('hidden', key !== mode);
+                });
+
+                resultBox.classList.add('hidden');
+                resultBox.innerHTML = '';
+            }
+
+            function calculateFromLmp() {
+                const lmpDate = parseDateInput(document.getElementById('lmpDate').value);
+                const asOfDate = parseDateInput(document.getElementById('lmpAsOfDate').value);
+
+                if (!lmpDate || !asOfDate) {
+                    showError('Enter an LMP date and an “as of” date.');
+                    return;
+                }
+
+                const edb = addDays(lmpDate, FULL_TERM_DAYS);
+                const gaDays = diffDays(lmpDate, asOfDate);
+                const daysUntilEdb = diffDays(asOfDate, edb);
+
+                showResult('Results from LMP', [
+                    { label: 'Estimated date of birth', value: formatDate(edb) },
+                    { label: 'Gestational age as of selected date', value: formatGestationalAge(gaDays) },
+                    { label: 'Days until EDB', value: `${daysUntilEdb} days` }
+                ], 'Formula used: EDB = LMP + 280 days.');
+            }
+
+            function calculateFromEdb() {
+                const edbDate = parseDateInput(document.getElementById('edbDate').value);
+                const asOfDate = parseDateInput(document.getElementById('edbAsOfDate').value);
+
+                if (!edbDate || !asOfDate) {
+                    showError('Enter an EDB and an “as of” date.');
+                    return;
+                }
+
+                const daysUntilEdb = diffDays(asOfDate, edbDate);
+                const gaDays = FULL_TERM_DAYS - daysUntilEdb;
+                const estimatedLmp = addDays(edbDate, -FULL_TERM_DAYS);
+
+                showResult('Results from EDB', [
+                    { label: 'Gestational age as of selected date', value: formatGestationalAge(gaDays) },
+                    { label: 'Estimated LMP', value: formatDate(estimatedLmp) },
+                    { label: 'Days until EDB', value: `${daysUntilEdb} days` }
+                ], 'Formula used: Current GA = 280 days − days remaining until EDB.');
+            }
+
+            function calculateFromKnownGa() {
+                const weeks = Number.parseInt(document.getElementById('knownWeeks').value, 10);
+                const days = Number.parseInt(document.getElementById('knownDays').value, 10);
+                const knownGaDate = parseDateInput(document.getElementById('knownGaDate').value);
+                const asOfDate = parseDateInput(document.getElementById('knownGaAsOfDate').value);
+
+                if (!Number.isInteger(weeks) || !Number.isInteger(days) || !knownGaDate || !asOfDate) {
+                    showError('Enter weeks, days, the date the gestational age was known, and an “as of” date.');
+                    return;
+                }
+
+                if (weeks < 0 || weeks > 45 || days < 0 || days > 6) {
+                    showError('Gestational age days should be between 0 and 6, and weeks should be within a reasonable pregnancy range.');
+                    return;
+                }
+
+                const knownGaTotalDays = (weeks * 7) + days;
+                const daysElapsed = diffDays(knownGaDate, asOfDate);
+                const currentGaDays = knownGaTotalDays + daysElapsed;
+                const edb = addDays(knownGaDate, FULL_TERM_DAYS - knownGaTotalDays);
+                const estimatedLmp = addDays(edb, -FULL_TERM_DAYS);
+                const daysUntilEdb = diffDays(asOfDate, edb);
+
+                showResult('Results from Known Gestational Age', [
+                    { label: 'Estimated date of birth', value: formatDate(edb) },
+                    { label: 'Gestational age as of selected date', value: formatGestationalAge(currentGaDays) },
+                    { label: 'Estimated LMP', value: formatDate(estimatedLmp) },
+                    { label: 'Days until EDB', value: `${daysUntilEdb} days` }
+                ], 'Formula used: EDB = date of known GA + remaining days to 40 weeks.');
+            }
+
+            function setDefaultDates() {
+                const todayValue = toDateInputValue(todayLocal());
+
+                document.getElementById('lmpAsOfDate').value = todayValue;
+                document.getElementById('edbAsOfDate').value = todayValue;
+                document.getElementById('knownGaAsOfDate').value = todayValue;
+                document.getElementById('knownGaDate').value = todayValue;
+            }
+
+            modeButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    setMode(button.dataset.mode);
+                });
+            });
+
+            document.querySelectorAll('.set-today-btn').forEach((button) => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    const target = document.getElementById(targetId);
+
+                    if (target) {
+                        target.value = toDateInputValue(todayLocal());
+                    }
+                });
+            });
+
+            document.getElementById('calculateFromLmpBtn').addEventListener('click', calculateFromLmp);
+            document.getElementById('calculateFromEdbBtn').addEventListener('click', calculateFromEdb);
+            document.getElementById('calculateFromKnownGaBtn').addEventListener('click', calculateFromKnownGa);
+
+            setDefaultDates();
+        })();
+    </script>
+</body>
+</html>
