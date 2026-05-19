@@ -12,38 +12,7 @@
 
     <p><strong>External ultrasound:</strong> a non-invasive fetal heart monitoring method that uses an ultrasound transducer placed on the maternal abdomen to detect fetal heart motion. Depending on available equipment, external ultrasound systems may be wired, wireless, and/or waterproof for use in appropriate clinical settings.</p>
 
-<div class="edu-indent">
-    <p><strong>Advantages:</strong></p>
-    <ul>
-        <li>Non-invasive and commonly used.</li>
-        <li>Can be applied without ruptured membranes.</li>
-        <li>May allow flexible monitoring options depending on the equipment available, such as wired, wireless, or waterproof systems.</li>
-    </ul>
-
-    <p><strong>Limitations:</strong></p>
-    <ul>
-        <li>Tracing quality can be affected by fetal position, maternal movement, signal loss, maternal body habitus, or monitor placement.</li>
-        <li>May inadvertently detect the maternal heart rate instead of the fetal heart rate.</li>
-        <li>If the tracing does not clearly represent the fetal heart rate, further assessment or troubleshooting is needed before interpretation.</li>
-    </ul>
-</div>
-
 <p><strong>Internal fetal scalp electrode (FSE):</strong> an internal fetal heart monitoring method, sometimes also called a fetal spiral electrode, where an electrode is applied directly to the fetal presenting part, usually the fetal scalp, after membrane rupture. It detects the fetal heart rate from the fetal electrocardiographic signal and may provide a more consistent tracing when external monitoring is difficult.</p>
-
-<div class="edu-indent">
-    <p><strong>Advantages:</strong></p>
-    <ul>
-        <li>May provide a more consistent fetal heart rate tracing when external monitoring is difficult.</li>
-        <li>Can help clarify the fetal heart rate when there is ongoing external signal loss or uncertainty.</li>
-    </ul>
-
-    <p><strong>Limitations:</strong></p>
-    <ul>
-        <li>Invasive and requires appropriate clinical conditions, patient consent, and adherence to institutional policy.</li>
-        <li>Potential risks include local fetal skin injury, bleeding, infection risk, artifact, and inappropriate use when contraindications are present.</li>
-        <li>Manufacturer-specific contraindications, warnings, or use restrictions should be reviewed when applicable.</li>
-    </ul>
-</div>
 
 <hr>
 
@@ -51,41 +20,8 @@
 
 <p><strong>External tocodynamometer (TOCO):</strong> an external uterine activity monitoring method that uses a pressure-sensitive transducer placed on the maternal abdomen, usually near the uterine fundus, to detect changes in abdominal wall contour during contractions.</p>
 
-<div class="edu-indent">
-    <p><strong>Advantages:</strong></p>
-    <ul>
-        <li>Non-invasive and commonly used.</li>
-        <li>Can help assess contraction frequency and approximate contraction duration.</li>
-        <li>Can show the timing of contractions in relation to the fetal heart rate.</li>
-    </ul>
-
-    <p><strong>Limitations:</strong></p>
-    <ul>
-        <li>Does not directly measure contraction strength or true resting tone.</li>
-        <li>Requires palpation to assess contraction intensity and resting tone.</li>
-        <li>Accuracy can be affected by maternal position, movement, body habitus, belt placement, and poor contact with the abdomen.</li>
-        <li>If the tracing does not match the clinical picture, further assessment or troubleshooting is needed before interpretation.</li>
-    </ul>
-</div>
-
 <p><strong>Internal uterine pressure catheter (IUPC):</strong> an internal uterine activity monitoring method where a catheter is placed inside the uterus after membrane rupture and connected to the monitor. It measures intrauterine pressure in mmHg and can provide information about contraction intensity, resting tone, and Montevideo Units.</p>
 
-<div class="edu-indent">
-    <p><strong>Advantages:</strong></p>
-    <ul>
-        <li>Can directly measure intrauterine pressure in mmHg.</li>
-        <li>Can provide more objective information about contraction intensity and resting tone.</li>
-        <li>Can be used to calculate Montevideo Units.</li>
-    </ul>
-
-    <p><strong>Limitations:</strong></p>
-    <ul>
-        <li>Invasive and requires appropriate clinical conditions, patient consent, and adherence to institutional policy.</li>
-        <li>Requires correct function and zeroing to provide accurate readings.</li>
-        <li>Potential risks include insertion difficulty, infection, bleeding, uterine or placental injury, inaccurate readings, and rare serious complications.</li>
-        <li>Manufacturer-specific instructions, warnings, and contraindications should be reviewed when applicable.</li>
-    </ul>
-</div>
 `,
     interpretability: `
     <p><strong>Interpretable tracing:</strong> contains enough visually clear fetal heart rate and uterine activity data to allow the clinician to assess the fetal health surveillance findings being evaluated.</p>
@@ -98,13 +34,12 @@
 
     <p><strong>Artifact:</strong> a signal that interferes with the fetal heart rate display and may arise from sources other than the fetal heart. Artifact can occur when the monitor detects the wrong input, such as the maternal heart rate, or when the system displays a misleading output signal.</p>
 
-    <p><strong>External ultrasound artifact:</strong> may appear as gaps, irregular marks, or “chicken scratches” that make the baseline difficult to determine. It may also create small vertical markings that falsely suggest variability. True fetal heart rate variability should be distinguished from artifact.</p>
+    <p><strong>External ultrasound artifact:</strong> may appear as gaps, irregular marks, or a heart rate that does not match the audible fetal heart rate that make the baseline difficult to determine. It may also create small vertical markings that falsely suggest variability. True fetal heart rate variability should be distinguished from artifact.</p>
 
     <p><strong>FSE artifact:</strong> internal fetal scalp electrode monitoring can also produce artifact. Possible causes include fetal movement, excess fetal hair, poor electrode contact, placement on maternal tissue, signal disruption during vaginal examination, or equipment-related issues.</p>
 
     <hr>
 
-    <p><strong>Practical reminder:</strong> whenever the tracing does not clearly represent the fetal heart rate, interpretation should be delayed until the signal is clarified. Ongoing difficulty obtaining interpretable data should be escalated according to institutional policy, and efforts to obtain interpretable data should be documented.</p>
 `,
     externalUterineActivity: `
     <p><strong>Uterine activity assessment</strong> evaluates the contraction pattern in relation to the fetal heart rate. With external monitoring, this includes use of the tocodynamometer and manual palpation of the maternal abdomen.</p>
@@ -141,7 +76,7 @@
         <li><strong>Intensity:</strong> IUPC measurement 75 mmHg or greater above baseline, except in second stage.</li>
     </ul>
 
-    <p>Tachysystole can reduce uteroplacental blood flow and may affect fetal oxygenation over time. If fetal heart rate characteristics are atypical or abnormal during excessive uterine activity, response should not be delayed while waiting to complete a 30-minute average.</p>
+    <p>Tachysystole can reduce uteroplacental blood flow and may affect fetal oxygenation over time. </p>
 `,
        maternalFactors: `
     <p><strong>Maternal factors matter</strong> because maternal physiology can affect fetal oxygen delivery and can also influence how the fetal heart rate tracing is interpreted.</p>
@@ -150,7 +85,7 @@
 
     <p>When maternal factors are present, the fetal tracing should be interpreted in the full clinical context. Maternal assessment, vital signs, symptoms, medications, labour progress, and the quality of the tracing may all affect clinical interpretation and next steps.</p>
 
-    <p><strong>Clinical reminder:</strong> abnormal maternal findings do not automatically determine the fetal heart rate classification, but they may increase concern, require correction or escalation, and support closer reassessment according to clinical judgment and institutional policy.</p>
+    <p><strong>Clinical reminder:</strong> abnormal maternal findings do not alter the fetal heart rate classification when EFM is being used, but they may increase concern, require correction or escalation, and support closer reassessment according to clinical judgment and institutional policy.</p>
 `,
        coincidence: `
     <p><strong>Maternal-fetal heart rate coincidence</strong> occurs when the displayed fetal heart rate is the same as, very similar to, or difficult to distinguish from the maternal heart rate.</p>
