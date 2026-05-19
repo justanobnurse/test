@@ -155,7 +155,7 @@
 
         <div class="mode-grid" role="group" aria-label="Calculator options">
             <button class="btn btn-primary mode-btn is-selected" type="button" data-mode="lmp" aria-pressed="true">
-                Calculate EDB from LMP
+                Calculate EDB from LMP / Ovulation
             </button>
 
             <button class="btn mode-btn" type="button" data-mode="edb" aria-pressed="false">
@@ -167,9 +167,9 @@
             </button>
         </div>
 
-        <!-- LMP PANEL -->
+        <!-- LMP / OVULATION PANEL -->
         <section id="panel-lmp" class="mode-panel">
-            <h2>Calculate EDB and GA from LMP</h2>
+            <h2>Calculate EDB from LMP or Ovulation Date</h2>
 
             <div class="form-row">
                 <label for="lmpDate">First day of last menstrual period</label>
@@ -177,7 +177,16 @@
                     <input id="lmpDate" type="date">
                     <button class="btn set-today-btn" type="button" data-target="lmpDate">Use Today</button>
                 </div>
-                <p class="form-hint">Uses Naegele’s rule: LMP + 280 days.</p>
+                <p class="form-hint">If no ovulation date is entered, this uses Naegele’s rule: LMP + 280 days.</p>
+            </div>
+
+            <div class="form-row">
+                <label for="ovulationDate">Ovulation date <span style="font-weight: 400;">(optional)</span></label>
+                <div class="date-input-row">
+                    <input id="ovulationDate" type="date">
+                    <button class="btn set-today-btn" type="button" data-target="ovulationDate">Use Today</button>
+                </div>
+                <p class="form-hint">If entered, this will be used instead of LMP. EDB is calculated as ovulation date + 266 days.</p>
             </div>
 
             <div class="form-row">
@@ -186,6 +195,7 @@
                     <input id="lmpAsOfDate" type="date">
                     <button class="btn set-today-btn" type="button" data-target="lmpAsOfDate">Use Today</button>
                 </div>
+                <p class="form-hint">Defaults to today’s date.</p>
             </div>
 
             <div class="inline-actions">
@@ -276,6 +286,8 @@
             'use strict';
 
             const FULL_TERM_DAYS = 280;
+            const OVULATION_TO_EDB_DAYS = 266;
+            const OVULATION_TO_ESTIMATED_LMP_DAYS = 14;
             const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
             const modeButtons = Array.from(document.querySelectorAll('.mode-btn'));
@@ -398,10 +410,38 @@
 
             function calculateFromLmp() {
                 const lmpDate = parseDateInput(document.getElementById('lmpDate').value);
+                const ovulationDate = parseDateInput(document.getElementById('ovulationDate').value);
                 const asOfDate = parseDateInput(document.getElementById('lmpAsOfDate').value);
 
-                if (!lmpDate || !asOfDate) {
-                    showError('Enter an LMP date and an “as of” date.');
+                if (!lmpDate && !ovulationDate) {
+                    showError('Enter either an LMP date or an ovulation date.');
+                    return;
+                }
+
+                if (!asOfDate) {
+                    showError('Enter an “as of” date.');
+                    return;
+                }
+
+                if (lmpDate && ovulationDate && ovulationDate < lmpDate) {
+                    showError('The ovulation date cannot be before the LMP date. Please check the dates entered.');
+                    return;
+                }
+
+                if (ovulationDate) {
+                    const estimatedLmp = addDays(ovulationDate, -OVULATION_TO_ESTIMATED_LMP_DAYS);
+                    const edb = addDays(ovulationDate, OVULATION_TO_EDB_DAYS);
+                    const gaDays = diffDays(estimatedLmp, asOfDate);
+                    const daysUntilEdb = diffDays(asOfDate, edb);
+
+                    showResult('Results from Ovulation Date', [
+                        { label: 'Dating method used', value: 'Ovulation date' },
+                        { label: 'Estimated date of birth', value: formatDate(edb) },
+                        { label: 'Estimated LMP used for GA calculation', value: formatDate(estimatedLmp) },
+                        { label: 'Gestational age as of selected date', value: formatGestationalAge(gaDays) },
+                        { label: 'Days until EDB', value: `${daysUntilEdb} days` }
+                    ], 'Formula used: EDB = ovulation date + 266 days. Gestational age is displayed using the standard LMP-based convention.');
+
                     return;
                 }
 
@@ -410,6 +450,7 @@
                 const daysUntilEdb = diffDays(asOfDate, edb);
 
                 showResult('Results from LMP', [
+                    { label: 'Dating method used', value: 'LMP' },
                     { label: 'Estimated date of birth', value: formatDate(edb) },
                     { label: 'Gestational age as of selected date', value: formatGestationalAge(gaDays) },
                     { label: 'Days until EDB', value: `${daysUntilEdb} days` }
