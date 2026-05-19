@@ -15,9 +15,9 @@
         }
 
         .tool-header h1 {
-    margin-bottom: 10px;
-    color: #008080;
-}
+            margin-bottom: 10px;
+            color: #008080;
+        }
 
         .mode-grid {
             display: grid;
@@ -54,6 +54,26 @@
             margin-top: 4px;
             color: var(--muted-text);
             font-size: 0.9rem;
+        }
+
+        .date-input-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .date-input-row input[type="date"] {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .date-input-row .btn {
+            width: auto;
+            min-width: 120px;
+            min-height: 48px;
+            margin: 0;
+            padding: 12px 16px;
         }
 
         input[type="date"],
@@ -110,7 +130,7 @@
 
         .result-value {
             font-weight: 700;
-            color: var(--accent);
+            color: #008080;
         }
 
         .subtle-note {
@@ -153,19 +173,24 @@
 
             <div class="form-row">
                 <label for="lmpDate">First day of last menstrual period</label>
-                <input id="lmpDate" type="date">
+                <div class="date-input-row">
+                    <input id="lmpDate" type="date">
+                    <button class="btn set-today-btn" type="button" data-target="lmpDate">Use Today</button>
+                </div>
                 <p class="form-hint">Uses Naegele’s rule: LMP + 280 days.</p>
             </div>
 
             <div class="form-row">
                 <label for="lmpAsOfDate">Calculate gestational age as of</label>
-                <input id="lmpAsOfDate" type="date">
+                <div class="date-input-row">
+                    <input id="lmpAsOfDate" type="date">
+                    <button class="btn set-today-btn" type="button" data-target="lmpAsOfDate">Use Today</button>
+                </div>
                 <p class="form-hint">Defaults to today’s date.</p>
             </div>
 
             <div class="inline-actions">
                 <button id="calculateFromLmpBtn" class="btn btn-primary" type="button">Calculate</button>
-                <button class="btn set-today-btn" type="button" data-target="lmpAsOfDate">Use Today</button>
             </div>
         </section>
 
@@ -175,18 +200,23 @@
 
             <div class="form-row">
                 <label for="edbDate">Estimated date of birth</label>
-                <input id="edbDate" type="date">
+                <div class="date-input-row">
+                    <input id="edbDate" type="date">
+                    <button class="btn set-today-btn" type="button" data-target="edbDate">Use Today</button>
+                </div>
             </div>
 
             <div class="form-row">
                 <label for="edbAsOfDate">Calculate gestational age as of</label>
-                <input id="edbAsOfDate" type="date">
+                <div class="date-input-row">
+                    <input id="edbAsOfDate" type="date">
+                    <button class="btn set-today-btn" type="button" data-target="edbAsOfDate">Use Today</button>
+                </div>
                 <p class="form-hint">Defaults to today’s date.</p>
             </div>
 
             <div class="inline-actions">
                 <button id="calculateFromEdbBtn" class="btn btn-primary" type="button">Calculate</button>
-                <button class="btn set-today-btn" type="button" data-target="edbAsOfDate">Use Today</button>
             </div>
         </section>
 
@@ -212,18 +242,23 @@
 
             <div class="form-row">
                 <label for="knownGaDate">Date this gestational age was known</label>
-                <input id="knownGaDate" type="date">
+                <div class="date-input-row">
+                    <input id="knownGaDate" type="date">
+                    <button class="btn set-today-btn" type="button" data-target="knownGaDate">Use Today</button>
+                </div>
             </div>
 
             <div class="form-row">
                 <label for="knownGaAsOfDate">Calculate current gestational age as of</label>
-                <input id="knownGaAsOfDate" type="date">
+                <div class="date-input-row">
+                    <input id="knownGaAsOfDate" type="date">
+                    <button class="btn set-today-btn" type="button" data-target="knownGaAsOfDate">Use Today</button>
+                </div>
                 <p class="form-hint">Defaults to today’s date.</p>
             </div>
 
             <div class="inline-actions">
                 <button id="calculateFromKnownGaBtn" class="btn btn-primary" type="button">Calculate</button>
-                <button class="btn set-today-btn" type="button" data-target="knownGaAsOfDate">Use Today</button>
             </div>
         </section>
 
@@ -235,14 +270,6 @@
         </div>
 
         <a href="index.html" class="btn btn-back">← Back to Home</a>
-
-        <footer class="site-footer">
-            <div class="footer-actions">
-                <button id="darkModeToggle" class="footer-btn" type="button">
-                    ☀️ Switch to Light Mode
-                </button>
-            </div>
-        </footer>
     </div>
 
     <script src="common.js"></script>
