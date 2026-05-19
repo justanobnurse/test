@@ -106,23 +106,15 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    align-items: stretch;
 }
 
 @media (min-width: 768px) {
     .home-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        align-items: stretch;
-    }
-
-    .home-grid .tool-card:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-        max-width: calc(50% - 10px);
-        justify-self: center;
-        width: 100%;
+        grid-template-columns: 1fr 1fr;
     }
 }
+
 @media (max-width: 600px) {
     .container {
         min-height: auto;
@@ -202,6 +194,9 @@ input[type="number"]:focus:not(:focus-visible) {
     .theme-purple .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #8d63ba;
     }
+   .theme-teal .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
+    background: #006f6f;
+}
 }
 
 /* Selected state */
@@ -217,7 +212,6 @@ input[type="number"]:focus:not(:focus-visible) {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 260px;
     padding: 25px;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -286,6 +280,18 @@ html.dark-mode .btn-exit,
 html.dark-mode .btn-back {
     background: #c0392b;
     color: #f8d7da;
+}
+.theme-teal {
+    border-left-color: #008080;
+}
+
+.theme-teal h2,
+.theme-teal h3 {
+    color: #008080;
+}
+
+.theme-teal .btn-primary {
+    background: #008080;
 }
 
 /* Footer pill buttons */
@@ -382,55 +388,6 @@ html.dark-mode .btn-back {
     border-left: 4px solid var(--border-color);
     border-radius: 8px;
     cursor: pointer;
-}
-
-/* ==========================================================================
-   EDUCATIONAL DROPDOWNS
-   ========================================================================== */
-
-.edu-drop {
-    margin: 16px 0;
-    padding: 14px 16px;
-    background: var(--item-bg);
-    border: 1px solid var(--border-color);
-    border-left: 4px solid var(--accent);
-    border-radius: 10px;
-}
-
-.edu-drop summary {
-    cursor: pointer;
-    font-weight: 700;
-    color: var(--text);
-}
-
-.edu-drop summary:focus-visible {
-    outline: 3px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 6px;
-}
-
-.edu-drop p,
-.edu-drop ul {
-    margin-top: 12px;
-    color: var(--text);
-}
-
-.edu-drop li {
-    margin-bottom: 6px;
-}
-
-.edu-indent {
-    margin: 8px 0 18px 18px;
-    padding-left: 14px;
-    border-left: 3px solid var(--border-color);
-}
-
-.edu-indent p {
-    margin: 8px 0 4px;
-}
-
-.edu-indent ul {
-    margin-top: 4px;
 }
 
 /* ==========================================================================
