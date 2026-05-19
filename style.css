@@ -202,6 +202,9 @@ input[type="number"]:focus:not(:focus-visible) {
     .theme-purple .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
         background: #8d63ba;
     }
+   .theme-teal .btn.btn-primary:hover:not(:disabled):not(.is-selected) {
+    background: #006f6f;
+}
 }
 
 /* Selected state */
@@ -240,6 +243,18 @@ input[type="number"]:focus:not(:focus-visible) {
 
 .tool-card .btn {
     margin-top: auto;
+}
+.theme-teal {
+    border-left-color: #008080;
+}
+
+.theme-teal h2,
+.theme-teal h3 {
+    color: #008080;
+}
+
+.theme-teal .btn-primary {
+    background: #008080;
 }
 
 /* Standard buttons */
